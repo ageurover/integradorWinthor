@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="winthorPU" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <class>winthorDb.jpa.LayoutDocSql</class>
+    <class>winthorDb.jpa.LayoutDoc</class>
+    <properties>
+      <!-- caching de dados -->
+      <property name="toplink.cache.type.default" value="Full"/>
+      <property name="toplink.cache.size.default" value="10000"/>
+      <property name="toplink.cache.shared.default" value="true"/>
+      <!-- Gera logs para debug do toplink -->
+      <!--
+            <property name="toplink.logging.level" value="ALL"/>
+            <property name="toplink.logging.timestamp" value="true"/>
+            <property name="toplink.logging.session" value="true"/>
+            <property name="toplink.logging.exceptions" value="true"/>
+            
+         properties>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+            <property name="javax.persistence.jdbc.user" value="system"/>
+            <property name="javax.persistence.jdbc.password" value="1111"/>
+        </properties>
+            
+     -->
+      <property name="toplink.jdbc.user" value="winthor"/>
+      <property name="toplink.jdbc.password" value="dr4wt9pc"/>
+      <property name="toplink.jdbc.url" value="jdbc:oracle:thin:BRASILDIS/DR4WT9PC@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = 192.168.5.2)(PORT = 1521))(CONNECT_DATA = (SID = WINT )))"/>
+      <property name="toplink.target-database" value="Auto"/>
+      <property name="toplink.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+    </properties>
+  </persistence-unit>
+</persistence>
