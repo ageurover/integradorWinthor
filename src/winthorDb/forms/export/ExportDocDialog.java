@@ -1290,7 +1290,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void btnBuscarRemessaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarRemessaActionPerformed
         // TODO add your handling code here:
         try {
-            if (!edtCodIbgeCartorio.getText().isBlank()) {
+            if (!edtCodIbgeCartorio.getText().isEmpty()) {
                 edtRemessa.setText(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText()));
             }
         } catch (Exception ex) {
@@ -1302,7 +1302,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void mnuRemessaBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRemessaBuscarActionPerformed
         // TODO add your handling code here:
         try {
-            if (!edtCodIbgeCartorio.getText().isBlank()) {
+            if (!edtCodIbgeCartorio.getText().isEmpty()) {
                 edtRemessa.setText(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText()));
             }
         } catch (Exception ex) {
