@@ -434,6 +434,9 @@
         <Component class="javax.swing.JButton" name="btnBuscarRemessa">
           <Properties>
             <Property name="text" type="java.lang.String" value="buscar"/>
+            <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="pMenuRemessa"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarRemessaActionPerformed"/>

@@ -643,7 +643,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
         String ret = "1";
         try {
-            String strSelect = "SELECT MAX(NUMREMESSA)+1 REMESSA "
+            String strSelect = "SELECT MAX(NUMREMESSA) +1 REMESSA "
                     + "  FROM BRZ_CARTORIO_REMESSA \n"
                     + "   WHERE CODIBGE = " + cidadeIbge
                     + "   AND CODCONVENIO = " + codConvenio;
@@ -654,7 +654,12 @@ public class ExportDocDialog extends javax.swing.JDialog {
             // se nao existir o codibge para o convenio informado deve ser criado o registro na tabela
             if (lst != null) {
                 if (!lst.isEmpty()) {
-                    ret = lst.get(0).toString();
+                    if (lst.get(0).toString().equalsIgnoreCase("[null]") ) {
+                        wint.insertDados("INSERT INTO BRZ_CARTORIO_REMESSA ( CODIBGE,CODCONVENIO,NUMREMESSA,DTULTREMESSA) "
+                                + " VALUES ( " + cidadeIbge + " , " + codConvenio + " , 1 , trunc(sysdate) ) ");
+                    } else {
+                        ret = lst.get(0).toString();
+                    }
                 }
             } else {
                 wint.insertDados("INSERT INTO BRZ_CARTORIO_REMESSA ( CODIBGE,CODCONVENIO,NUMREMESSA,DTULTREMESSA) "
@@ -824,6 +829,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         edtDataDesd.setToolTipText("DD/MM/AAAA");
 
         btnBuscarRemessa.setText("buscar");
+        btnBuscarRemessa.setComponentPopupMenu(pMenuRemessa);
         btnBuscarRemessa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarRemessaActionPerformed(evt);
@@ -932,7 +938,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             .add(20, 20, 20)
                             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                 .add(edtCodPraca)
-                                .add(edtCodCli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE))))
+                                .add(edtCodCli, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                             .add(jLabel9)
@@ -1291,7 +1297,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             if (!edtCodIbgeCartorio.getText().isEmpty()) {
-                edtRemessa.setText(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText()));
+                edtRemessa.setText(Formato.somenteNumeros(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText())));
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "busca remessa");
@@ -1303,7 +1309,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             if (!edtCodIbgeCartorio.getText().isEmpty()) {
-                edtRemessa.setText(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText()));
+                  edtRemessa.setText(Formato.somenteNumeros(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText())));
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "busca remessa");
