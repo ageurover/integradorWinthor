@@ -17,6 +17,7 @@ import winthorDb.util.Formato;
  */
 public class ConsultaRemessaGerada extends javax.swing.JDialog {
 
+    private boolean updateRemessa = true;
 //    /**
 //     * Creates new form ConsultaRemessaGerada
 //     */
@@ -26,6 +27,7 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
 //        setLocationRelativeTo(null);
 //        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png")).getImage());
 //    }
+
     /**
      * Creates new form CfopDialog
      *
@@ -43,6 +45,45 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
 
     public static void open() {
         new ConsultaRemessaGerada(null, true).setVisible(true);
+    }
+
+    /**
+     * Faz a busca dos dados do pedido no sistema winthor para que seja
+     * confirmado pelo usuario.
+     *
+     */
+    private void buscaRemessaCartorio() throws Exception {
+        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
+
+        try {
+            String filtro = " ";
+            filtro += " AND C.CODIBGE = '" + edtIbgeCartorio.getText() + "' ";
+
+            if (!edtNumRemessa.getText().isEmpty()) {
+                filtro += " AND C.CODCONVENIO = '" + edtConvenioCartorio.getText() + "' ";
+            }
+
+//            if ((edtDataInicial.getDate() != null)) {
+//                filtro += " AND C.DTENVIO BETWEEN TO_DATE('" + Formato.dateToStr(edtDataInicial.getDate()) + " 00:01','DD/MM/YYYY HH24:MI') "
+//                        + " AND TO_DATE('" + Formato.dateToStr(edtDataInicial.getDate()) + " 23:59','DD/MM/YYYY HH24:MI') \n";
+//            } else {
+//                MessageDialog.error("A Data final deve ser maior ou igual a data inicial!");
+//            }
+            String strSelect = "SELECT * FROM BRZ_CARTORIO_REMESSA C "
+                    + "   WHERE C.CODIBGE IS NOT NULL \n"
+                    + filtro
+                    + "   ORDER BY C.CODCONVENIO, C.CODIBGE";
+
+            wint.openConectOracle();
+            tblBrzCartorioRemessa.clearTableData();
+            tblBrzCartorioRemessa.setTableData(wint.selectResultSet(strSelect));
+
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "buscaRemessaCartorio");
+        } finally {
+            wint.closeConectOracle();
+        }
+
     }
 
     /**
@@ -93,7 +134,7 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
         }
 
     }
-    
+
     private boolean exluirRemessa(Date dataEnvio, String numRemessa, String CodCliente, String codCobranca) throws Exception {
         IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
         String strUpdate = "";
@@ -167,17 +208,17 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         edtIbgeCartorio = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        edtConvenio = new javax.swing.JTextField();
+        edtConvenioCartorio = new javax.swing.JTextField();
         btnBuscarRemessaCartorio = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        edtConvenioRemessaX = new javax.swing.JTextField();
+        edtCartorioIbgeX = new javax.swing.JTextField();
+        edtRemessaX = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         btnGravaRemessaCartorio = new javax.swing.JButton();
+        edtDataUltimaGeradaX = new com.toedter.calendar.JDateChooser();
 
         setTitle("Conversão de Pedidos");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -350,6 +391,11 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
         jLabel13.setText("Dt. Ultima gerada:");
 
         btnGravaRemessaCartorio.setText("Gravar");
+        btnGravaRemessaCartorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGravaRemessaCartorioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -360,33 +406,33 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel10))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(edtConvenioRemessaX)
+                                    .addComponent(edtCartorioIbgeX)
+                                    .addComponent(edtRemessaX)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtDataUltimaGeradaX, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnGravaRemessaCartorio))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(edtIbgeCartorio, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtConvenio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(edtConvenioCartorio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnBuscarRemessaCartorio))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel11)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel13)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(45, 45, 45)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3))))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGravaRemessaCartorio)))
+                        .addComponent(btnBuscarRemessaCartorio)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -397,28 +443,28 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addComponent(edtIbgeCartorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(edtConvenio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edtConvenioCartorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarRemessaCartorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edtConvenioRemessaX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edtCartorioIbgeX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edtRemessaX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edtDataUltimaGeradaX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGravaRemessaCartorio))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Controle Remessa", jPanel3);
@@ -475,19 +521,71 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
 
     private void tblBrzCartorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBrzCartorioMouseClicked
         // TODO add your handling code here:
-        if (tblBrzCartorio.getRowCount()>0){
-           
+        if (tblBrzCartorio.getRowCount() > 0) {
+
         }
-               
+
     }//GEN-LAST:event_tblBrzCartorioMouseClicked
 
     private void tblBrzCartorioRemessaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBrzCartorioRemessaMouseClicked
-        // TODO add your handling code here:
+        try {
+            if (tblBrzCartorioRemessa.getRowCount() > 0) {
+                updateRemessa = true;
+                btnGravaRemessaCartorio.setText("Gravar");
+                edtConvenioRemessaX.setText(tblBrzCartorioRemessa.getConteudoRowSelected("CODCONVENIO").toString());
+                edtCartorioIbgeX.setText(tblBrzCartorioRemessa.getConteudoRowSelected("CODIBGE").toString());
+                edtRemessaX.setText(tblBrzCartorioRemessa.getConteudoRowSelected("NUMREMESSA").toString());
+                edtDataUltimaGeradaX.setDate(Formato.strToDate(tblBrzCartorioRemessa.getConteudoRowSelected("DTULTREMESSA").toString()));
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex);
+        }
     }//GEN-LAST:event_tblBrzCartorioRemessaMouseClicked
 
     private void btnBuscarRemessaCartorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarRemessaCartorioActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            buscaRemessaCartorio();
+        } catch (Exception ex) {
+            trataErro.trataException(ex);
+            //Logger.getLogger(ConsultaRemessaGerada.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnBuscarRemessaCartorioActionPerformed
+
+    private void btnGravaRemessaCartorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravaRemessaCartorioActionPerformed
+        // TODO add your handling code here:
+        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
+        try {
+            wint.openConectOracle();
+            if (updateRemessa) {
+                if ((!edtCartorioIbgeX.getText().isEmpty()) && (!edtConvenioRemessaX.getText().isEmpty()) && (!edtRemessaX.getText().isEmpty())) {
+                    wint.updateDados("UPDATE BRZ_CARTORIO_REMESSA SET CODIBGE = " + edtCartorioIbgeX.getText()
+                            + " , CODCONVENIO = " + edtConvenioRemessaX.getText()
+                            + " ,NUMREMESSA = " + edtRemessaX.getText()
+                            + " ,DTULTREMESSA = trunc(sysdate)");
+                }
+            } else {
+                if ((!edtCartorioIbgeX.getText().isEmpty()) && (!edtConvenioRemessaX.getText().isEmpty()) && (!edtRemessaX.getText().isEmpty())) {
+                    wint.insertDados("INSERT INTO BRZ_CARTORIO_REMESSA ( CODIBGE,CODCONVENIO,NUMREMESSA,DTULTREMESSA) "
+                            + " VALUES ( " + edtCartorioIbgeX.getText() + " , " + edtConvenioRemessaX.getText() + " , " + edtRemessaX.getText() + "  , trunc(sysdate) ) ");
+                }
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "btnGravaRemessaCartorioActionPerformed");
+        } finally {
+            btnGravaRemessaCartorio.setText("Novo");
+            updateRemessa = false;
+            edtCartorioIbgeX.setText("");
+            edtConvenioRemessaX.setText("");
+            edtRemessaX.setText("");
+            edtDataUltimaGeradaX.setDate(null);
+            try {
+                wint.closeConectOracle();
+            } catch (Exception ex) {
+                trataErro.trataException(ex);
+            }
+        }
+    }//GEN-LAST:event_btnGravaRemessaCartorioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -526,12 +624,16 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
     private javax.swing.JButton btnGravaRemessaCartorio;
     private javax.swing.JButton btnGravar;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JTextField edtCartorioIbgeX;
     private javax.swing.JTextField edtCodCli;
     private javax.swing.JTextField edtCodCob;
-    private javax.swing.JTextField edtConvenio;
+    private javax.swing.JTextField edtConvenioCartorio;
+    private javax.swing.JTextField edtConvenioRemessaX;
     private com.toedter.calendar.JDateChooser edtDataInicial;
+    private com.toedter.calendar.JDateChooser edtDataUltimaGeradaX;
     private javax.swing.JTextField edtIbgeCartorio;
     private javax.swing.JTextField edtNumRemessa;
+    private javax.swing.JTextField edtRemessaX;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -552,10 +654,6 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private winthorDb.util.CustomTable tblBrzCartorio;
     private winthorDb.util.CustomTable tblBrzCartorioRemessa;
     private javax.swing.JTextArea txtLog;
