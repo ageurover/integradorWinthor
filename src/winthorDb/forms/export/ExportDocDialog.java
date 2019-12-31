@@ -306,6 +306,23 @@ public class ExportDocDialog extends javax.swing.JDialog {
         }
     }
 
+    private void gravaUltimaRemessa() throws Exception {
+        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
+        try {
+            wint.openConectOracle();
+            if ((!edtCodIbgeCartorio.getText().isEmpty()) && (!edtConvenio.getText().isEmpty()) && (!edtRemessa.getText().isEmpty())) {
+                wint.updateDados("UPDATE BRZ_CARTORIO_REMESSA SET NUMREMESSA = " + edtRemessa.getText()
+                        + " ,DTULTREMESSA = trunc(sysdate)"
+                        + " WHERE CODIBGE = " + edtCodIbgeCartorio.getText()
+                        + " AND CODCONVENIO = " + edtConvenio.getText());
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "gravaUltimaRemessa");
+        } finally {
+            wint.closeConectOracle();
+        }
+    }
+
     private void processaExport(final String tipoReg) {
         String linha = "";
         String campo = "";
@@ -654,7 +671,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             // se nao existir o codibge para o convenio informado deve ser criado o registro na tabela
             if (lst != null) {
                 if (!lst.isEmpty()) {
-                    if (lst.get(0).toString().equalsIgnoreCase("[null]") ) {
+                    if (lst.get(0).toString().equalsIgnoreCase("[null]")) {
                         wint.insertDados("INSERT INTO BRZ_CARTORIO_REMESSA ( CODIBGE,CODCONVENIO,NUMREMESSA,DTULTREMESSA) "
                                 + " VALUES ( " + cidadeIbge + " , " + codConvenio + " , 1 , trunc(sysdate) ) ");
                     } else {
@@ -1216,6 +1233,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 }
                 // grava o log no banco de dados
                 gravaLogExport();
+                gravaUltimaRemessa();
                 MessageDialog.info("Log Salvo em :\n" + val);
                 MessageDialog.saveSucess();
                 jfc = null;
@@ -1307,7 +1325,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             if (!edtCodIbgeCartorio.getText().isEmpty()) {
-                  edtRemessa.setText(Formato.somenteNumeros(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText())));
+                edtRemessa.setText(Formato.somenteNumeros(proximaRemssa(edtCodIbgeCartorio.getText(), edtConvenio.getText())));
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "busca remessa");
