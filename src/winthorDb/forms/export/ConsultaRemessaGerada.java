@@ -57,9 +57,11 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
 
         try {
             String filtro = " ";
-            filtro += " AND C.CODIBGE = '" + edtIbgeCartorio.getText() + "' ";
 
-            if (!edtNumRemessa.getText().isEmpty()) {
+            if (!edtIbgeCartorio.getText().isEmpty()) {
+                filtro += " AND C.CODIBGE = '" + edtIbgeCartorio.getText() + "' ";
+            }
+            if (!edtConvenioCartorio.getText().isEmpty()) {
                 filtro += " AND C.CODCONVENIO = '" + edtConvenioCartorio.getText() + "' ";
             }
 
@@ -562,7 +564,9 @@ public class ConsultaRemessaGerada extends javax.swing.JDialog {
                     wint.updateDados("UPDATE BRZ_CARTORIO_REMESSA SET CODIBGE = " + edtCartorioIbgeX.getText()
                             + " , CODCONVENIO = " + edtConvenioRemessaX.getText()
                             + " ,NUMREMESSA = " + edtRemessaX.getText()
-                            + " ,DTULTREMESSA = trunc(sysdate)");
+                            + " ,DTULTREMESSA = trunc(sysdate) "
+                            + " WHERE CODIBGE = " + edtCartorioIbgeX.getText()
+                            + " AND CODCONVENIO = " + edtConvenioRemessaX.getText());
                 }
             } else {
                 if ((!edtCartorioIbgeX.getText().isEmpty()) && (!edtConvenioRemessaX.getText().isEmpty()) && (!edtRemessaX.getText().isEmpty())) {
