@@ -8,6 +8,7 @@ package winthorDb.forms;
 import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ListSelectionModel;
 import winthorDb.Main;
@@ -417,6 +418,7 @@ public class Brz009 extends javax.swing.JFrame {
             // altera a filial fatura do cliente
             if (result >= 0) {
                 updString = "update pcclient set tipoDocumento = 'A', codfilialnf = " + codFilial
+                        + " , DTULTCOMP = TO_DATE('" + Formato.dateToStr(new Date())+ "', 'DD/MM/YYYY') "
                         + " WHERE codcli =  " + codCliente;
 
                 result = wint.updateDados(updString);
