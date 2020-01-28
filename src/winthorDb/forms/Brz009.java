@@ -416,10 +416,14 @@ public class Brz009 extends javax.swing.JFrame {
             }
 
             // altera a filial fatura do cliente
+            // 28/01 - Gravacao da dtultcomp no cadastro do cliente, o winthor estava 
+            //         marcando esse cliente como inativo quando so compra no cupom
+            
             if (result >= 0) {
                 updString = "update pcclient set tipoDocumento = 'A', codfilialnf = " + codFilial
                         + " , DTULTCOMP = TO_DATE('" + Formato.dateToStr(new Date())+ "', 'DD/MM/YYYY') "
                         + " WHERE codcli =  " + codCliente;
+                
 
                 result = wint.updateDados(updString);
                 edtDetalhePedido.append("Registros Atualizados: " + result + "\n");
