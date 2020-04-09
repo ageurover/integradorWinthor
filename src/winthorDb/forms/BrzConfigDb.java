@@ -29,6 +29,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
 
     private void limpaForm() {
         edtIpServidor.setText("");
+        edtPortaDb.setText("");
         edtSenhaDb.setText("");
         edtSidDb.setText("");
         edtUsuarioDb.setText("");
@@ -37,6 +38,8 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtCodFilialFatura.setText("");
         edtLicenca.setText("");
         edtCnpjMatriz.setText("");
+        edtQtdeUsuarios.setText("");
+        edtDataExpiracao.setText("");
         edtValorMaxCupom.setText("");
         edtAjustaFrenteLoja.setText("");
         edtPastaImagens.setText("");
@@ -47,7 +50,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             limpaForm();
             CarregaStringConect.getConectDbXml();
             edtIpServidor.setText(CarregaStringConect.conectDb.getIpServidorDb());
-
+             
             edtUsuarioDb.setText(CarregaStringConect.conectDb.getUsuarioDb());
             edtSenhaDb.setText(CarregaStringConect.conectDb.getSenhaDb());
             edtSidDb.setText(CarregaStringConect.conectDb.getSidServidorDb());
@@ -222,6 +225,11 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtQtdeUsuarios.setEditable(false);
 
         btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("Porta:");
 
@@ -389,18 +397,28 @@ public class BrzConfigDb extends javax.swing.JFrame {
         // TODO add your handling code here:
         String keySecret = Main.SECRETKEY;
         String decryptedString = AES.decrypt(edtLicenca.getText(), keySecret);
-        String decodeKey[] = decryptedString.split(";");
-        if (decodeKey.length == 3) {
-            String decodeKeyCnpj = decodeKey[0];
-            String decodeKeyDataExp = decodeKey[1];
-            String decodeKeyQtdeUser = decodeKey[2];
-            edtCnpjMatriz.setText(decodeKeyCnpj);
-            edtDataExpiracao.setText(decodeKeyDataExp);
-            edtQtdeUsuarios.setText(decodeKeyQtdeUser);
+        if (decryptedString != null) {
+            String decodeKey[] = decryptedString.split(";");
+            if (decodeKey.length == 3) {
+                String decodeKeyCnpj = decodeKey[0];
+                String decodeKeyDataExp = decodeKey[1];
+                String decodeKeyQtdeUser = decodeKey[2];
+                edtCnpjMatriz.setText(decodeKeyCnpj);
+                edtDataExpiracao.setText(decodeKeyDataExp);
+                edtQtdeUsuarios.setText(decodeKeyQtdeUser);
+            } else {
+                MessageDialog.error("Erro ao ler a chave de acesso!");
+            }
         } else {
-            MessageDialog.error("Erro ao ler a chave de acesso!");
+            MessageDialog.error("chave de acesso invlida!");
         }
+
     }//GEN-LAST:event_btnLerLicencaActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
 
     /**
      * @param args the command line arguments
