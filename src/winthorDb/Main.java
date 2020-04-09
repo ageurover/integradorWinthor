@@ -116,42 +116,47 @@ public class Main {
      */
     public static void validKeySystem() {
         try {
-            if (!CarregaStringConect.getCnpjMatriz().isEmpty()) {
+            if (!CarregaStringConect.getLicenca().isEmpty()) {
 
                 String decryptedString = AES.decrypt(CarregaStringConect.getLicenca(), Main.SECRETKEY);
-                String decodeKey[] = decryptedString.split(";");
-                if (decodeKey.length == 3) {
-                    String decodeKeyCnpj = decodeKey[0];
-                    String decodeKeyDataExp = decodeKey[1];
-                    String decodeKeyQtdeUser = decodeKey[2];
+                if (decryptedString != null) {
+                    String decodeKey[] = decryptedString.split(";");
+                    if (decodeKey.length == 3) {
+                        String decodeKeyCnpj = decodeKey[0];
+                        String decodeKeyDataExp = decodeKey[1];
+                        String decodeKeyQtdeUser = decodeKey[2];
 
-                    // verficia se o cbnpj da chave é o mesmo do cnpj matriz
-                    if (!CarregaStringConect.getCnpjMatriz().equalsIgnoreCase(decodeKeyCnpj)) {
-                        MessageDialog.error("Erro ao validar licença de uso!\nEntrar em contato com o fornecedor de software.");
-                        System.exit(0);
+                        // verficia se o cbnpj da chave é o mesmo do cnpj matriz
+                        if (!CarregaStringConect.getCnpjMatriz().equalsIgnoreCase(decodeKeyCnpj)) {
+                            MessageDialog.error("Erro ao validar licença de uso!\nEntrar em contato com o fornecedor de software.");
+                            System.exit(0);
+                        }
+
+                        // verifica se a chave informada pertence a algum cnjp cadastrado no sistema
+                        int qtdeFilial = DaoDirect.getMaxLength("PcFilial", " replace(replace(replace(cgc, '.',''), '/','') , '-','') = " + decodeKeyCnpj);
+
+                        if (qtdeFilial == 0) {
+                            MessageDialog.error("Nao existe cnpj cadastrado para esta licença!\nEntrar em contato com o fornecedor de software.");
+                            System.exit(0);
+                        }
+
+                        Date dtExpira = Formato.strToDateNfe(decodeKeyDataExp);
+                        int diasExpira = Formato.diferencaEmDiasInteiros(new Date(), dtExpira);
+                        if (diasExpira < 0) {
+                            MessageDialog.error("Data de validade expirou licença!\nEntrar em contato com o fornecedor de software.");
+                            System.exit(0);
+                        }
+                        if (diasExpira < 30) {
+                            MessageDialog.info("Data de validade licença expira em " + diasExpira + " dias! \nEntrar em contato com o fornecedor de software.");
+                        }
                     }
 
-                    // verifica se a chave informada pertence a algum cnjp cadastrado no sistema
-                    int qtdeFilial = DaoDirect.getMaxLength("PcFilial", " replace(replace(replace(cgc, '.',''), '/','') , '-','') = " + decodeKeyCnpj);
-
-                    if (qtdeFilial == 0) {
-                        MessageDialog.error("Nao existe cnpj cadastrado para esta licença!\nEntrar em contato com o fornecedor de software.");
-                        System.exit(0);
-                    }
-
-                    Date dtExpira = Formato.strToDateNfe(decodeKeyDataExp);
-                    int diasExpira = Formato.diferencaEmDiasInteiros(new Date(), dtExpira);
-                    if (diasExpira < 0) {
-                        MessageDialog.error("Data de validade expirou licença!\nEntrar em contato com o fornecedor de software.");
-                        System.exit(0);
-                    }
-                    if (diasExpira < 30) {
-                        MessageDialog.info("Data de validade licença expira em " + diasExpira + " dias! \nEntrar em contato com o fornecedor de software.");
-                    }
+                } else {
+                    MessageDialog.error("Erro ao processar licença de uso!\nEntrar em contato com o fornecedor de software.");
+                    System.exit(0);
                 }
-
             } else {
-                MessageDialog.error("Erro ao processar licença de uso!\nEntrar em contato com o fornecedor de software.");
+                MessageDialog.error("licença de uso invalida!\nEntrar em contato com o fornecedor de software.");
                 System.exit(0);
             }
         } catch (Exception ex) {
