@@ -6,10 +6,15 @@ package winthorDb;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.Date;
 import javax.swing.JFrame;
+import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
 import winthorDb.forms.Login;
+import winthorDb.jpa.dao.DaoDirect;
 import winthorDb.oracleDb.CarregaStringConect;
+import winthorDb.util.AES;
+import winthorDb.util.Formato;
 
 /**
  *
@@ -40,12 +45,14 @@ public class Main {
     public static String nameColunaColor = null;
     public static String valorColunaColor = null;
     public static int[] linhaColor;
-
+    public static final String SECRETKEY = "#KimTec!546832%$";
     public static String nomeUsuario = "";
     public static String senhaUsuario = "";
     public static String sidServidor = "";
     public static String ipServidor = "";
     public static String portaServidor = "";
+    public static String dataExpiracao = "";
+    public static String qtdeMaxUsuarios = "";
 
     /**
      * @param args the command line arguments
@@ -55,61 +62,32 @@ public class Main {
         // BRZ001 BRASILDIS DR4WT9PC 192.168.5.2 WINT
         initModules();
 
-//        if (args.length > 0) {
-//            if (args.length == 5) {
-//                
-//               // getConnectionDb = "jdbc:oracle:thin:" + args[1] + "/" + args[2] + "@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = " + args[3] + ")(PORT = 1521))(CONNECT_DATA = (SID = " + args[4] + " )))";
-//               getConnectionDb = CarregaStringConect.getStringConectDbOracle();
-//
-//                System.out.println(getConnectionDb);
-//
-//                switch (args[0]) {
-//                    case "BRZ001":
-//                        dialog = new Brz001();
-//                        dialog.setVisible(true);
-//                        break;
-//                    case "BRZ002":
-//                        dialog = new Brz002();
-//                        dialog.setVisible(true);
-//                        break;
-//                    case "BRZ003":
-//                        break;
-//                    case "BRZ004":
-//                        break;
-//                    case "BRZ005":
-//                        break;
-//                    default:
-//                        trataErro.lstErros.add("Por Favor informe o nome da Rotina para podermos inicar!");
-//                        trataErro.mostraListaErros();
-//                        System.exit(0);
-//                }
-//
-//            }
-//        } else {
         xmlConectDb = System.getProperties().get("user.dir").toString() + System.getProperties().get("file.separator").toString() + "conectDb.xml";
         System.out.println(xmlConectDb);
         getConnectionDb = CarregaStringConect.getStringConectDbOracle();
         Main.nomeUsuario = CarregaStringConect.getNomeUsuario();
         Main.senhaUsuario = CarregaStringConect.getSenhaUsuario();
         Main.ipServidor = CarregaStringConect.getIpServidor();
-        Main.portaServidor = "1521";
+        Main.portaServidor = CarregaStringConect.getPortaServidor();
         Main.sidServidor = CarregaStringConect.getSidServidor();
-        
-        
+
         System.out.println(getConnectionDb);
         Main.codConsumidor = CarregaStringConect.getCodConsumidor();
         Main.codFilial = CarregaStringConect.getCodFilial();
         Main.codFilialFatura = CarregaStringConect.getCodFilialFatura();
         Main.cnpjMatriz = CarregaStringConect.getCnpjMatriz();
         Main.licenca = CarregaStringConect.getLicenca();
+        Main.dataExpiracao = CarregaStringConect.getDataExpiracao();
+        Main.qtdeMaxUsuarios = CarregaStringConect.getQtdeMaxUsuarios();
         Main.AjustaFrenteLoja = CarregaStringConect.getAjustaFrenteLoja();
         Main.PastaImagens = CarregaStringConect.getPastaImagens();
-        
+
+        validKeySystem();
 
         // abre a tela de login
         dialogLogin = new Login();
         dialogLogin.setVisible(true);
-//        }
+
     }
 
     public static void initModules() {
@@ -128,6 +106,56 @@ public class Main {
         } catch (Exception e) {
             trataErro.trataException(e);
             System.exit(0);
+        }
+    }
+
+    /**
+     * Faz a validacao do sistema conforme a chave de acesso do sistema
+     * verificando o CNPJ comercializado; verificando a data limite de expiracao
+     * da licenca setando a quantidade maxima de usuarios para acessar o sistema
+     */
+    public static void validKeySystem() {
+        try {
+            if (CarregaStringConect.getCnpjMatriz().isEmpty()) {
+
+                String decryptedString = AES.decrypt(CarregaStringConect.getLicenca(), Main.SECRETKEY);
+                String decodeKey[] = decryptedString.split(";");
+                if (decodeKey.length == 3) {
+                    String decodeKeyCnpj = decodeKey[0];
+                    String decodeKeyDataExp = decodeKey[1];
+                    String decodeKeyQtdeUser = decodeKey[2];
+
+                    // verficia se o cbnpj da chave é o mesmo do cnpj matriz
+                    if (!CarregaStringConect.getCnpjMatriz().equalsIgnoreCase(decodeKeyCnpj)) {
+                        MessageDialog.error("Erro ao validar licença de uso!\nEntrar em contato com o fornecedor de software.");
+                        System.exit(0);
+                    }
+
+                    // verifica se a chave informada pertence a algum cnjp cadastrado no sistema
+                    int qtdeFilial = DaoDirect.getMaxLength("PcFilial", " replace(replace(replace(cgc, '.',''), '/','') , '-','') = " + decodeKeyCnpj);
+
+                    if (qtdeFilial == 0) {
+                        MessageDialog.error("Nao existe cnpj cadastrado para esta licença!\nEntrar em contato com o fornecedor de software.");
+                        System.exit(0);
+                    }
+
+                    Date dtExpira = Formato.strToDateNfe(decodeKeyDataExp);
+                    int diasExpira = Formato.diferencaEmDiasInteiros(new Date(), dtExpira);
+                    if (diasExpira < 0) {
+                        MessageDialog.error("Data de validade expirou licença!\nEntrar em contato com o fornecedor de software.");
+                        System.exit(0);
+                    }
+                    if (diasExpira < 30) {
+                        MessageDialog.info("Data de validade licença expira em " + diasExpira + " dias! \nEntrar em contato com o fornecedor de software.");
+                    }
+                }
+
+            } else {
+                MessageDialog.error("Erro ao processar licença de uso!\nEntrar em contato com o fornecedor de software.");
+                System.exit(0);
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "validKeySystem");
         }
     }
 

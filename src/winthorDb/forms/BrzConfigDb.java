@@ -5,9 +5,11 @@
  */
 package winthorDb.forms;
 
+import winthorDb.Main;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
 import winthorDb.oracleDb.CarregaStringConect;
+import winthorDb.util.AES;
 
 /**
  *
@@ -45,6 +47,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             limpaForm();
             CarregaStringConect.getConectDbXml();
             edtIpServidor.setText(CarregaStringConect.conectDb.getIpServidorDb());
+
             edtUsuarioDb.setText(CarregaStringConect.conectDb.getUsuarioDb());
             edtSenhaDb.setText(CarregaStringConect.conectDb.getSenhaDb());
             edtSidDb.setText(CarregaStringConect.conectDb.getSidServidorDb());
@@ -56,15 +59,16 @@ public class BrzConfigDb extends javax.swing.JFrame {
             edtValorMaxCupom.setText(CarregaStringConect.conectDb.getValorMaxCupom().toString());
             edtAjustaFrenteLoja.setText(CarregaStringConect.conectDb.getAjustaFrenteLoja());
             edtPastaImagens.setText(CarregaStringConect.conectDb.getPastaImagens());
-            
+
         } catch (Exception ex) {
-            trataErro.trataException(ex,"conectDbToForm");
+            trataErro.trataException(ex, "conectDbToForm");
         }
     }
 
     private void formToConectDb() {
         try {
             CarregaStringConect.conectDb.setIpServidorDb(edtIpServidor.getText());
+            CarregaStringConect.conectDb.setPortaSerividor(edtPortaDb.getText());
             CarregaStringConect.conectDb.setSenhaDb(edtSenhaDb.getText());
             CarregaStringConect.conectDb.setSidServidorDb(edtSidDb.getText());
             CarregaStringConect.conectDb.setUsuarioDb(edtUsuarioDb.getText());
@@ -73,12 +77,13 @@ public class BrzConfigDb extends javax.swing.JFrame {
             CarregaStringConect.conectDb.setCodFilialFatura(edtCodFilialFatura.getText());
             CarregaStringConect.conectDb.setLicenca(edtLicenca.getText());
             CarregaStringConect.conectDb.setCnpjMatriz(edtCnpjMatriz.getText());
+            CarregaStringConect.conectDb.setQtdeMaxUsuario(edtQtdeUsuarios.getText());
             CarregaStringConect.conectDb.setValorMaxCupom(Double.parseDouble(edtValorMaxCupom.getText()));
             CarregaStringConect.conectDb.setAjustaFrenteLoja(edtAjustaFrenteLoja.getText());
             CarregaStringConect.conectDb.setPastaImagens(edtPastaImagens.getText());
             CarregaStringConect.setStringConectDb();
-        } catch (Exception ex) {
-            trataErro.trataException(ex,"formToConectDb");
+        } catch (NumberFormatException ex) {
+            trataErro.trataException(ex, "formToConectDb");
         }
     }
 
@@ -121,6 +126,14 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtValorMaxCupom = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         edtPastaImagens = new javax.swing.JTextField();
+        btnLerLicenca = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        edtDataExpiracao = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        edtQtdeUsuarios = new javax.swing.JTextField();
+        btnFechar = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        edtPortaDb = new javax.swing.JTextField();
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png"))); // NOI18N
 
@@ -132,7 +145,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2))
         );
@@ -173,13 +186,15 @@ public class BrzConfigDb extends javax.swing.JFrame {
 
         jLabel8.setText("Codigo Consumidor:");
 
-        jLabel9.setText("Codigo Filial:");
+        jLabel9.setText("Filial:");
 
-        jLabel10.setText("Codigo Filial Fatura:");
+        jLabel10.setText("Filial Fatura:");
 
         jLabel11.setText("Licença uso:");
 
         jLabel12.setText("CNPJ Matriz");
+
+        edtCnpjMatriz.setEditable(false);
 
         jLabel13.setText("Valor maximo cupom Fiscal:");
 
@@ -189,7 +204,28 @@ public class BrzConfigDb extends javax.swing.JFrame {
 
         edtValorMaxCupom.setText("0.00");
 
-        jLabel15.setText("Imagens");
+        jLabel15.setText("Caminho Imagens:");
+
+        btnLerLicenca.setText("->");
+        btnLerLicenca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLerLicencaActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Data Expiraçao:");
+
+        edtDataExpiracao.setEditable(false);
+
+        jLabel17.setText("Limite Usuarios:");
+
+        edtQtdeUsuarios.setEditable(false);
+
+        btnFechar.setText("Fechar");
+
+        jLabel18.setText("Porta:");
+
+        edtPortaDb.setText("1521");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,53 +236,82 @@ public class BrzConfigDb extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnCarregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalvar))
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(edtCodFilialFatura, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
-                                    .addComponent(edtCodFilial)
-                                    .addComponent(edtIpServidor)
-                                    .addComponent(edtUsuarioDb)
-                                    .addComponent(edtSenhaDb)
-                                    .addComponent(edtSidDb, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                                    .addComponent(edtCodConsumidor)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel12))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(edtCnpjMatriz)
-                                    .addComponent(edtLicenca)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtValorMaxCupom, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel14)
+                            .addComponent(edtIpServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                            .addComponent(edtUsuarioDb))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtAjustaFrenteLoja))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtSenhaDb))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtSidDb, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtPortaDb, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(edtLicenca)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLerLicenca, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(edtCnpjMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtDataExpiracao, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtQtdeUsuarios))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtPastaImagens)))
+                        .addComponent(edtPastaImagens))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnCarregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalvar)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnFechar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtAjustaFrenteLoja, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtCodConsumidor, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtCodFilialFatura, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(edtValorMaxCupom, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -256,41 +321,29 @@ public class BrzConfigDb extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(edtIpServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edtIpServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(edtSidDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(edtPortaDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(edtUsuarioDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edtUsuarioDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(edtSenhaDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(edtSidDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(edtAjustaFrenteLoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(edtCodConsumidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(edtCodFilialFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(edtLicenca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(edtCnpjMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edtCodFilialFatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
                     .addComponent(edtValorMaxCupom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,14 +352,25 @@ public class BrzConfigDb extends javax.swing.JFrame {
                     .addComponent(edtPastaImagens, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(edtAjustaFrenteLoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
+                    .addComponent(jLabel11)
+                    .addComponent(edtLicenca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLerLicenca))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(edtCnpjMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(edtDataExpiracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)
+                    .addComponent(edtQtdeUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCarregar)
-                    .addComponent(btnSalvar)))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnFechar))
+                .addContainerGap())
         );
 
         pack();
@@ -320,6 +384,23 @@ public class BrzConfigDb extends javax.swing.JFrame {
         formToConectDb();
         MessageDialog.saveSucess();
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnLerLicencaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLerLicencaActionPerformed
+        // TODO add your handling code here:
+        String keySecret = Main.SECRETKEY;
+        String decryptedString = AES.decrypt(edtLicenca.getText(), keySecret);
+        String decodeKey[] = decryptedString.split(";");
+        if (decodeKey.length == 3) {
+            String decodeKeyCnpj = decodeKey[0];
+            String decodeKeyDataExp = decodeKey[1];
+            String decodeKeyQtdeUser = decodeKey[2];
+            edtCnpjMatriz.setText(decodeKeyCnpj);
+            edtDataExpiracao.setText(decodeKeyDataExp);
+            edtQtdeUsuarios.setText(decodeKeyQtdeUser);
+        } else {
+            MessageDialog.error("Erro ao ler a chave de acesso!");
+        }
+    }//GEN-LAST:event_btnLerLicencaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -359,15 +440,20 @@ public class BrzConfigDb extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCarregar;
+    private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnLerLicenca;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JTextField edtAjustaFrenteLoja;
     private javax.swing.JTextField edtCnpjMatriz;
     private javax.swing.JTextField edtCodConsumidor;
     private javax.swing.JTextField edtCodFilial;
     private javax.swing.JTextField edtCodFilialFatura;
+    private javax.swing.JTextField edtDataExpiracao;
     private javax.swing.JTextField edtIpServidor;
     private javax.swing.JTextField edtLicenca;
     private javax.swing.JTextField edtPastaImagens;
+    private javax.swing.JTextField edtPortaDb;
+    private javax.swing.JTextField edtQtdeUsuarios;
     private javax.swing.JTextField edtSenhaDb;
     private javax.swing.JTextField edtSidDb;
     private javax.swing.JTextField edtUsuarioDb;
@@ -379,6 +465,9 @@ public class BrzConfigDb extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
