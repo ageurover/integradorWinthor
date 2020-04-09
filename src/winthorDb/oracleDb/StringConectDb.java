@@ -13,6 +13,7 @@ public final class StringConectDb {
 
     private String UsuarioDb;
     private String SenhaDb;
+    private String portaSerividor;
     private String IpServidorDb;
     private String SidServidorDb;
     private String CodConsumidorDb;
@@ -20,6 +21,8 @@ public final class StringConectDb {
     private String CodFilialFatura;
     private String Licenca;
     private String CnpjMatriz;
+    private String qtdeMaxUsuario;
+    private String dataExpiracao;
     private Double valorMaxCupom;
     private String AjustaFrenteLoja;
     private String pastaImagens;
@@ -36,6 +39,7 @@ public final class StringConectDb {
      * @param UsuarioDb
      * @param SenhaDb
      * @param IpServidorDb
+     * @param portaDb
      * @param SidServidorDb
      * @param CodConsumidor
      * @param CodFilial
@@ -45,14 +49,15 @@ public final class StringConectDb {
      * @param valorMaxCup
      * @param AjustaFrenteLoja
      * @param pastaImagens
-     * 
+     *
      */
-    public StringConectDb(String UsuarioDb, String SenhaDb, String IpServidorDb, String SidServidorDb, String CodConsumidor, String CodFilial,String CodFilialFatura, String CnpjMatriz, String Licenca, Double valorMaxCup, String AjustaFrenteLoja, String pastaImagens) {
+    public StringConectDb(String UsuarioDb, String SenhaDb, String IpServidorDb, String portaDb, String SidServidorDb, String CodConsumidor, String CodFilial, String CodFilialFatura, String CnpjMatriz, String Licenca, Double valorMaxCup, String AjustaFrenteLoja, String pastaImagens) {
         if ((!UsuarioDb.isEmpty()) && (!SenhaDb.isEmpty()) && (!IpServidorDb.isEmpty()) && (!SidServidorDb.isEmpty())) {
             setUsuarioDb(UsuarioDb);
             setSenhaDb(SenhaDb);
             setSidServidorDb(SidServidorDb);
             setIpServidorDb(IpServidorDb);
+            setPortaSerividor(portaDb);
             setCodConsumidorDb(CodConsumidor);
             setCodFilial(CodFilial);
             setCodFilialFatura(CodFilialFatura);
@@ -72,8 +77,8 @@ public final class StringConectDb {
     public String getStringConectDbOracle() {
         String conn = "";
 
-        if ((((!getSenhaDb().isEmpty()) || (!getIpServidorDb().isEmpty())) || (!getSidServidorDb().isEmpty())) || (!getUsuarioDb().isEmpty())) {
-            conn = "jdbc:oracle:thin:" + getUsuarioDb() + "/" + getSenhaDb() + "@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = " + getIpServidorDb() + ")(PORT = 1521))(CONNECT_DATA = (SID = " + getSidServidorDb() + " )))";
+        if ((((!getSenhaDb().isEmpty()) || (!getIpServidorDb().isEmpty())) || (!getSidServidorDb().isEmpty())) || (!getUsuarioDb().isEmpty()) || (!getPortaSerividor().isEmpty())) {
+            conn = "jdbc:oracle:thin:" + getUsuarioDb() + "/" + getSenhaDb() + "@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = " + getIpServidorDb() + ")(PORT = " + getPortaSerividor() + "))(CONNECT_DATA = (SID = " + getSidServidorDb() + " )))";
         }
         return conn;
     }
@@ -244,6 +249,48 @@ public final class StringConectDb {
      */
     public void setPastaImagens(String pastaImagens) {
         this.pastaImagens = pastaImagens;
+    }
+
+    /**
+     * @return the portaSerividor
+     */
+    public String getPortaSerividor() {
+        return portaSerividor;
+    }
+
+    /**
+     * @param portaSerividor the portaSerividor to set
+     */
+    public void setPortaSerividor(String portaSerividor) {
+        this.portaSerividor = portaSerividor;
+    }
+
+    /**
+     * @return the qtdeMaxUsuario
+     */
+    public String getQtdeMaxUsuario() {
+        return qtdeMaxUsuario;
+    }
+
+    /**
+     * @param qtdeMaxUsuario the qtdeMaxUsuario to set
+     */
+    public void setQtdeMaxUsuario(String qtdeMaxUsuario) {
+        this.qtdeMaxUsuario = qtdeMaxUsuario;
+    }
+
+    /**
+     * @return the dataExpiracao
+     */
+    public String getDataExpiracao() {
+        return dataExpiracao;
+    }
+
+    /**
+     * @param dataExpiracao the dataExpiracao to set
+     */
+    public void setDataExpiracao(String dataExpiracao) {
+        this.dataExpiracao = dataExpiracao;
     }
 
 }

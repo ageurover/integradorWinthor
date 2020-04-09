@@ -97,6 +97,7 @@ public class CarregaStringConect {
         return conectDb.getSidServidorDb();
 
     }
+
     public static String getIpServidor() {
         if (conectDb == null) {
             getConectDbXml();
@@ -104,7 +105,14 @@ public class CarregaStringConect {
         return conectDb.getIpServidorDb();
 
     }
-    
+
+    public static String getPortaServidor() {
+        if (conectDb == null) {
+            getConectDbXml();
+        }
+        return conectDb.getPortaSerividor();
+
+    }
 
     public static String getStringConectDbOracle() {
         if (conectDb == null) {
@@ -151,6 +159,22 @@ public class CarregaStringConect {
             getConectDbXml();
         }
         return conectDb.getCnpjMatriz();
+
+    }
+
+    public static String getQtdeMaxUsuarios() {
+        if (conectDb == null) {
+            getConectDbXml();
+        }
+        return conectDb.getQtdeMaxUsuario();
+
+    }
+
+    public static String getDataExpiracao() {
+        if (conectDb == null) {
+            getConectDbXml();
+        }
+        return conectDb.getDataExpiracao();
 
     }
 
