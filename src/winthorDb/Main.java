@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.swing.JFrame;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
+import winthorDb.forms.BrzConfigDb;
 import winthorDb.forms.Login;
 import winthorDb.jpa.dao.DaoDirect;
 import winthorDb.oracleDb.CarregaStringConect;
@@ -153,11 +154,21 @@ public class Main {
 
                 } else {
                     MessageDialog.error("Erro ao processar licença de uso!\nEntrar em contato com o fornecedor de software.");
-                    System.exit(0);
+                    if (MessageDialog.ask("Deseja informar a licença correta?") == MessageDialog.YES_OPTION) {
+                        Main.dialog = new BrzConfigDb();
+                        Main.dialog.setVisible(true);
+                    } else {
+                        System.exit(0);
+                    }
                 }
             } else {
                 MessageDialog.error("licença de uso invalida!\nEntrar em contato com o fornecedor de software.");
-                System.exit(0);
+                if (MessageDialog.ask("Deseja informar a licença correta?") == MessageDialog.YES_OPTION) {
+                    Main.dialog = new BrzConfigDb();
+                    Main.dialog.setVisible(true);
+                } else {
+                    System.exit(0);
+                }
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "validKeySystem");
