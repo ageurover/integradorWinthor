@@ -29,6 +29,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
 
     private void limpaForm() {
         edtIpServidor.setText("");
+        edtPortaDb.setText("");
         edtSenhaDb.setText("");
         edtSidDb.setText("");
         edtUsuarioDb.setText("");
@@ -36,6 +37,8 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtCodFilial.setText("");
         edtCodFilialFatura.setText("");
         edtLicenca.setText("");
+        edtQtdeUsuarios.setText("");
+        edtDataExpiracao.setText("");
         edtCnpjMatriz.setText("");
         edtValorMaxCupom.setText("");
         edtAjustaFrenteLoja.setText("");
@@ -47,7 +50,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             limpaForm();
             CarregaStringConect.getConectDbXml();
             edtIpServidor.setText(CarregaStringConect.conectDb.getIpServidorDb());
-
+            edtPortaDb.setText(CarregaStringConect.conectDb.getPortaSerividor());
             edtUsuarioDb.setText(CarregaStringConect.conectDb.getUsuarioDb());
             edtSenhaDb.setText(CarregaStringConect.conectDb.getSenhaDb());
             edtSidDb.setText(CarregaStringConect.conectDb.getSidServidorDb());
@@ -56,6 +59,8 @@ public class BrzConfigDb extends javax.swing.JFrame {
             edtCodFilialFatura.setText(CarregaStringConect.conectDb.getCodFilialFatura());
             edtCnpjMatriz.setText(CarregaStringConect.conectDb.getCnpjMatriz());
             edtLicenca.setText(CarregaStringConect.conectDb.getLicenca());
+            edtQtdeUsuarios.setText(CarregaStringConect.conectDb.getQtdeMaxUsuario());
+            edtDataExpiracao.setText(CarregaStringConect.conectDb.getDataExpiracao());
             edtValorMaxCupom.setText(CarregaStringConect.conectDb.getValorMaxCupom().toString());
             edtAjustaFrenteLoja.setText(CarregaStringConect.conectDb.getAjustaFrenteLoja());
             edtPastaImagens.setText(CarregaStringConect.conectDb.getPastaImagens());
@@ -78,6 +83,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             CarregaStringConect.conectDb.setLicenca(edtLicenca.getText());
             CarregaStringConect.conectDb.setCnpjMatriz(edtCnpjMatriz.getText());
             CarregaStringConect.conectDb.setQtdeMaxUsuario(edtQtdeUsuarios.getText());
+            CarregaStringConect.conectDb.setDataExpiracao(edtDataExpiracao.getText());
             CarregaStringConect.conectDb.setValorMaxCupom(Double.parseDouble(edtValorMaxCupom.getText()));
             CarregaStringConect.conectDb.setAjustaFrenteLoja(edtAjustaFrenteLoja.getText());
             CarregaStringConect.conectDb.setPastaImagens(edtPastaImagens.getText());
@@ -222,6 +228,11 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtQtdeUsuarios.setEditable(false);
 
         btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         jLabel18.setText("Porta:");
 
@@ -401,6 +412,11 @@ public class BrzConfigDb extends javax.swing.JFrame {
             MessageDialog.error("Erro ao ler a chave de acesso!");
         }
     }//GEN-LAST:event_btnLerLicencaActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
 
     /**
      * @param args the command line arguments
