@@ -37,6 +37,8 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtCodFilial.setText("");
         edtCodFilialFatura.setText("");
         edtLicenca.setText("");
+        edtQtdeUsuarios.setText("");
+        edtDataExpiracao.setText("");
         edtCnpjMatriz.setText("");
         edtQtdeUsuarios.setText("");
         edtDataExpiracao.setText("");
@@ -50,6 +52,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             limpaForm();
             CarregaStringConect.getConectDbXml();
             edtIpServidor.setText(CarregaStringConect.conectDb.getIpServidorDb());
+            edtPortaDb.setText(CarregaStringConect.conectDb.getPortaSerividor());
              
             edtUsuarioDb.setText(CarregaStringConect.conectDb.getUsuarioDb());
             edtSenhaDb.setText(CarregaStringConect.conectDb.getSenhaDb());
@@ -59,6 +62,8 @@ public class BrzConfigDb extends javax.swing.JFrame {
             edtCodFilialFatura.setText(CarregaStringConect.conectDb.getCodFilialFatura());
             edtCnpjMatriz.setText(CarregaStringConect.conectDb.getCnpjMatriz());
             edtLicenca.setText(CarregaStringConect.conectDb.getLicenca());
+            edtQtdeUsuarios.setText(CarregaStringConect.conectDb.getQtdeMaxUsuario());
+            edtDataExpiracao.setText(CarregaStringConect.conectDb.getDataExpiracao());
             edtValorMaxCupom.setText(CarregaStringConect.conectDb.getValorMaxCupom().toString());
             edtAjustaFrenteLoja.setText(CarregaStringConect.conectDb.getAjustaFrenteLoja());
             edtPastaImagens.setText(CarregaStringConect.conectDb.getPastaImagens());
@@ -81,6 +86,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             CarregaStringConect.conectDb.setLicenca(edtLicenca.getText());
             CarregaStringConect.conectDb.setCnpjMatriz(edtCnpjMatriz.getText());
             CarregaStringConect.conectDb.setQtdeMaxUsuario(edtQtdeUsuarios.getText());
+            CarregaStringConect.conectDb.setDataExpiracao(edtDataExpiracao.getText());
             CarregaStringConect.conectDb.setValorMaxCupom(Double.parseDouble(edtValorMaxCupom.getText()));
             CarregaStringConect.conectDb.setAjustaFrenteLoja(edtAjustaFrenteLoja.getText());
             CarregaStringConect.conectDb.setPastaImagens(edtPastaImagens.getText());
