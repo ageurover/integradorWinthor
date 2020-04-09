@@ -116,7 +116,7 @@ public class Main {
      */
     public static void validKeySystem() {
         try {
-            if (CarregaStringConect.getCnpjMatriz().isEmpty()) {
+            if (!CarregaStringConect.getCnpjMatriz().isEmpty()) {
 
                 String decryptedString = AES.decrypt(CarregaStringConect.getLicenca(), Main.SECRETKEY);
                 String decodeKey[] = decryptedString.split(";");
