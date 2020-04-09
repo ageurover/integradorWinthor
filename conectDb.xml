@@ -1,13 +1,15 @@
 <winthorDb.oracleDb.StringConectDb>
   <UsuarioDb>BRASILDIS</UsuarioDb>
   <SenhaDb>DR4WT9PC</SenhaDb>
+  <portaSerividor>1521</portaSerividor>
   <IpServidorDb>192.168.5.2</IpServidorDb>
   <SidServidorDb>WINT</SidServidorDb>
   <CodConsumidorDb>1</CodConsumidorDb>
   <CodFilial>1</CodFilial>
   <CodFilialFatura>1</CodFilialFatura>
-  <Licenca>71979ca87aa4a193a3829fa79885</Licenca>
+  <Licenca>HnRTA8hIR9Zks8w33WLcAk8c7szP/7ljBZZtePILdx0=</Licenca>
   <CnpjMatriz>00735882000133</CnpjMatriz>
+  <qtdeMaxUsuario>001</qtdeMaxUsuario>
   <valorMaxCupom>5.0</valorMaxCupom>
   <AjustaFrenteLoja>N</AjustaFrenteLoja>
   <pastaImagens>\\192.168.5.3\WINTHOR\IMAGENS</pastaImagens>
