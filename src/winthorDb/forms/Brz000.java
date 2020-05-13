@@ -43,7 +43,7 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuRotinas = new javax.swing.JMenu();
         mnuProcessoPedidoCupom = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        mnuProcessoPedidoCarga = new javax.swing.JMenuItem();
         mnuFilialFaturaCarga = new javax.swing.JMenuItem();
         mnuProcessoDevolucaoCupom = new javax.swing.JMenuItem();
         mnuConversaoEmbalagem = new javax.swing.JMenuItem();
@@ -53,9 +53,10 @@ public class Brz000 extends javax.swing.JFrame {
         mnuBaixaLancProducao = new javax.swing.JMenuItem();
         mnuValidaEan = new javax.swing.JMenuItem();
         mnuExportaProtesto = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        mnuImportaFolhaCnab240 = new javax.swing.JMenuItem();
+        mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
-        jMenuConfig = new javax.swing.JMenu();
+        mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
@@ -81,13 +82,13 @@ public class Brz000 extends javax.swing.JFrame {
         });
         jMenuRotinas.add(mnuProcessoPedidoCupom);
 
-        jMenuItem3.setText("Processo Pedido/Cupom (Carga)");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        mnuProcessoPedidoCarga.setText("Processo Pedido/Cupom (Carga)");
+        mnuProcessoPedidoCarga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                mnuProcessoPedidoCargaActionPerformed(evt);
             }
         });
-        jMenuRotinas.add(jMenuItem3);
+        jMenuRotinas.add(mnuProcessoPedidoCarga);
 
         mnuFilialFaturaCarga.setText("Processo Filial Fatura por Carregamento");
         mnuFilialFaturaCarga.addActionListener(new java.awt.event.ActionListener() {
@@ -161,9 +162,17 @@ public class Brz000 extends javax.swing.JFrame {
         });
         jMenuRotinas.add(mnuExportaProtesto);
 
+        mnuImportaFolhaCnab240.setText("Importação Folha Pagamento (CNAB-240)");
+        mnuImportaFolhaCnab240.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuImportaFolhaCnab240ActionPerformed(evt);
+            }
+        });
+        jMenuRotinas.add(mnuImportaFolhaCnab240);
+
         jMenuBar1.add(jMenuRotinas);
 
-        jMenu1.setText("Coletor");
+        mnuColetor.setText("Coletor");
 
         mnuConsultaOs.setText("Consulta OS");
         mnuConsultaOs.addActionListener(new java.awt.event.ActionListener() {
@@ -171,11 +180,11 @@ public class Brz000 extends javax.swing.JFrame {
                 mnuConsultaOsActionPerformed(evt);
             }
         });
-        jMenu1.add(mnuConsultaOs);
+        mnuColetor.add(mnuConsultaOs);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mnuColetor);
 
-        jMenuConfig.setText("Configuração");
+        mnuConfig.setText("Configuração");
 
         mnuConfigDb.setText("Conexão Banco de Dados");
         mnuConfigDb.addActionListener(new java.awt.event.ActionListener() {
@@ -183,9 +192,9 @@ public class Brz000 extends javax.swing.JFrame {
                 mnuConfigDbActionPerformed(evt);
             }
         });
-        jMenuConfig.add(mnuConfigDb);
+        mnuConfig.add(mnuConfigDb);
 
-        jMenuBar1.add(jMenuConfig);
+        jMenuBar1.add(mnuConfig);
 
         setJMenuBar(jMenuBar1);
 
@@ -232,10 +241,10 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuProcessoDevolucaoCupomActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void mnuProcessoPedidoCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuProcessoPedidoCargaActionPerformed
         Main.dialog = new Brz009();
         Main.dialog.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_mnuProcessoPedidoCargaActionPerformed
 
     private void mnuPedidoViradaMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPedidoViradaMesActionPerformed
         // TODO add your handling code here:
@@ -277,6 +286,12 @@ public class Brz000 extends javax.swing.JFrame {
         ExportDocDialog.open(9999, "CART", "0");
     }//GEN-LAST:event_mnuExportaProtestoActionPerformed
 
+    private void mnuImportaFolhaCnab240ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuImportaFolhaCnab240ActionPerformed
+        // TODO add your handling code here:
+        Main.dialog = new Brz013();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuImportaFolhaCnab240ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -315,24 +330,25 @@ public class Brz000 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuConfig;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu jMenuRotinas;
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
+    private javax.swing.JMenu mnuColetor;
+    private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenuItem mnuConfigDb;
     private javax.swing.JMenuItem mnuConsultaOs;
     private javax.swing.JMenuItem mnuConversaoEmbalagem;
     private javax.swing.JMenuItem mnuExportaProtesto;
     private javax.swing.JMenuItem mnuFilialFaturaCarga;
+    private javax.swing.JMenuItem mnuImportaFolhaCnab240;
     private javax.swing.JMenuItem mnuPedidoViradaMes;
     private javax.swing.JMenuItem mnuProcessarImagens;
     private javax.swing.JMenuItem mnuProcessoDevolucaoCupom;
+    private javax.swing.JMenuItem mnuProcessoPedidoCarga;
     private javax.swing.JMenuItem mnuProcessoPedidoCupom;
     private javax.swing.JMenuItem mnuValidaEan;
     // End of variables declaration//GEN-END:variables

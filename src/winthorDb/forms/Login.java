@@ -11,7 +11,7 @@ import winthorDb.Main;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
 import winthorDb.oracleDb.IntegracaoWinthorDb;
-import winthorDb.util.Formato;
+import winthorDb.util.AES;
 
 /**
  *
@@ -204,7 +204,7 @@ public class Login extends javax.swing.JFrame {
 
         if (!Main.licenca.isEmpty()) {
             if (!Main.cnpjMatriz.isEmpty()) {
-                licencaCnpj = Formato.geraChaveLicenca(Main.cnpjMatriz);
+                licencaCnpj = AES.encrypt(Main.cnpjMatriz + ";" + Main.dataExpiracao + ";" + Main.qtdeMaxUsuarios, Main.SECRETKEY);
                 if (!licencaCnpj.equalsIgnoreCase(Main.licenca)) {
                     MessageDialog.error("Licença de uso invalida para o Cnpj informado! \nAcesse as configurações e cadastre a licença de uso correta!");
                     return;
