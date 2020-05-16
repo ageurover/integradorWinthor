@@ -44,7 +44,7 @@ public class Brz013 extends javax.swing.JFrame {
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png")).getImage());
         edtDataLanc.setDate(new Date());
         edtDataVenc.setDate(new Date());
-
+        btnGravarContasPagar.setEnabled(false);
     }
 
     private void abreArquivo() throws Exception {
@@ -555,6 +555,10 @@ public class Brz013 extends javax.swing.JFrame {
                 trataErro.mostraListaErros();
             } else {
                 MessageDialog.saveSucess();
+                contasPagar=null;
+                edtLog.setText("");
+                btnGravarContasPagar.setEnabled(false);
+                        
             }
         } catch (Exception ex) {
             trataErro.trataException(ex);
