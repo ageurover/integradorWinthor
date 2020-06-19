@@ -8,12 +8,12 @@ package winthorDb.util;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import com.gargoylesoftware.htmlunit.html.DomElement;
 import java.util.List;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
@@ -34,7 +34,7 @@ public class ConsultaCnpjSintegra {
     public Cliente sintegraCNPJ_RO(String cnpj) throws Exception {
         Cliente ret = new Cliente();
         String pgTxt = "";
-        try (final WebClient webClient = new WebClient(BrowserVersion.FIREFOX_45)) {
+        try (final WebClient webClient = new WebClient(BrowserVersion.CHROME)) {
             CookieManager cookieManager = webClient.getCookieManager();
             cookieManager.setCookiesEnabled(true);
             webClient.setCookieManager(cookieManager);

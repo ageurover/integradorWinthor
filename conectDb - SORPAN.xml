@@ -1,15 +1,15 @@
 <winthorDb.oracleDb.StringConectDb>
-  <UsuarioDb>BRASILDIS</UsuarioDb>
-  <SenhaDb>DR4WT9PC</SenhaDb>
+  <UsuarioDb>SORPAN</UsuarioDb>
+  <SenhaDb>SORPANWINT</SenhaDb>
   <portaSerividor>1521</portaSerividor>
-  <IpServidorDb>192.168.5.2</IpServidorDb>
+  <IpServidorDb>192.168.1.105</IpServidorDb>
   <SidServidorDb>WINT</SidServidorDb>
   <CodConsumidorDb>1</CodConsumidorDb>
   <CodFilial>1</CodFilial>
   <CodFilialFatura>1</CodFilialFatura>
-  <Licenca>HnRTA8hIR9Zks8w33WLcAotU3iS0XwSGUY7wzoaCAfY=</Licenca>
-  <CnpjMatriz>00735882000133</CnpjMatriz>
-  <qtdeMaxUsuario>005</qtdeMaxUsuario>
+  <Licenca>AnbhtW0tFRMnPCgDofnumuOcIv4kY04I8gYTeBBS0Oo=</Licenca>
+  <CnpjMatriz>02623537000133</CnpjMatriz>
+  <qtdeMaxUsuario>002</qtdeMaxUsuario>
   <dataExpiracao>2021-01-01</dataExpiracao>
   <valorMaxCupom>5.0</valorMaxCupom>
   <AjustaFrenteLoja>N</AjustaFrenteLoja>

@@ -153,8 +153,8 @@ public class Brz013 extends javax.swing.JFrame {
                     cp.setValor(linha.substring(135, 148) + "." + linha.substring(148, 150));
                     number = buscaNumerador();
                     cp.setRecNum(number[0]);
-                    cp.setNumTrans(number[1]);
-                    cp.setNumTransent(number[2]);
+                    cp.setNumTrans("null");
+                    cp.setNumTransent("null");
 
                     contasPagar.add(cp);
                 }
@@ -207,16 +207,16 @@ public class Brz013 extends javax.swing.JFrame {
         int exec = 0;
         String strSelect = "";
         try {
-            strSelect = "Select PROXNUMLANC+1 , PROXNUMTRANS+1, PROXNUMTRANSENT+1 from PCCONSUM ";
+            strSelect = "Select PROXNUMLANC+1 from PCCONSUM ";
             wint.openConectOracle();
             dados = wint.selectDados(strSelect);
             if (dados.size() > 0) {
                 number = (List) dados.get(0);
                 ret[0] = number.get(0).toString().replace("[", "").replace("]", "").trim();
-                ret[1] = number.get(1).toString().replace("[", "").replace("]", "").trim();
-                ret[2] = number.get(2).toString().replace("[", "").replace("]", "").trim();
+                // ret[1] = number.get(1).toString().replace("[", "").replace("]", "").trim();
+                // ret[2] = number.get(2).toString().replace("[", "").replace("]", "").trim();
 
-                exec = wint.updateDados("UPDATE PCCONSUM SET PROXNUMLANC = " + ret[0] + " , PROXNUMTRANS=" + ret[1] + " , PROXNUMTRANSENT = " + ret[2]);
+                exec = wint.updateDados("UPDATE PCCONSUM SET PROXNUMLANC = " + ret[0] );
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "buscaNumerador");
@@ -265,12 +265,12 @@ public class Brz013 extends javax.swing.JFrame {
                 strInsert = "INSERT INTO PCLANC( CODFILIAL, INDICE, RECNUM, NUMTRANSENT, NUMTRANS,"
                         + " CODCONTA, TIPOPARCEIRO, CODFORNEC, fornecedor, DTEMISSAO, DTLANC, DTVENC, dtCompetencia, \n"
                         + " NUMNOTA, DUPLIC, VALOR, HISTORICO, moeda, tipoLanc, tipoPagto, FORMAPGTO, \n"
-                        + " tipoServico, nfServico,codComprador,utilizouRateioconta, prcRateioUtilizado ) VALUES ("
+                        + " tipoServico, nfServico, codComprador, utilizouRateioconta, prcRateioUtilizado ) VALUES ("
                         + "   '" + cp.getCodFilial() + "'"
                         + " , '" + cp.getIndice() + "'"
                         + " ,  " + cp.getRecNum()
-                        + " ,  " + cp.getNumTransent()
-                        + " ,  " + cp.getNumTrans() + "\n"
+                        + " ,  null " // + cp.getNumTransent()
+                        + " ,  null " // + cp.getNumTrans() + "\n"
                         + " ,  " + cp.getCodConta()
                         + " , '" + cp.getTipoParceiro() + "' "
                         + " ,  " + cp.getCodFornec()
@@ -279,7 +279,7 @@ public class Brz013 extends javax.swing.JFrame {
                         + " , '" + cp.getDtLanc() + "'"
                         + " , '" + cp.getDtVenc() + "'"
                         + " , '" + cp.getDtCompetencia() + "'\n"
-                        + " ,  " + cp.getNumNota()
+                        + " ,  0 " // + cp.getNumNota()
                         + " , '" + cp.getDuplic() + "'"
                         + " ,  " + cp.getValor()
                         + " , '" + Formato.strTiraIncompativeisBd(cp.getHistorico()) + "'"

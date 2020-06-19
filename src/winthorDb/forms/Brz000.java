@@ -54,6 +54,7 @@ public class Brz000 extends javax.swing.JFrame {
         mnuValidaEan = new javax.swing.JMenuItem();
         mnuExportaProtesto = new javax.swing.JMenuItem();
         mnuImportaFolhaCnab240 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
         mnuConfig = new javax.swing.JMenu();
@@ -169,6 +170,14 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         jMenuRotinas.add(mnuImportaFolhaCnab240);
+
+        jMenuItem3.setText("Cadastro de Cliente Sintegra");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenuRotinas.add(jMenuItem3);
 
         jMenuBar1.add(jMenuRotinas);
 
@@ -292,6 +301,12 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuImportaFolhaCnab240ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        Main.dialog = new Brz008();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -334,6 +349,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu jMenuRotinas;
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
