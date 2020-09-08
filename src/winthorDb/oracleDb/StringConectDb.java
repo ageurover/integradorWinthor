@@ -16,6 +16,7 @@ public final class StringConectDb {
     private String portaSerividor;
     private String IpServidorDb;
     private String SidServidorDb;
+    private String TipoConectServidorDb;
     private String CodConsumidorDb;
     private String CodFilial;
     private String CodFilialFatura;
@@ -51,7 +52,7 @@ public final class StringConectDb {
      * @param pastaImagens
      *
      */
-    public StringConectDb(String UsuarioDb, String SenhaDb, String IpServidorDb, String portaDb, String SidServidorDb, String CodConsumidor, String CodFilial, String CodFilialFatura, String CnpjMatriz, String Licenca, Double valorMaxCup, String AjustaFrenteLoja, String pastaImagens) {
+    public StringConectDb(String UsuarioDb, String SenhaDb, String IpServidorDb, String portaDb, String SidServidorDb, String CodConsumidor, String CodFilial, String CodFilialFatura, String CnpjMatriz, String Licenca, Double valorMaxCup, String AjustaFrenteLoja, String pastaImagens, String TipoConectServidorDb) {
         if ((!UsuarioDb.isEmpty()) && (!SenhaDb.isEmpty()) && (!IpServidorDb.isEmpty()) && (!SidServidorDb.isEmpty())) {
             setUsuarioDb(UsuarioDb);
             setSenhaDb(SenhaDb);
@@ -66,6 +67,7 @@ public final class StringConectDb {
             setValorMaxCupom(valorMaxCup);
             setAjustaFrenteLoja(AjustaFrenteLoja);
             setPastaImagens(pastaImagens);
+            setTipoConectServidorDb(TipoConectServidorDb);
         }
     }
 
@@ -77,8 +79,8 @@ public final class StringConectDb {
     public String getStringConectDbOracle() {
         String conn = "";
 
-        if ((((!getSenhaDb().isEmpty()) || (!getIpServidorDb().isEmpty())) || (!getSidServidorDb().isEmpty())) || (!getUsuarioDb().isEmpty()) || (!getPortaSerividor().isEmpty())) {
-            conn = "jdbc:oracle:thin:" + getUsuarioDb() + "/" + getSenhaDb() + "@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = " + getIpServidorDb() + ")(PORT = " + getPortaSerividor() + "))(CONNECT_DATA = (SID = " + getSidServidorDb() + " )))";
+        if ((((!getSenhaDb().isEmpty()) || (!getIpServidorDb().isEmpty())) || (!getSidServidorDb().isEmpty())) || (!getUsuarioDb().isEmpty()) || (!getPortaSerividor().isEmpty()) || (!getTipoConectServidorDb().isEmpty())) {
+            conn = "jdbc:oracle:thin:" + getUsuarioDb() + "/" + getSenhaDb() + "@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = " + getIpServidorDb() + ")(PORT = " + getPortaSerividor() + "))(CONNECT_DATA = ( " + TipoConectServidorDb + " = " + getSidServidorDb() + " )))";
         }
         return conn;
     }
@@ -291,6 +293,24 @@ public final class StringConectDb {
      */
     public void setDataExpiracao(String dataExpiracao) {
         this.dataExpiracao = dataExpiracao;
+    }
+
+    /**
+     * @return the TipoConectServidorDb
+     */
+    public String getTipoConectServidorDb() {
+        return TipoConectServidorDb;
+    }
+
+    /**
+     * @param TipoConectServidorDb the TipoConectServidorDb to set
+     */
+    public void setTipoConectServidorDb(String TipoConectServidorDb) {
+        if ((TipoConectServidorDb.equalsIgnoreCase("SID") || (TipoConectServidorDb.equalsIgnoreCase("SERVICE_NAME")))) {
+            this.TipoConectServidorDb = TipoConectServidorDb;
+        } else {
+            this.TipoConectServidorDb = "SID";
+        }
     }
 
 }

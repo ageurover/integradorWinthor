@@ -71,7 +71,6 @@ public class CarregaStringConect {
         } catch (FileNotFoundException ex) {
             trataErro.trataException(ex, "Erro ao carregar o XML para conectDB");
         }
-
     }
 
     public static String getNomeUsuario() {
@@ -79,7 +78,6 @@ public class CarregaStringConect {
             getConectDbXml();
         }
         return conectDb.getUsuarioDb();
-
     }
 
     public static String getSenhaUsuario() {
@@ -87,7 +85,6 @@ public class CarregaStringConect {
             getConectDbXml();
         }
         return conectDb.getSenhaDb();
-
     }
 
     public static String getSidServidor() {
@@ -95,7 +92,13 @@ public class CarregaStringConect {
             getConectDbXml();
         }
         return conectDb.getSidServidorDb();
-
+    }
+    
+    public static String getTipoServidor() {
+        if (conectDb == null) {
+            getConectDbXml();
+        }
+        return conectDb.getTipoConectServidorDb();
     }
 
     public static String getIpServidor() {

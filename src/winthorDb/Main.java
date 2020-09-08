@@ -65,25 +65,41 @@ public class Main {
 
         xmlConectDb = System.getProperties().get("user.dir").toString() + System.getProperties().get("file.separator").toString() + "conectDb.xml";
         System.out.println(xmlConectDb);
-        getConnectionDb = CarregaStringConect.getStringConectDbOracle();
-        Main.nomeUsuario = CarregaStringConect.getNomeUsuario();
-        Main.senhaUsuario = CarregaStringConect.getSenhaUsuario();
-        Main.ipServidor = CarregaStringConect.getIpServidor();
-        Main.portaServidor = CarregaStringConect.getPortaServidor();
-        Main.sidServidor = CarregaStringConect.getSidServidor();
+        File fileCfgDb = new File(Main.xmlConectDb);
 
-        System.out.println(getConnectionDb);
-        Main.codConsumidor = CarregaStringConect.getCodConsumidor();
-        Main.codFilial = CarregaStringConect.getCodFilial();
-        Main.codFilialFatura = CarregaStringConect.getCodFilialFatura();
-        Main.cnpjMatriz = CarregaStringConect.getCnpjMatriz();
-        Main.licenca = CarregaStringConect.getLicenca();
-        Main.dataExpiracao = CarregaStringConect.getDataExpiracao();
-        Main.qtdeMaxUsuarios = CarregaStringConect.getQtdeMaxUsuarios();
-        Main.AjustaFrenteLoja = CarregaStringConect.getAjustaFrenteLoja();
-        Main.PastaImagens = CarregaStringConect.getPastaImagens();
+        if (fileCfgDb.exists()) {
+            getConnectionDb = CarregaStringConect.getStringConectDbOracle();
+            Main.nomeUsuario = CarregaStringConect.getNomeUsuario();
+            Main.senhaUsuario = CarregaStringConect.getSenhaUsuario();
+            Main.ipServidor = CarregaStringConect.getIpServidor();
+            Main.portaServidor = CarregaStringConect.getPortaServidor();
+            Main.sidServidor = CarregaStringConect.getSidServidor();
 
-        validKeySystem();
+            System.out.println(getConnectionDb);
+            Main.codConsumidor = CarregaStringConect.getCodConsumidor();
+            Main.codFilial = CarregaStringConect.getCodFilial();
+            Main.codFilialFatura = CarregaStringConect.getCodFilialFatura();
+            Main.cnpjMatriz = CarregaStringConect.getCnpjMatriz();
+            Main.licenca = CarregaStringConect.getLicenca();
+            Main.dataExpiracao = CarregaStringConect.getDataExpiracao();
+            Main.qtdeMaxUsuarios = CarregaStringConect.getQtdeMaxUsuarios();
+            Main.AjustaFrenteLoja = CarregaStringConect.getAjustaFrenteLoja();
+            Main.PastaImagens = CarregaStringConect.getPastaImagens();
+
+            validKeySystem();
+        } else {
+            if (MessageDialog.ask("Arquivo de configuração não encontrado, deseja configurar agora ?") == MessageDialog.YES_OPTION) {
+                // abre a tela de configuracao do banco de dados
+                Main.dialog = new BrzConfigDb();
+                Main.dialog.setVisible(true);
+
+//                // reinicia a aplicação
+//                MessageDialog.info("Por favor abra o sistema novamente para que as configurações tenham efeito!");
+//                System.exit(0);
+            } else {
+                System.exit(0);
+            }
+        }
 
         // abre a tela de login
         dialogLogin = new Login();

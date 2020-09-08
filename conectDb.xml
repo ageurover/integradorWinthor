@@ -4,6 +4,7 @@
   <portaSerividor>1521</portaSerividor>
   <IpServidorDb>192.168.5.2</IpServidorDb>
   <SidServidorDb>WINT</SidServidorDb>
+  <TipoConectServidorDb>SERVICE_NAME</TipoConectServidorDb>
   <CodConsumidorDb>1</CodConsumidorDb>
   <CodFilial>1</CodFilial>
   <CodFilialFatura>1</CodFilialFatura>

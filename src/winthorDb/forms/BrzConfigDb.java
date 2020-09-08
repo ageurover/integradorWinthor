@@ -5,6 +5,7 @@
  */
 package winthorDb.forms;
 
+import java.io.File;
 import winthorDb.Main;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
@@ -22,9 +23,19 @@ public class BrzConfigDb extends javax.swing.JFrame {
      */
     public BrzConfigDb() {
         initComponents();
+        initGuid();
+    }
+
+    private void initGuid() {
         setLocationRelativeTo(null);
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png")).getImage());
-        conectDbToForm();
+
+        File fileCfgDb = new File(Main.xmlConectDb);
+        if (fileCfgDb.exists()) {
+            conectDbToForm();
+        } else {
+            limpaForm();
+        }
     }
 
     private void limpaForm() {
@@ -32,6 +43,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
         edtPortaDb.setText("");
         edtSenhaDb.setText("");
         edtSidDb.setText("");
+        edtTipoConect.setText("");
         edtUsuarioDb.setText("");
         edtCodConsumidor.setText("");
         edtCodFilial.setText("");
@@ -53,10 +65,11 @@ public class BrzConfigDb extends javax.swing.JFrame {
             CarregaStringConect.getConectDbXml();
             edtIpServidor.setText(CarregaStringConect.conectDb.getIpServidorDb());
             edtPortaDb.setText(CarregaStringConect.conectDb.getPortaSerividor());
-             
+
             edtUsuarioDb.setText(CarregaStringConect.conectDb.getUsuarioDb());
             edtSenhaDb.setText(CarregaStringConect.conectDb.getSenhaDb());
             edtSidDb.setText(CarregaStringConect.conectDb.getSidServidorDb());
+            edtTipoConect.setText(CarregaStringConect.getTipoServidor());
             edtCodConsumidor.setText(CarregaStringConect.conectDb.getCodConsumidorDb());
             edtCodFilial.setText(CarregaStringConect.conectDb.getCodFilial());
             edtCodFilialFatura.setText(CarregaStringConect.conectDb.getCodFilialFatura());
@@ -79,6 +92,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
             CarregaStringConect.conectDb.setPortaSerividor(edtPortaDb.getText());
             CarregaStringConect.conectDb.setSenhaDb(edtSenhaDb.getText());
             CarregaStringConect.conectDb.setSidServidorDb(edtSidDb.getText());
+            CarregaStringConect.conectDb.setTipoConectServidorDb(edtTipoConect.getText());
             CarregaStringConect.conectDb.setUsuarioDb(edtUsuarioDb.getText());
             CarregaStringConect.conectDb.setCodConsumidorDb(edtCodConsumidor.getText());
             CarregaStringConect.conectDb.setCodFilial(edtCodFilial.getText());
@@ -143,6 +157,8 @@ public class BrzConfigDb extends javax.swing.JFrame {
         btnFechar = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         edtPortaDb = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        edtTipoConect = new javax.swing.JTextField();
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png"))); // NOI18N
 
@@ -241,6 +257,11 @@ public class BrzConfigDb extends javax.swing.JFrame {
 
         edtPortaDb.setText("1521");
 
+        jLabel19.setText("Tipo");
+
+        edtTipoConect.setText("SID");
+        edtTipoConect.setToolTipText("SID / SERVICE_NAME");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -250,29 +271,6 @@ public class BrzConfigDb extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(edtIpServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-                            .addComponent(edtUsuarioDb))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtSenhaDb))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtSidDb, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtPortaDb, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
@@ -324,7 +322,34 @@ public class BrzConfigDb extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtValorMaxCupom, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(edtValorMaxCupom, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(edtIpServidor, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+                                    .addComponent(edtUsuarioDb))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtSidDb, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel19))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtSenhaDb, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(edtTipoConect, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtPortaDb)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -338,14 +363,16 @@ public class BrzConfigDb extends javax.swing.JFrame {
                     .addComponent(edtIpServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(edtSidDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18)
-                    .addComponent(edtPortaDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel19)
+                    .addComponent(edtTipoConect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(edtUsuarioDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(edtSenhaDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edtSenhaDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(edtPortaDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -480,6 +507,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
     private javax.swing.JTextField edtQtdeUsuarios;
     private javax.swing.JTextField edtSenhaDb;
     private javax.swing.JTextField edtSidDb;
+    private javax.swing.JTextField edtTipoConect;
     private javax.swing.JTextField edtUsuarioDb;
     private javax.swing.JTextField edtValorMaxCupom;
     private javax.swing.JLabel jLabel1;
@@ -492,6 +520,7 @@ public class BrzConfigDb extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
