@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import winthorDb.Main;
 import winthorDb.forms.coletor.consultaOS;
+import winthorDb.forms.coletor.vinculaEnderecoLoja;
 import winthorDb.forms.export.ExportDocDialog;
 
 /**
@@ -57,6 +58,7 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
 
@@ -191,6 +193,14 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuColetor.add(mnuConsultaOs);
 
+        jMenuItem4.setText("Capacidade Loja");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        mnuColetor.add(jMenuItem4);
+
         jMenuBar1.add(mnuColetor);
 
         mnuConfig.setText("Configuração");
@@ -307,6 +317,11 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        Main.dialog = new vinculaEnderecoLoja();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -350,6 +365,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu jMenuRotinas;
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
