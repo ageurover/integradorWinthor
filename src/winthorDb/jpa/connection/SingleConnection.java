@@ -42,7 +42,6 @@ public class SingleConnection {
                 connection.setAutoCommit(false);
             }
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Erro ao Conectar com o Banco de Dados");
         }
     }
