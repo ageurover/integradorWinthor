@@ -193,7 +193,7 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuColetor.add(mnuConsultaOs);
 
-        jMenuItem4.setText("Capacidade Loja");
+        jMenuItem4.setText("Endereço Loja");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);

@@ -67,6 +67,10 @@ public class MessageDialog {
         JOptionPane.showMessageDialog(null, "Alterações realizadas com sucesso.", "Alterar", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public static void deleteSucess() {
+        JOptionPane.showMessageDialog(null, "Remoção realizada com sucesso.", "Remover", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public static int askCancel() {
         return JOptionPane.showConfirmDialog(null,
                 "Ao sair sem gravar, as alterações serão perdidas. Deseja sair?", "Deseja fechar?", JOptionPane.YES_NO_OPTION);

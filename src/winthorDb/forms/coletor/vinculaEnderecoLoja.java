@@ -6,6 +6,7 @@
 package winthorDb.forms.coletor;
 
 import java.awt.event.KeyEvent;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
@@ -41,6 +42,17 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             setLocationRelativeTo(null);
             setIconImage(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png")).getImage());
             btnAddProduto.setEnabled(false);
+
+            // permite selecionar mais de uma linha de dados.
+            tblEnderecoLoja.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            tblEnderecoLoja.setColumnSelectionAllowed(false);
+            tblEnderecoLoja.setRowSelectionAllowed(true);
+
+            // permite selecionar mais de uma linha de dados.
+            tblProdutoLoja.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            tblProdutoLoja.setColumnSelectionAllowed(false);
+            tblProdutoLoja.setRowSelectionAllowed(true);
+
             edtEndereco.requestFocus();
         } catch (Exception ex) {
             trataErro.trataException(ex, "initGuid");
@@ -48,7 +60,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     }
 
     private void calculaCapacidade(double frente, double fundo, double altura) {
-        double capacidade = Formato.doubleToRound((frente * fundo * altura), 2) ;
+        double capacidade = Formato.doubleToRound((frente * fundo * altura), 2);
         double pontorepos = calculaPontoReposicao(capacidade, Double.parseDouble(edtPercPontoRep.getText()));
 
         edtCapacidade.setText(Formato.doubleToCurrStr(capacidade, 2));
@@ -60,13 +72,13 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             prod.setQtalturagondula(altura);
             prod.setCapacidade(capacidade);
             prod.setPontoreposicao(pontorepos);
-            
-            lblCapacidadeMaster.setText(Formato.doubleToCurrStr(capacidade / prod.getQtUnidadeMaster(),2));
+
+            lblCapacidadeMaster.setText(Formato.doubleToCurrStr(capacidade / prod.getQtUnidadeMaster(), 2));
         }
     }
 
     private double calculaPontoReposicao(double capacidade, double percReposicao) {
-        return Formato.doubleToRound(( capacidade * (percReposicao / 100)), 2);
+        return Formato.doubleToRound((capacidade * (percReposicao / 100)), 2);
     }
 
     private void limpaProduto() {
@@ -83,6 +95,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtPontoReposicao.setText("0");
         edtEmbalagemVenda.setText("");
         edtEmbalagemMaster.setText("");
+        tblProdutoLoja.clearTableData();
         btnAddProduto.setEnabled(false);
         edtCodBarras.requestFocus();
     }
@@ -95,7 +108,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtPredio.setText("");
         edtNivel.setText("");
         edtApto.setText("");
-        tblProdutoEndereco.clearTableData();
+        tblEnderecoLoja.clearTableData();
         edtEndereco.requestFocus();
     }
 
@@ -113,18 +126,20 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                     edtCapAltura.setText(Double.toString(prod.getQtalturagondula()));
                     edtEmbalagemVenda.setText(prod.getEmbalagem());
                     edtEmbalagemMaster.setText(prod.getEmbalagemmaster());
+                    edtGiroDia.setText(Double.toString(prod.getGirodia()));
                     btnAddProduto.setEnabled(true);
                     edtCapFrente.requestFocus();
-                    if (endWms != null){
+                    if (endWms != null) {
                         prod.setCodenderecoloja(endWms.getCodendereco());
                     }
+                    localizaProdutoLoja(idFilial, Long.toString(prod.getCodprod()));
                 } else {
                     MessageDialog.error("Produto não localizado para a filial");
                     limpaProduto();
                 }
             }
         } catch (Exception ex) {
-            trataErro.trataException(ex, "btnFiltraEnderecoActionPerformed");
+            trataErro.trataException(ex, "localizaProduto");
 
         }
     }
@@ -148,19 +163,30 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                 }
             }
         } catch (Exception ex) {
-            trataErro.trataException(ex, "btnFiltraEnderecoActionPerformed");
+            trataErro.trataException(ex, "localizaEnderecoWms");
 
         }
     }
 
-        private void localizaEnderecoLoja(String idFilial, String idEndereco) {
+    private void localizaEnderecoLoja(String idFilial, String idEndereco) {
         try {
-            DaoEnderecoLoja daoEndLoja = new DaoEnderecoLoja();            
+            DaoEnderecoLoja daoEndLoja = new DaoEnderecoLoja();
             if (idEndereco != null && !idEndereco.isEmpty() && idFilial != null && !idFilial.isEmpty()) {
-                tblProdutoEndereco.setTableData( daoEndLoja.listar(idFilial, idEndereco));
+                tblEnderecoLoja.setTableData(daoEndLoja.listar(idFilial, idEndereco));
             }
         } catch (Exception ex) {
-            trataErro.trataException(ex, "btnFiltraEnderecoActionPerformed");
+            trataErro.trataException(ex, "localizaEnderecoLoja");
+        }
+    }
+
+    private void localizaProdutoLoja(String idFilial, String idProduto) {
+        try {
+            DaoEnderecoLoja daoEndLoja = new DaoEnderecoLoja();
+            if (idProduto != null && !idProduto.isEmpty() && idFilial != null && !idFilial.isEmpty()) {
+                tblProdutoLoja.setTableData(daoEndLoja.listarProduto(idFilial, idProduto));
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "localizaProdutoLoja");
         }
     }
 
@@ -213,10 +239,16 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtPontoReposicao = new javax.swing.JTextField();
         lblCodProduto = new javax.swing.JLabel();
         lblCapacidadeMaster = new javax.swing.JLabel();
+        edtGiroDia = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        btnDelProduto = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblProdutoEndereco = new winthorDb.util.CustomTable();
+        tblEnderecoLoja = new winthorDb.util.CustomTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblProdutoLoja = new winthorDb.util.CustomTable();
 
         setTitle("Endereço Loja");
+        setFont(new java.awt.Font("DejaVu Sans", 0, 8)); // NOI18N
         setMinimumSize(new java.awt.Dimension(230, 250));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -369,7 +401,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             }
         });
 
-        btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/icons/save_18dp.png"))); // NOI18N
+        btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/icons/diskette.png"))); // NOI18N
         btnAddProduto.setMaximumSize(new java.awt.Dimension(32, 32));
         btnAddProduto.setMinimumSize(new java.awt.Dimension(32, 32));
         btnAddProduto.setPreferredSize(new java.awt.Dimension(32, 32));
@@ -389,7 +421,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtCapacidade.setText("1");
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel12.setText("Capacidade");
+        jLabel12.setText("Capac.");
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel15.setText("Filial:");
@@ -416,17 +448,41 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtPercPontoRep.setText("40");
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel11.setText("Reposição:");
+        jLabel11.setText("Repos.");
 
         edtPontoReposicao.setEditable(false);
         edtPontoReposicao.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         edtPontoReposicao.setText("1");
 
         lblCodProduto.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        lblCodProduto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblCodProduto.setText("...");
 
         lblCapacidadeMaster.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        lblCapacidadeMaster.setText("...");
+        lblCapacidadeMaster.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCapacidadeMaster.setText("0");
+
+        edtGiroDia.setEditable(false);
+        edtGiroDia.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        edtGiroDia.setText("0");
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel13.setText("Giro Dia");
+
+        btnDelProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/icons/trash.png"))); // NOI18N
+        btnDelProduto.setMaximumSize(new java.awt.Dimension(32, 32));
+        btnDelProduto.setMinimumSize(new java.awt.Dimension(32, 32));
+        btnDelProduto.setPreferredSize(new java.awt.Dimension(32, 32));
+        btnDelProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelProdutoActionPerformed(evt);
+            }
+        });
+        btnDelProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnDelProdutoKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -459,8 +515,8 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -477,7 +533,9 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(edtCodBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnFiltraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnFiltraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblCapacidadeMaster, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel16)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -485,39 +543,44 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel17)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(edtEmbalagemMaster, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(edtEmbalagemMaster, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(lblProduto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(edtPercPontoRep, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(edtPontoReposicao))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(edtCapacidade))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblCapacidadeMaster, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(edtCapFrente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(edtCapFundo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel9)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(edtCapAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnAddProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(edtPercPontoRep, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(edtPontoReposicao))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(edtCapacidade))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(edtGiroDia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edtCapFrente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edtCapFundo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnDelProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(edtCapAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAddProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -544,61 +607,78 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                     .addComponent(edtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(edtApto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel5)
-                    .addComponent(edtCodBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFiltraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblProduto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(edtEmbalagemVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17)
-                    .addComponent(edtEmbalagemMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel5)
+                            .addComponent(edtCodBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFiltraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCapacidadeMaster))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(edtEmbalagemVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17)
+                            .addComponent(edtEmbalagemMaster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(edtCapFrente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(edtCapFundo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(edtCapAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(edtCapAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnAddProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(jLabel11)
-                            .addComponent(jLabel12)))
-                    .addComponent(btnAddProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edtPercPontoRep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edtPontoReposicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edtCapacidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCapacidadeMaster))
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(edtPercPontoRep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtPontoReposicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtCapacidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtGiroDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnDelProduto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Produto", jPanel1);
 
-        tblProdutoEndereco.setToolTipText("");
-        tblProdutoEndereco.setCellSelectionEnabled(true);
-        tblProdutoEndereco.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jScrollPane3.setViewportView(tblProdutoEndereco);
+        jScrollPane3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
 
-        jTabbedPane1.addTab("Produto -> Endereço", jScrollPane3);
+        tblEnderecoLoja.setToolTipText("");
+        tblEnderecoLoja.setCellSelectionEnabled(true);
+        tblEnderecoLoja.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
+        tblEnderecoLoja.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblEnderecoLojaMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblEnderecoLoja);
+
+        jTabbedPane1.addTab("Endereço Loja", jScrollPane3);
+
+        tblProdutoLoja.setToolTipText("");
+        tblProdutoLoja.setCellSelectionEnabled(true);
+        tblProdutoLoja.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
+        jScrollPane4.setViewportView(tblProdutoLoja);
+
+        jTabbedPane1.addTab("Produto Loja", jScrollPane4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,7 +860,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     }//GEN-LAST:event_edtCapAlturaKeyPressed
 
     private void btnAddProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddProdutoKeyPressed
-                try {
+        try {
             if (evt.getKeyCode() == KeyEvent.VK_ACCEPT || evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 btnAddProdutoActionPerformed(null);
             }
@@ -788,6 +868,33 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             trataErro.trataException(ex, "edtCapAlturaKeyPressed");
         }
     }//GEN-LAST:event_btnAddProdutoKeyPressed
+
+    private void tblEnderecoLojaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEnderecoLojaMouseClicked
+
+    }//GEN-LAST:event_tblEnderecoLojaMouseClicked
+
+    private void btnDelProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelProdutoActionPerformed
+        try {
+            if (MessageDialog.askDeleteItem() == MessageDialog.YES_OPTION) {
+                DaoProduto daoProduto = new DaoProduto();
+                if (endWms != null && prod != null) {
+                    daoProduto.remover(prod);
+                }
+                daoProduto = null;
+                MessageDialog.deleteSucess();
+                limpaProduto();
+                if (!edtEndereco.getText().isEmpty() && !edtFilial.getText().isEmpty()) {
+                    localizaEnderecoWms(edtFilial.getText(), edtEndereco.getText());
+                }
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "btnDelProdutoActionPerformed");
+        }
+    }//GEN-LAST:event_btnDelProdutoActionPerformed
+
+    private void btnDelProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDelProdutoKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDelProdutoKeyPressed
 
     /**
      * @param args the command line arguments
@@ -823,6 +930,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddProduto;
+    private javax.swing.JButton btnDelProduto;
     private javax.swing.JButton btnFiltraEndereco;
     private javax.swing.JButton btnFiltraProduto;
     private javax.swing.JTextField edtApto;
@@ -836,6 +944,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private javax.swing.JTextField edtEmbalagemVenda;
     private javax.swing.JTextField edtEndereco;
     private javax.swing.JTextField edtFilial;
+    private javax.swing.JTextField edtGiroDia;
     private javax.swing.JTextField edtNivel;
     private javax.swing.JTextField edtPercPontoRep;
     private javax.swing.JTextField edtPontoReposicao;
@@ -845,6 +954,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -859,10 +969,12 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblCapacidadeMaster;
     private javax.swing.JLabel lblCodProduto;
     private javax.swing.JLabel lblProduto;
-    private winthorDb.util.CustomTable tblProdutoEndereco;
+    private winthorDb.util.CustomTable tblEnderecoLoja;
+    private winthorDb.util.CustomTable tblProdutoLoja;
     // End of variables declaration//GEN-END:variables
 }

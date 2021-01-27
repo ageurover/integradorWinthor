@@ -5,13 +5,13 @@
   <IpServidorDb>192.168.5.2</IpServidorDb>
   <SidServidorDb>WINT</SidServidorDb>
   <TipoConectServidorDb>SERVICE_NAME</TipoConectServidorDb>
-  <CodConsumidorDb>1</CodConsumidorDb>
+  <CodConsumidorDb>2</CodConsumidorDb>
   <CodFilial>1</CodFilial>
   <CodFilialFatura>1</CodFilialFatura>
-  <Licenca>HnRTA8hIR9Zks8w33WLcAotU3iS0XwSGUY7wzoaCAfY=</Licenca>
+  <Licenca>HnRTA8hIR9Zks8w33WLcAox9FqlX80CLF0RJG9GfAiI=</Licenca>
   <CnpjMatriz>00735882000133</CnpjMatriz>
   <qtdeMaxUsuario>005</qtdeMaxUsuario>
-  <dataExpiracao>2021-01-01</dataExpiracao>
+  <dataExpiracao>2022-01-01</dataExpiracao>
   <valorMaxCupom>5.0</valorMaxCupom>
   <AjustaFrenteLoja>N</AjustaFrenteLoja>
   <pastaImagens>\\192.168.5.3\WINTHOR\IMAGENS</pastaImagens>

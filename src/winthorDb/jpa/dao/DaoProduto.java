@@ -49,19 +49,22 @@ public class DaoProduto {
                 + " nvl(bl.qtfrentegondula,1) as qtfrentegondula, nvl(bl.qtfundogondula,1) as qtfundogondula, \n"
                 + " nvl(bl.qtalturagondula,1) as qtalturagondula ,  nvl(bl.percpontoreposicao,1) as percpontoreposicao , \n"
                 + " nvl(es.codendereco,0) as codenderecoloja, nvl(es.pontoreposicao,0) as pontoreposicao, nvl(es.capacidade,1) as capacidade,\n"
-                + " decode(es.codendereco,null, 'N', 'S') as pcestendloja, decode(bl.codendereco,null, 'N', 'S') as brendecoloja\n"
-                + " FROM pcprodut p, pcembalagem e, pcestendloja es , brendecoloja bl, pcendereco ed\n"
+                + " decode(es.codendereco,null, 'N', 'S') as pcestendloja, decode(bl.codendereco,null, 'N', 'S') as brendecoloja,\n"
+                + " round(((nvl(et.qtvendmes,0) + nvl(qtvendmes1,0) + nvl(qtvendmes2,0) + nvl(qtvendmes3,0))/4)/30,0) as girodia \n"
+                + " FROM pcprodut p, pcembalagem e, pcestendloja es , brendecoloja bl, pcendereco ed, pcest et \n"
                 + " WHERE p.codprod = e.codprod\n"
                 + " and bl.codprod (+)= p.codprod\n"
                 + " and bl.codfilial (+)= e.codfilial\n"
                 + " and bl.codendereco (+) = ed.codendereco\n"
                 + " and es.codprod (+) = e.codprod \n"
                 + " and es.codfilial (+) = e.codfilial \n"
-                + " and es.codendereco (+) = ed.codendereco"
+                + " and es.codendereco (+) = ed.codendereco \n"
+                + " and et.codprod = p.codprod \n"
+                + " and et.codfilial = e.codfilial \n"
                 + " and e.codauxiliar = '" + idProduto + "'"
                 + " and e.codfilial = '" + idFilial + "'"
                 + " and ed.codendereco = " + idEndereco;
-        
+
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
@@ -82,6 +85,7 @@ public class DaoProduto {
             produto.setQtUnidadeMaster(resultSet.getDouble("qtUnidadeMaster"));
             produto.setPcestendloja(resultSet.getString("pcestendloja"));
             produto.setBrendecoloja(resultSet.getString("brendecoloja"));
+            produto.setGirodia(resultSet.getDouble("girodia"));
 
             return produto;
         }
@@ -164,6 +168,51 @@ public class DaoProduto {
 
                 ret = insBrEndLoja.executeUpdate();
 
+                if (ret > 0) {
+                    connection.commit();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+                MessageDialog.error("Transação abortada!");
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    /*
+		 * Método REMOVER()
+		 * Método Responsável Por remover os Dados no BD
+		 * @param BeanProduto produto = Objeto Produto da Classe BeanProduto
+     */
+    public void remover(BeanProduto produto) {
+        try {
+            int ret = 0;
+            String sqlEnderecoLoja = "";
+            String sqlBrEnderecoLoja = "";
+
+            if (produto.getPcestendloja().equalsIgnoreCase("S")) {
+                sqlEnderecoLoja = "DELETE FROM pcestendloja "
+                        + " WHERE codendereco = " + produto.getCodenderecoloja()
+                        + " AND codprod = " + produto.getCodprod();
+                PreparedStatement updEndLoja = connection.prepareStatement(sqlEnderecoLoja);
+                ret = updEndLoja.executeUpdate();
+                if (ret > 0) {
+                    connection.commit();
+                }
+            }
+
+            if (produto.getBrendecoloja().equalsIgnoreCase("S")) {
+                sqlBrEnderecoLoja = "DELETE FROM brendecoloja "
+                        + " WHERE codendereco = " + produto.getCodenderecoloja()
+                        + " AND codprod = " + produto.getCodprod()
+                        + " AND codfilial = '" + produto.getCodfilial() + "' ";
+                PreparedStatement updBrEndLoja = connection.prepareStatement(sqlBrEnderecoLoja);
+                ret = updBrEndLoja.executeUpdate();
+                
                 if (ret > 0) {
                     connection.commit();
                 }

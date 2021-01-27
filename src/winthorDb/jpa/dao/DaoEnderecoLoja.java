@@ -71,6 +71,20 @@ public class DaoEnderecoLoja {
         return resultSet;
     }
 
+   public ResultSet listarProduto(String idFilial, String idProduto) throws Exception {
+
+        String sql = "select el.codprod, el.codendereco, el.pontoreposicao, el.capacidade, el.codfilial, "
+                + " p.descricao, p.embalagem "
+                + " from pcestendloja el, pcprodut p "
+                + " where p.codprod = el.codprod "
+                + " and el.codfilial = '" + idFilial + "' "
+                + " and el.codprod = " + idProduto
+                + " order by el.codendereco ";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+
+        return resultSet;
+    }
     /*
 		 * Método consultar()
 		 * Responsável Por Fazer Consultas (SELECT) no BD

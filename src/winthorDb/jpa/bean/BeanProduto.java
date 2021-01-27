@@ -27,6 +27,8 @@ public class BeanProduto {
     private double qtUnidadeMaster;
     private String pcestendloja;
     private String brendecoloja; 
+    private double girodia;
+    
     /**
      * @return the codprod
      */
@@ -249,6 +251,20 @@ public class BeanProduto {
      */
     public void setQtUnidadeMaster(double qtUnidadeMaster) {
         this.qtUnidadeMaster = qtUnidadeMaster;
+    }
+
+    /**
+     * @return the girodia
+     */
+    public double getGirodia() {
+        return girodia;
+    }
+
+    /**
+     * @param girodia the girodia to set
+     */
+    public void setGirodia(double girodia) {
+        this.girodia = girodia;
     }
 
 }
