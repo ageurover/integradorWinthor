@@ -27,6 +27,7 @@ public class BeanProduto {
     private double qtUnidadeMaster;
     private String pcestendloja;
     private String brendecoloja; 
+    private String pcestendereco; 
     private double girodia;
     
     /**
@@ -265,6 +266,20 @@ public class BeanProduto {
      */
     public void setGirodia(double girodia) {
         this.girodia = girodia;
+    }
+
+    /**
+     * @return the pcestendereco
+     */
+    public String getPcestendereco() {
+        return pcestendereco;
+    }
+
+    /**
+     * @param pcestendereco the pcestenderecoa to set
+     */
+    public void setPcestendereco(String pcestendereco) {
+        this.pcestendereco = pcestendereco;
     }
 
 }

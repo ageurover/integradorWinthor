@@ -112,12 +112,12 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtEndereco.requestFocus();
     }
 
-    private void localizaProduto(String idFilial, String idProduto, String idEndereco) {
+    private void localizaProduto(String idFilial, String idProduto, String idEndereco, boolean consultaCodProd) {
         try {
             DaoProduto daoProduto = new DaoProduto();
             if (idFilial != null && !idFilial.isEmpty()
                     && idProduto != null && !idProduto.isEmpty()) {
-                prod = daoProduto.consultar(idFilial, idProduto, idEndereco);
+                prod = daoProduto.consultar(idFilial, idProduto, idEndereco,consultaCodProd);
                 if (prod != null) {
                     lblProduto.setText(prod.getDescricao());
                     lblCodProduto.setText(prod.getCodprod().toString());
@@ -134,7 +134,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                     }
                     localizaProdutoLoja(idFilial, Long.toString(prod.getCodprod()));
                 } else {
-                    MessageDialog.error("Produto não localizado para a filial");
+                    MessageDialog.error("Produto não localizado para a filial \n verifique na rotina 2013 \nse existe a embalagem cadastrada para \n a filial informada!");
                     limpaProduto();
                 }
             }
@@ -214,7 +214,6 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtNivel = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         edtApto = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         edtCodBarras = new javax.swing.JTextField();
         btnFiltraProduto = new javax.swing.JButton();
         lblProduto = new javax.swing.JLabel();
@@ -242,6 +241,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtGiroDia = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         btnDelProduto = new javax.swing.JButton();
+        chkCodProd = new javax.swing.JCheckBox();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblEnderecoLoja = new winthorDb.util.CustomTable();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -311,9 +311,6 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
 
         edtApto.setEditable(false);
         edtApto.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel5.setText("Produto:");
 
         edtCodBarras.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         edtCodBarras.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -484,6 +481,10 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             }
         });
 
+        chkCodProd.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        chkCodProd.setText("Produto");
+        chkCodProd.setActionCommand("Produto");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -529,9 +530,9 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                         .addComponent(btnFiltraEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel5)
+                            .addComponent(chkCodProd)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(edtCodBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtCodBarras)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnFiltraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -610,10 +611,10 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel5)
                             .addComponent(edtCodBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnFiltraProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCapacidadeMaster))
+                            .addComponent(lblCapacidadeMaster)
+                            .addComponent(chkCodProd))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblProduto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -720,7 +721,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         try {
             if (evt.getKeyCode() == KeyEvent.VK_ACCEPT || evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_TAB) {
                 if (!edtCodBarras.getText().isEmpty() && !edtFilial.getText().isEmpty() && !edtEndereco.getText().isEmpty()) {
-                    localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText());
+                    localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText(),chkCodProd.isSelected());
                 }
             }
         } catch (Exception ex) {
@@ -732,7 +733,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private void btnFiltraProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltraProdutoActionPerformed
         try {
             if (!edtCodBarras.getText().isEmpty() && !edtFilial.getText().isEmpty() && !edtEndereco.getText().isEmpty()) {
-                localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText());
+                localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText(),chkCodProd.isSelected());
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "btnFiltraProdutoActionPerformed");
@@ -933,6 +934,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private javax.swing.JButton btnDelProduto;
     private javax.swing.JButton btnFiltraEndereco;
     private javax.swing.JButton btnFiltraProduto;
+    private javax.swing.JCheckBox chkCodProd;
     private javax.swing.JTextField edtApto;
     private javax.swing.JTextField edtCapAltura;
     private javax.swing.JTextField edtCapFrente;
@@ -962,7 +964,6 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

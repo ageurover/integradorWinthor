@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import winthorDb.error.MessageDialog;
 
 import winthorDb.jpa.bean.BeanProduto;
@@ -43,15 +44,17 @@ public class DaoProduto {
 //        }
 //        return listar;
 //    }
-    public BeanProduto consultar(String idFilial, String idProduto, String idEndereco) throws Exception {
+    public BeanProduto consultar(String idFilial, String idProduto, String idEndereco, boolean consultaCodProd) throws Exception {
         String sql = "SELECT p.codprod, p.descricao, p.embalagem, p.UNIDADEMASTER || ' - ' || p.QTUNITCX as embalagemmaster,\n"
                 + " nvl(p.QTUNITCX,1) as qtUnidadeMaster, e.codauxiliar , e.codfilial, \n"
                 + " nvl(bl.qtfrentegondula,1) as qtfrentegondula, nvl(bl.qtfundogondula,1) as qtfundogondula, \n"
                 + " nvl(bl.qtalturagondula,1) as qtalturagondula ,  nvl(bl.percpontoreposicao,1) as percpontoreposicao , \n"
                 + " nvl(es.codendereco,0) as codenderecoloja, nvl(es.pontoreposicao,0) as pontoreposicao, nvl(es.capacidade,1) as capacidade,\n"
-                + " decode(es.codendereco,null, 'N', 'S') as pcestendloja, decode(bl.codendereco,null, 'N', 'S') as brendecoloja,\n"
+                + " decode(es.codendereco,null, 'N', 'S') as estendloja, \n"
+                + " decode(bl.codendereco,null, 'N', 'S') as endecoloja, \n"
+                + " decode(ee.codendereco,null, 'N', 'S') as estendereco, \n"
                 + " round(((nvl(et.qtvendmes,0) + nvl(qtvendmes1,0) + nvl(qtvendmes2,0) + nvl(qtvendmes3,0))/4)/30,0) as girodia \n"
-                + " FROM pcprodut p, pcembalagem e, pcestendloja es , brendecoloja bl, pcendereco ed, pcest et \n"
+                + " FROM pcprodut p, pcembalagem e, pcestendloja es , brendecoloja bl, pcendereco ed, pcest et , pcestendereco ee \n"
                 + " WHERE p.codprod = e.codprod\n"
                 + " and bl.codprod (+)= p.codprod\n"
                 + " and bl.codfilial (+)= e.codfilial\n"
@@ -59,9 +62,11 @@ public class DaoProduto {
                 + " and es.codprod (+) = e.codprod \n"
                 + " and es.codfilial (+) = e.codfilial \n"
                 + " and es.codendereco (+) = ed.codendereco \n"
+                + " and ee.codendereco (+) = ed.codendereco \n"
+                + " and ee.codprod (+)= e.codprod \n"
                 + " and et.codprod = p.codprod \n"
                 + " and et.codfilial = e.codfilial \n"
-                + " and e.codauxiliar = '" + idProduto + "'"
+                + (consultaCodProd ? " and e.codprod = " + idProduto : " and e.codauxiliar = '" + idProduto + "'")
                 + " and e.codfilial = '" + idFilial + "'"
                 + " and ed.codendereco = " + idEndereco;
 
@@ -83,8 +88,9 @@ public class DaoProduto {
             produto.setPontoreposicao(resultSet.getDouble("pontoreposicao"));
             produto.setCapacidade(resultSet.getDouble("capacidade"));
             produto.setQtUnidadeMaster(resultSet.getDouble("qtUnidadeMaster"));
-            produto.setPcestendloja(resultSet.getString("pcestendloja"));
-            produto.setBrendecoloja(resultSet.getString("brendecoloja"));
+            produto.setPcestendloja(resultSet.getString("estendloja"));
+            produto.setBrendecoloja(resultSet.getString("endecoloja"));
+            produto.setPcestendereco(resultSet.getString("estendereco"));
             produto.setGirodia(resultSet.getDouble("girodia"));
 
             return produto;
@@ -100,6 +106,7 @@ public class DaoProduto {
     public void atualizar(BeanProduto produto) {
         try {
             int ret = 0;
+            String sqlEstEndereco = "";
             String sqlEnderecoLoja = "";
             String sqlBrEnderecoLoja = "";
 
@@ -172,6 +179,26 @@ public class DaoProduto {
                     connection.commit();
                 }
             }
+            if (produto.getPcestendereco().equalsIgnoreCase("N")) {
+                java.util.Date utilDate = new java.util.Date();
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                
+                // System.out.println("utilDate:" + utilDate);
+                // System.out.println("sqlDate:" + sqlDate);
+
+                sqlEstEndereco = "INSERT INTO PCESTENDERECO(CODPROD,CODENDERECO,QT,DTVAL)  "
+                        + " VALUES ( ? , ? , ? , ? )";
+                PreparedStatement insEstEnd = connection.prepareStatement(sqlEstEndereco);
+                insEstEnd.setLong(1, produto.getCodprod());
+                insEstEnd.setLong(2, produto.getCodenderecoloja());
+                insEstEnd.setDouble(3, 0.0);
+                insEstEnd.setDate(4, sqlDate);
+                ret = insEstEnd.executeUpdate();
+
+                if (ret > 0) {
+                    connection.commit();
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -191,6 +218,7 @@ public class DaoProduto {
     public void remover(BeanProduto produto) {
         try {
             int ret = 0;
+            String sqlEstEndereco = "";
             String sqlEnderecoLoja = "";
             String sqlBrEnderecoLoja = "";
 
@@ -212,7 +240,18 @@ public class DaoProduto {
                         + " AND codfilial = '" + produto.getCodfilial() + "' ";
                 PreparedStatement updBrEndLoja = connection.prepareStatement(sqlBrEnderecoLoja);
                 ret = updBrEndLoja.executeUpdate();
-                
+
+                if (ret > 0) {
+                    connection.commit();
+                }
+            }
+            if (produto.getPcestendereco().equalsIgnoreCase("S")) {
+                sqlEstEndereco = "DELETE FROM PCESTENDERECO "
+                        + " WHERE codendereco = " + produto.getCodenderecoloja()
+                        + " AND codprod = " + produto.getCodprod();
+                PreparedStatement updEstEndereco = connection.prepareStatement(sqlEstEndereco);
+                ret = updEstEndereco.executeUpdate();
+
                 if (ret > 0) {
                     connection.commit();
                 }
