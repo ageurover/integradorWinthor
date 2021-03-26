@@ -72,13 +72,13 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             prod.setQtalturagondula(altura);
             prod.setCapacidade(capacidade);
             prod.setPontoreposicao(pontorepos);
-
+            prod.setPercpontoreposicao(Double.parseDouble(edtPercPontoRep.getText()));
             lblCapacidadeMaster.setText(Formato.doubleToCurrStr(capacidade / prod.getQtUnidadeMaster(), 2));
         }
     }
 
     private double calculaPontoReposicao(double capacidade, double percReposicao) {
-        return Formato.doubleToRound((capacidade * (percReposicao / 100)), 2);
+        return Formato.doubleToRound((capacidade * (percReposicao / 100)), 0);
     }
 
     private void limpaProduto() {
@@ -117,7 +117,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             DaoProduto daoProduto = new DaoProduto();
             if (idFilial != null && !idFilial.isEmpty()
                     && idProduto != null && !idProduto.isEmpty()) {
-                prod = daoProduto.consultar(idFilial, idProduto, idEndereco,consultaCodProd);
+                prod = daoProduto.consultar(idFilial, idProduto, idEndereco, consultaCodProd);
                 if (prod != null) {
                     lblProduto.setText(prod.getDescricao());
                     lblCodProduto.setText(prod.getCodprod().toString());
@@ -127,12 +127,16 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
                     edtEmbalagemVenda.setText(prod.getEmbalagem());
                     edtEmbalagemMaster.setText(prod.getEmbalagemmaster());
                     edtGiroDia.setText(Double.toString(prod.getGirodia()));
+                    edtPercPontoRep.setText(Double.toString(prod.getPercpontoreposicao()));
+                    edtPontoReposicao.setText(Double.toString(prod.getPontoreposicao()));
+                    
                     btnAddProduto.setEnabled(true);
                     edtCapFrente.requestFocus();
                     if (endWms != null) {
                         prod.setCodenderecoloja(endWms.getCodendereco());
                     }
                     localizaProdutoLoja(idFilial, Long.toString(prod.getCodprod()));
+                    calculaCapacidade(prod.getQtfrentegondula(), prod.getQtfundogondula(), prod.getQtalturagondula());
                 } else {
                     MessageDialog.error("Produto não localizado para a filial \n verifique na rotina 2013 \nse existe a embalagem cadastrada para \n a filial informada!");
                     limpaProduto();
@@ -223,6 +227,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtCapFundo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         edtCapAltura = new javax.swing.JTextField();
+        edtPercPontoRep = new javax.swing.JTextField();
         btnAddProduto = new javax.swing.JButton();
         edtCapacidade = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -233,7 +238,6 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         edtEmbalagemMaster = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        edtPercPontoRep = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         edtPontoReposicao = new javax.swing.JTextField();
         lblCodProduto = new javax.swing.JLabel();
@@ -398,6 +402,14 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
             }
         });
 
+        edtPercPontoRep.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        edtPercPontoRep.setText("60");
+        edtPercPontoRep.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                edtPercPontoRepFocusLost(evt);
+            }
+        });
+
         btnAddProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/icons/diskette.png"))); // NOI18N
         btnAddProduto.setMaximumSize(new java.awt.Dimension(32, 32));
         btnAddProduto.setMinimumSize(new java.awt.Dimension(32, 32));
@@ -441,9 +453,6 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel10.setText("%  Rep.");
 
-        edtPercPontoRep.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        edtPercPontoRep.setText("40");
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel11.setText("Repos.");
 
@@ -483,7 +492,6 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
 
         chkCodProd.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         chkCodProd.setText("Produto");
-        chkCodProd.setActionCommand("Produto");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -721,7 +729,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
         try {
             if (evt.getKeyCode() == KeyEvent.VK_ACCEPT || evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_TAB) {
                 if (!edtCodBarras.getText().isEmpty() && !edtFilial.getText().isEmpty() && !edtEndereco.getText().isEmpty()) {
-                    localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText(),chkCodProd.isSelected());
+                    localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText(), chkCodProd.isSelected());
                 }
             }
         } catch (Exception ex) {
@@ -733,7 +741,7 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private void btnFiltraProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltraProdutoActionPerformed
         try {
             if (!edtCodBarras.getText().isEmpty() && !edtFilial.getText().isEmpty() && !edtEndereco.getText().isEmpty()) {
-                localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText(),chkCodProd.isSelected());
+                localizaProduto(edtFilial.getText(), edtCodBarras.getText(), edtEndereco.getText(), chkCodProd.isSelected());
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "btnFiltraProdutoActionPerformed");
@@ -896,6 +904,15 @@ public class vinculaEnderecoLoja extends javax.swing.JFrame {
     private void btnDelProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDelProdutoKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDelProdutoKeyPressed
+
+    private void edtPercPontoRepFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_edtPercPontoRepFocusLost
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                calculaCapacidade(Double.parseDouble(edtCapFrente.getText()), Double.parseDouble(edtCapFundo.getText()), Double.parseDouble(edtCapAltura.getText()));
+            }
+        });
+    }//GEN-LAST:event_edtPercPontoRepFocusLost
 
     /**
      * @param args the command line arguments

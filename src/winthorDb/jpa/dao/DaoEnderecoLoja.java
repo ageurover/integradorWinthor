@@ -74,9 +74,10 @@ public class DaoEnderecoLoja {
    public ResultSet listarProduto(String idFilial, String idProduto) throws Exception {
 
         String sql = "select el.codprod, el.codendereco, el.pontoreposicao, el.capacidade, el.codfilial, "
-                + " p.descricao, p.embalagem "
-                + " from pcestendloja el, pcprodut p "
+                + " p.descricao, p.embalagem, e.deposito, e.rua, e.predio, e.nivel, e.apto "
+                + " from pcestendloja el, pcprodut p, pcendereco e "
                 + " where p.codprod = el.codprod "
+                + " and e.codendereco = el.codendereco (+) "
                 + " and el.codfilial = '" + idFilial + "' "
                 + " and el.codprod = " + idProduto
                 + " order by el.codendereco ";
