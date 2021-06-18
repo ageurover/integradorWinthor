@@ -56,6 +56,7 @@ public class Brz000 extends javax.swing.JFrame {
         mnuExportaProtesto = new javax.swing.JMenuItem();
         mnuImportaFolhaCnab240 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        mnuAtualizaBarrasPedido = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -180,6 +181,14 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         jMenuRotinas.add(jMenuItem3);
+
+        mnuAtualizaBarrasPedido.setText("Atualiza Cod. Barras Pedido Venda");
+        mnuAtualizaBarrasPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAtualizaBarrasPedidoActionPerformed(evt);
+            }
+        });
+        jMenuRotinas.add(mnuAtualizaBarrasPedido);
 
         jMenuBar1.add(jMenuRotinas);
 
@@ -322,6 +331,11 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void mnuAtualizaBarrasPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAtualizaBarrasPedidoActionPerformed
+        Main.dialog = new Brz014();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuAtualizaBarrasPedidoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -368,6 +382,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu jMenuRotinas;
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
+    private javax.swing.JMenuItem mnuAtualizaBarrasPedido;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
     private javax.swing.JMenu mnuColetor;
     private javax.swing.JMenu mnuConfig;
