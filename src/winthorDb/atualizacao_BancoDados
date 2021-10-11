@@ -70,3 +70,93 @@ CREATE TABLE BRZ_CARTORIO_REMESSA
 
 
 CREATE INDEX IDX_CARTORIO2 ON BRZ_CARTORIO_REMESSA (CODIBGE, CODCONVENIO);
+
+CREATE TABLE layoutdocsql
+    (id                             NUMBER(9,0) NOT NULL,
+    iddoc                          NUMBER(9,0) NOT NULL,
+    tipodoc                        VARCHAR2(5 CHAR) NOT NULL,
+    sql_header                     VARCHAR2(4000 CHAR) DEFAULT NULL,
+    sql_detalhe                    VARCHAR2(4000 CHAR) DEFAULT NULL,
+    sql_treller                    VARCHAR2(4000 CHAR) DEFAULT NULL,
+    sql_detalhefilho               VARCHAR2(4000 CHAR) DEFAULT 'NULL',
+    sql_detalheneto                VARCHAR2(4000 CHAR) DEFAULT 'NULL')
+  PCTFREE     10
+  INITRANS    1
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+  NOCACHE
+  MONITORING
+  NOPARALLEL
+  LOGGING
+/
+
+-- Constraints for LAYOUTDOCSQL
+
+ALTER TABLE layoutdocsql
+ADD PRIMARY KEY (id)
+USING INDEX
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+/
+
+CREATE TABLE layoutdoc
+    (id                             NUMBER(9,0) NOT NULL,
+    tipodoc                        VARCHAR2(5 CHAR) DEFAULT 'CART' NOT NULL,
+    iddoc                          NUMBER(9,0) NOT NULL,
+    tiporegistro                   VARCHAR2(1 CHAR) NOT NULL,
+    sequencia                      NUMBER(9,0) NOT NULL,
+    tipodado                       VARCHAR2(3 CHAR) DEFAULT 'ALF' NOT NULL,
+    tamanho                        NUMBER(9,0) DEFAULT '0',
+    posincial                      NUMBER(9,0) DEFAULT '0',
+    posfinal                       NUMBER(9,0) DEFAULT '0',
+    sqlcampo                       VARCHAR2(512 CHAR) DEFAULT NULL,
+    comentario                     VARCHAR2(4000 CHAR) DEFAULT NULL,
+    mascara                        VARCHAR2(45 CHAR) DEFAULT NULL,
+    valor_default                  VARCHAR2(45 CHAR) DEFAULT NULL)
+  PCTFREE     10
+  INITRANS    1
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+  NOCACHE
+  MONITORING
+  NOPARALLEL
+  LOGGING
+/
+
+
+-- Constraints for LAYOUTDOC
+
+ALTER TABLE layoutdoc
+ADD PRIMARY KEY (id)
+USING INDEX
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+/

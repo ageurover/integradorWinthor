@@ -269,7 +269,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
 
         jLabel9.setText("Mascara");
 
-        cmbTipoRegistro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H - Header", "D - Detalhe", "T - Treller" }));
+        cmbTipoRegistro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H - Header", "D - Detalhe Pai", "F - Detalhe Filho", "N - Detalhe Neto", "T - Treller" }));
         cmbTipoRegistro.setToolTipText("H - Header\\nD - Detalhe\\nT - Treller");
         cmbTipoRegistro.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -519,7 +519,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 782, Short.MAX_VALUE)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jScrollPane3))
                 .addContainerGap())
         );

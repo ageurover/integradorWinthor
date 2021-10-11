@@ -3,7 +3,7 @@
  *
  * Created on 22 de Outubro de 2018, 22:10
  */
-package winthorDb.forms.export;
+package winthorDb.forms.etl.cartorio;
 
 import java.awt.HeadlessException;
 import java.io.BufferedReader;
@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
+import winthorDb.forms.export.LayoutRemessaDialog;
 import winthorDb.oracleDb.IntegracaoWinthorDb;
 import winthorDb.util.Formato;
 

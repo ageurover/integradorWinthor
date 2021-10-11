@@ -25,6 +25,7 @@ public class Main {
 
     // String de conexao ao oracle
     //jdbc:oracle:thin:winthor2/zlqwkru5@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST =192.168.1.201)(PORT = 1521))(CONNECT_DATA = (SID =WINT)))
+    public static String versao = "1.0 r10";
     public static String getConnectionDb = null;
     public static String dirAplication = null;
     public static int colunaColor = 0;

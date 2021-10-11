@@ -25,159 +25,195 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuRotinas">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Winthor"/>
+            <Property name="text" type="java.lang.String" value="Rotinas"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCupom">
+            <Menu class="javax.swing.JMenu" name="mnuVendas">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Pedido)"/>
+                <Property name="text" type="java.lang.String" value="Vendas"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCupomActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCarga">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCupom">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Pedido)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCupomActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuCadastroSintegra">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cadastro de Cliente Sintegra"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuCadastroSintegraActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuAtualizaBarrasPedido">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Atualiza Cod. Barras Pedido Venda"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAtualizaBarrasPedidoActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuPedidoViradaMes">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ajusta Data Pedido Virada M&#xea;s"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuPedidoViradaMesActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuFilialFaturaCarga">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Processo Filial Fatura por Carregamento"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuFilialFaturaCargaActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoDevolucaoCupom">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Processo Devolu&#xe7;&#xe3;o Cupom Fiscal"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoDevolucaoCupomActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCarga">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Carga)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCargaActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuEstoque">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Carga)"/>
+                <Property name="text" type="java.lang.String" value="Estoque"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCargaActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuFilialFaturaCarga">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuProcessarImagens">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Processar Imagens de Produtos"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessarImagensActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuBaixaLancProducao">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Baixa Lan&#xe7;amento Entrada Producao"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuBaixaLancProducaoActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuAjusteEstoqueFilial90">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ajuste Estoque Filial 90 para Filial Retira"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAjusteEstoqueFilial90ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuConversaoEmbalagem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Convers&#xe3;o de Embagem (Master/Unidade)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuConversaoEmbalagemActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuValidaEan">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Valida&#xe7;&#xe3;o EAN 8/13"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuValidaEanActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuFinanceiro">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Processo Filial Fatura por Carregamento"/>
+                <Property name="text" type="java.lang.String" value="Financeiro"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuFilialFaturaCargaActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoDevolucaoCupom">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuExportaProtesto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o Dados Protesto de Titulos"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExportaProtestoActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuImportaFolhaCnab240">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Importa&#xe7;&#xe3;o Folha Pagamento (CNAB-240)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuImportaFolhaCnab240ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuColetor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Processo Devolu&#xe7;&#xe3;o Cupom Fiscal"/>
+                <Property name="text" type="java.lang.String" value="Coletor"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoDevolucaoCupomActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuConversaoEmbalagem">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuConsultaOs">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Consulta OS"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuConsultaOsActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Endere&#xe7;o Loja"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuConfig">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Convers&#xe3;o de Embagem (Master/Unidade)"/>
+                <Property name="text" type="java.lang.String" value="Configura&#xe7;&#xe3;o"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuConversaoEmbalagemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuProcessarImagens">
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuConfigDb">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Conex&#xe3;o Banco de Dados"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuConfigDbActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuExportacao">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Processar Imagens de Produtos"/>
+                <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessarImagensActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuPedidoViradaMes">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ajusta Data Pedido Virada M&#xea;s"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuPedidoViradaMesActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAjusteEstoqueFilial90">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ajuste Estoque Filial 90 para Filial Retira"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAjusteEstoqueFilial90ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuBaixaLancProducao">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Baixa Lan&#xe7;amento Entrada Producao"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuBaixaLancProducaoActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuValidaEan">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Valida&#xe7;&#xe3;o EAN 8/13"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuValidaEanActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuExportaProtesto">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o Dados Protesto de Titulos"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExportaProtestoActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuImportaFolhaCnab240">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Importa&#xe7;&#xe3;o Folha Pagamento (CNAB-240)"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuImportaFolhaCnab240ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cadastro de Cliente Sintegra"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAtualizaBarrasPedido">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Atualiza Cod. Barras Pedido Venda"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAtualizaBarrasPedidoActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuColetor">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Coletor"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuConsultaOs">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Consulta OS"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuConsultaOsActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Endere&#xe7;o Loja"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuConfig">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Configura&#xe7;&#xe3;o"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuConfigDb">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Conex&#xe3;o Banco de Dados"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuConfigDbActionPerformed"/>
-              </Events>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoes">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o - 3 Cora&#xe7;&#xf5;es"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -207,12 +243,17 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" alignment="0" pref="300" max="32767" attributes="0"/>
+          <Component id="jLabel1" pref="300" max="32767" attributes="0"/>
+          <Component id="lblVersao" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" alignment="0" pref="278" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <Component id="lblVersao" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel1" pref="258" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -224,6 +265,12 @@
           <Image iconType="3" name="/winthorDb/forms/RoverTecnologiaIcone.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="www.rovertecnologia.com.br"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblVersao">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Vers&#xe3;o:"/>
       </Properties>
     </Component>
   </SubComponents>

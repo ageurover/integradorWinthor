@@ -39,6 +39,12 @@ public class LayoutDocSql implements Serializable {
         //-
     @Column(name = "sql_Detalhe", nullable = true, length=8092)
     private String sqlDetalhe;
+            //-
+    @Column(name = "sql_DetalheFilho", nullable = true, length=8092)
+    private String sqlDetalheFilho;
+            //-
+    @Column(name = "sql_DetalheNeto", nullable = true, length=8092)
+    private String sqlDetalheNeto;
         //-
     @Column(name = "sql_Treller", nullable = true, length=8092)
     private String sqlTreller;
@@ -148,6 +154,34 @@ public class LayoutDocSql implements Serializable {
      */
     public void setSql_Treller(String sql_Treller) {
         this.sqlTreller = sql_Treller;
+    }
+
+    /**
+     * @return the sqlDetalheFilho
+     */
+    public String getSqlDetalheFilho() {
+        return sqlDetalheFilho;
+    }
+
+    /**
+     * @param sqlDetalheFilho the sqlDetalheFilho to set
+     */
+    public void setSqlDetalheFilho(String sqlDetalheFilho) {
+        this.sqlDetalheFilho = sqlDetalheFilho;
+    }
+
+    /**
+     * @return the sqlDetalheNeto
+     */
+    public String getSqlDetalheNeto() {
+        return sqlDetalheNeto;
+    }
+
+    /**
+     * @param sqlDetalheNeto the sqlDetalheNeto to set
+     */
+    public void setSqlDetalheNeto(String sqlDetalheNeto) {
+        this.sqlDetalheNeto = sqlDetalheNeto;
     }
 
 }

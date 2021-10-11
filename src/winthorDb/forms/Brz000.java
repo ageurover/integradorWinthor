@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import winthorDb.Main;
 import winthorDb.forms.coletor.consultaOS;
 import winthorDb.forms.coletor.vinculaEnderecoLoja;
-import winthorDb.forms.export.ExportDocDialog;
+import winthorDb.forms.etl.cartorio.ExportDocDialog;
 
 /**
  *
@@ -25,6 +25,7 @@ public class Brz000 extends javax.swing.JFrame {
     public Brz000() {
         initComponents();
         setLocationRelativeTo(null);
+        lblVersao.setText("Versão: " + Main.versao );
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png")).getImage());
     }
 
@@ -41,27 +42,33 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
+        lblVersao = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuRotinas = new javax.swing.JMenu();
+        mnuVendas = new javax.swing.JMenu();
         mnuProcessoPedidoCupom = new javax.swing.JMenuItem();
-        mnuProcessoPedidoCarga = new javax.swing.JMenuItem();
+        mnuCadastroSintegra = new javax.swing.JMenuItem();
+        mnuAtualizaBarrasPedido = new javax.swing.JMenuItem();
+        mnuPedidoViradaMes = new javax.swing.JMenuItem();
         mnuFilialFaturaCarga = new javax.swing.JMenuItem();
         mnuProcessoDevolucaoCupom = new javax.swing.JMenuItem();
-        mnuConversaoEmbalagem = new javax.swing.JMenuItem();
+        mnuProcessoPedidoCarga = new javax.swing.JMenuItem();
+        mnuEstoque = new javax.swing.JMenu();
         mnuProcessarImagens = new javax.swing.JMenuItem();
-        mnuPedidoViradaMes = new javax.swing.JMenuItem();
-        mnuAjusteEstoqueFilial90 = new javax.swing.JMenuItem();
         mnuBaixaLancProducao = new javax.swing.JMenuItem();
+        mnuAjusteEstoqueFilial90 = new javax.swing.JMenuItem();
+        mnuConversaoEmbalagem = new javax.swing.JMenuItem();
         mnuValidaEan = new javax.swing.JMenuItem();
+        mnuFinanceiro = new javax.swing.JMenu();
         mnuExportaProtesto = new javax.swing.JMenuItem();
         mnuImportaFolhaCnab240 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        mnuAtualizaBarrasPedido = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
+        mnuExportacao = new javax.swing.JMenu();
+        mnuExport_3coracoes = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -76,7 +83,12 @@ public class Brz000 extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png"))); // NOI18N
         jLabel1.setText("www.rovertecnologia.com.br");
 
-        jMenuRotinas.setText("Winthor");
+        lblVersao.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblVersao.setText("Versão:");
+
+        jMenuRotinas.setText("Rotinas");
+
+        mnuVendas.setText("Vendas");
 
         mnuProcessoPedidoCupom.setText("Processo Pedido/Cupom (Pedido)");
         mnuProcessoPedidoCupom.addActionListener(new java.awt.event.ActionListener() {
@@ -84,103 +96,15 @@ public class Brz000 extends javax.swing.JFrame {
                 mnuProcessoPedidoCupomActionPerformed(evt);
             }
         });
-        jMenuRotinas.add(mnuProcessoPedidoCupom);
+        mnuVendas.add(mnuProcessoPedidoCupom);
 
-        mnuProcessoPedidoCarga.setText("Processo Pedido/Cupom (Carga)");
-        mnuProcessoPedidoCarga.addActionListener(new java.awt.event.ActionListener() {
+        mnuCadastroSintegra.setText("Cadastro de Cliente Sintegra");
+        mnuCadastroSintegra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuProcessoPedidoCargaActionPerformed(evt);
+                mnuCadastroSintegraActionPerformed(evt);
             }
         });
-        jMenuRotinas.add(mnuProcessoPedidoCarga);
-
-        mnuFilialFaturaCarga.setText("Processo Filial Fatura por Carregamento");
-        mnuFilialFaturaCarga.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuFilialFaturaCargaActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuFilialFaturaCarga);
-
-        mnuProcessoDevolucaoCupom.setText("Processo Devolução Cupom Fiscal");
-        mnuProcessoDevolucaoCupom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuProcessoDevolucaoCupomActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuProcessoDevolucaoCupom);
-
-        mnuConversaoEmbalagem.setText("Conversão de Embagem (Master/Unidade)");
-        mnuConversaoEmbalagem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuConversaoEmbalagemActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuConversaoEmbalagem);
-
-        mnuProcessarImagens.setText("Processar Imagens de Produtos");
-        mnuProcessarImagens.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuProcessarImagensActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuProcessarImagens);
-
-        mnuPedidoViradaMes.setText("Ajusta Data Pedido Virada Mês");
-        mnuPedidoViradaMes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuPedidoViradaMesActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuPedidoViradaMes);
-
-        mnuAjusteEstoqueFilial90.setText("Ajuste Estoque Filial 90 para Filial Retira");
-        mnuAjusteEstoqueFilial90.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAjusteEstoqueFilial90ActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuAjusteEstoqueFilial90);
-
-        mnuBaixaLancProducao.setText("Baixa Lançamento Entrada Producao");
-        mnuBaixaLancProducao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuBaixaLancProducaoActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuBaixaLancProducao);
-
-        mnuValidaEan.setText("Validação EAN 8/13");
-        mnuValidaEan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuValidaEanActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuValidaEan);
-
-        mnuExportaProtesto.setText("Exportação Dados Protesto de Titulos");
-        mnuExportaProtesto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuExportaProtestoActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuExportaProtesto);
-
-        mnuImportaFolhaCnab240.setText("Importação Folha Pagamento (CNAB-240)");
-        mnuImportaFolhaCnab240.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuImportaFolhaCnab240ActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(mnuImportaFolhaCnab240);
-
-        jMenuItem3.setText("Cadastro de Cliente Sintegra");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenuRotinas.add(jMenuItem3);
+        mnuVendas.add(mnuCadastroSintegra);
 
         mnuAtualizaBarrasPedido.setText("Atualiza Cod. Barras Pedido Venda");
         mnuAtualizaBarrasPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -188,9 +112,105 @@ public class Brz000 extends javax.swing.JFrame {
                 mnuAtualizaBarrasPedidoActionPerformed(evt);
             }
         });
-        jMenuRotinas.add(mnuAtualizaBarrasPedido);
+        mnuVendas.add(mnuAtualizaBarrasPedido);
 
-        jMenuBar1.add(jMenuRotinas);
+        mnuPedidoViradaMes.setText("Ajusta Data Pedido Virada Mês");
+        mnuPedidoViradaMes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuPedidoViradaMesActionPerformed(evt);
+            }
+        });
+        mnuVendas.add(mnuPedidoViradaMes);
+
+        mnuFilialFaturaCarga.setText("Processo Filial Fatura por Carregamento");
+        mnuFilialFaturaCarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuFilialFaturaCargaActionPerformed(evt);
+            }
+        });
+        mnuVendas.add(mnuFilialFaturaCarga);
+
+        mnuProcessoDevolucaoCupom.setText("Processo Devolução Cupom Fiscal");
+        mnuProcessoDevolucaoCupom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuProcessoDevolucaoCupomActionPerformed(evt);
+            }
+        });
+        mnuVendas.add(mnuProcessoDevolucaoCupom);
+
+        mnuProcessoPedidoCarga.setText("Processo Pedido/Cupom (Carga)");
+        mnuProcessoPedidoCarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuProcessoPedidoCargaActionPerformed(evt);
+            }
+        });
+        mnuVendas.add(mnuProcessoPedidoCarga);
+
+        jMenuRotinas.add(mnuVendas);
+
+        mnuEstoque.setText("Estoque");
+
+        mnuProcessarImagens.setText("Processar Imagens de Produtos");
+        mnuProcessarImagens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuProcessarImagensActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuProcessarImagens);
+
+        mnuBaixaLancProducao.setText("Baixa Lançamento Entrada Producao");
+        mnuBaixaLancProducao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuBaixaLancProducaoActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuBaixaLancProducao);
+
+        mnuAjusteEstoqueFilial90.setText("Ajuste Estoque Filial 90 para Filial Retira");
+        mnuAjusteEstoqueFilial90.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAjusteEstoqueFilial90ActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuAjusteEstoqueFilial90);
+
+        mnuConversaoEmbalagem.setText("Conversão de Embagem (Master/Unidade)");
+        mnuConversaoEmbalagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuConversaoEmbalagemActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuConversaoEmbalagem);
+
+        mnuValidaEan.setText("Validação EAN 8/13");
+        mnuValidaEan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuValidaEanActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuValidaEan);
+
+        jMenuRotinas.add(mnuEstoque);
+
+        mnuFinanceiro.setText("Financeiro");
+
+        mnuExportaProtesto.setText("Exportação Dados Protesto de Titulos");
+        mnuExportaProtesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExportaProtestoActionPerformed(evt);
+            }
+        });
+        mnuFinanceiro.add(mnuExportaProtesto);
+
+        mnuImportaFolhaCnab240.setText("Importação Folha Pagamento (CNAB-240)");
+        mnuImportaFolhaCnab240.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuImportaFolhaCnab240ActionPerformed(evt);
+            }
+        });
+        mnuFinanceiro.add(mnuImportaFolhaCnab240);
+
+        jMenuRotinas.add(mnuFinanceiro);
 
         mnuColetor.setText("Coletor");
 
@@ -210,7 +230,7 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuColetor.add(jMenuItem4);
 
-        jMenuBar1.add(mnuColetor);
+        jMenuRotinas.add(mnuColetor);
 
         mnuConfig.setText("Configuração");
 
@@ -222,7 +242,21 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuConfig.add(mnuConfigDb);
 
-        jMenuBar1.add(mnuConfig);
+        jMenuRotinas.add(mnuConfig);
+
+        mnuExportacao.setText("Exportação");
+
+        mnuExport_3coracoes.setText("Exportação - 3 Corações");
+        mnuExport_3coracoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExport_3coracoesActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuExport_3coracoes);
+
+        jMenuRotinas.add(mnuExportacao);
+
+        jMenuBar1.add(jMenuRotinas);
 
         setJMenuBar(jMenuBar1);
 
@@ -231,10 +265,14 @@ public class Brz000 extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(lblVersao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(lblVersao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
         );
 
         pack();
@@ -311,7 +349,7 @@ public class Brz000 extends javax.swing.JFrame {
 
     private void mnuExportaProtestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExportaProtestoActionPerformed
         // TODO add your handling code here:
-        ExportDocDialog.open(9999, "CART", "0");
+        winthorDb.forms.etl.cartorio.ExportDocDialog.open(9999, "CART", "0");
     }//GEN-LAST:event_mnuExportaProtestoActionPerformed
 
     private void mnuImportaFolhaCnab240ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuImportaFolhaCnab240ActionPerformed
@@ -320,11 +358,11 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuImportaFolhaCnab240ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void mnuCadastroSintegraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCadastroSintegraActionPerformed
         // TODO add your handling code here:
         Main.dialog = new Brz008();
         Main.dialog.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_mnuCadastroSintegraActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         Main.dialog = new vinculaEnderecoLoja();
@@ -335,6 +373,11 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog = new Brz014();
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuAtualizaBarrasPedidoActionPerformed
+
+    private void mnuExport_3coracoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExport_3coracoesActionPerformed
+        // TODO add your handling code here:
+        winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(0001, "3COR", "0");
+    }//GEN-LAST:event_mnuExport_3coracoesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,19 +421,24 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu jMenuRotinas;
+    private javax.swing.JLabel lblVersao;
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
     private javax.swing.JMenuItem mnuAtualizaBarrasPedido;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
+    private javax.swing.JMenuItem mnuCadastroSintegra;
     private javax.swing.JMenu mnuColetor;
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenuItem mnuConfigDb;
     private javax.swing.JMenuItem mnuConsultaOs;
     private javax.swing.JMenuItem mnuConversaoEmbalagem;
+    private javax.swing.JMenu mnuEstoque;
+    private javax.swing.JMenuItem mnuExport_3coracoes;
     private javax.swing.JMenuItem mnuExportaProtesto;
+    private javax.swing.JMenu mnuExportacao;
     private javax.swing.JMenuItem mnuFilialFaturaCarga;
+    private javax.swing.JMenu mnuFinanceiro;
     private javax.swing.JMenuItem mnuImportaFolhaCnab240;
     private javax.swing.JMenuItem mnuPedidoViradaMes;
     private javax.swing.JMenuItem mnuProcessarImagens;
@@ -398,5 +446,6 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuProcessoPedidoCarga;
     private javax.swing.JMenuItem mnuProcessoPedidoCupom;
     private javax.swing.JMenuItem mnuValidaEan;
+    private javax.swing.JMenu mnuVendas;
     // End of variables declaration//GEN-END:variables
 }

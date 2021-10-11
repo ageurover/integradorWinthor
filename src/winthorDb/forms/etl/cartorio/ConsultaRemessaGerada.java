@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package winthorDb.forms.export;
+package winthorDb.forms.etl.cartorio;
 
 import java.util.Date;
 import winthorDb.error.MessageDialog;

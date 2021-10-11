@@ -278,10 +278,12 @@
         <Component class="javax.swing.JComboBox" name="cmbTipoRegistro">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
+              <StringArray count="5">
                 <StringItem index="0" value="H - Header"/>
-                <StringItem index="1" value="D - Detalhe"/>
-                <StringItem index="2" value="T - Treller"/>
+                <StringItem index="1" value="D - Detalhe Pai"/>
+                <StringItem index="2" value="F - Detalhe Filho"/>
+                <StringItem index="3" value="N - Detalhe Neto"/>
+                <StringItem index="4" value="T - Treller"/>
               </StringArray>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="H - Header\u005cnD - Detalhe\u005cnT - Treller" containsInvalidXMLChars="true"/>
