@@ -1113,7 +1113,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnProcessarActionPerformed
 
     private void btnLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLayoutActionPerformed
-        LayoutRemessaDialog.open(9999, "CART");
+        LayoutRemessaDialog.open(0001, "3COR");
         exibeSqlComando();
     }//GEN-LAST:event_btnLayoutActionPerformed
 
@@ -1135,6 +1135,12 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             }
                             if (linha.substring(0, 1).equalsIgnoreCase("1")) {
                                 processaValidarExport("D", linha);
+                            }
+                            if (linha.substring(0, 1).equalsIgnoreCase("1")) {
+                                processaValidarExport("F", linha);
+                            }
+                            if (linha.substring(0, 1).equalsIgnoreCase("1")) {
+                                processaValidarExport("N", linha);
                             }
                             if (linha.substring(0, 1).equalsIgnoreCase("9")) {
                                 processaValidarExport("T", linha);
