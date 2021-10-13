@@ -393,6 +393,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
         try {
             if (edtId.getText().isEmpty()) {
                 sqlEdit = new LayoutDocSql();
+                //sqlEdit.setId(Formato.strToInt(edtCodDoc.getText()));
                 sqlEdit.setIdDoc(Formato.strToInt(edtCodDoc.getText()));
                 sqlEdit.setTipoDoc(edtTipoDoc.getText());
             }

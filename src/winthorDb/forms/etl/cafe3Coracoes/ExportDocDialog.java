@@ -135,6 +135,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         + " ('' ||id) as id, ('' ||idDoc) as idDoc, ('' ||tipoDoc) as tipoDoc, "
                         + " ('' ||sql_Header) as sql_Header, "
                         + " ('' ||sql_Detalhe) as sql_Detalhe, "
+                        + " ('' ||sql_DetalheFilho) as sql_DetalheFilho, "
+                        + " ('' ||sql_DetalheNeto) as sql_DetalheNeto, "
                         + " ('' ||sql_Treller) as sql_Treller "
                         + " FROM LayoutDocSql"
                         + " WHERE idDoc = " + edtCodDoc.getText()
@@ -1113,7 +1115,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnProcessarActionPerformed
 
     private void btnLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLayoutActionPerformed
-        LayoutRemessaDialog.open(0001, "3COR");
+        LayoutRemessaDialog.open(9001, "3COR");
         exibeSqlComando();
     }//GEN-LAST:event_btnLayoutActionPerformed
 

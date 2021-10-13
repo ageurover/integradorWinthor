@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import winthorDb.Main;
 import winthorDb.forms.coletor.consultaOS;
 import winthorDb.forms.coletor.vinculaEnderecoLoja;
-import winthorDb.forms.etl.cartorio.ExportDocDialog;
 
 /**
  *
@@ -376,7 +375,7 @@ public class Brz000 extends javax.swing.JFrame {
 
     private void mnuExport_3coracoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExport_3coracoesActionPerformed
         // TODO add your handling code here:
-        winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(0001, "3COR", "0");
+        winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(9001, "3COR", "0");
     }//GEN-LAST:event_mnuExport_3coracoesActionPerformed
 
     /**

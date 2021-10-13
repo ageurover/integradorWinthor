@@ -71,6 +71,9 @@ CREATE TABLE BRZ_CARTORIO_REMESSA
 
 CREATE INDEX IDX_CARTORIO2 ON BRZ_CARTORIO_REMESSA (CODIBGE, CODCONVENIO);
 
+-- Start of DDL Script for Table BRASILDIS.LAYOUTDOCSQL
+-- Generated 12/10/2021 10:32:37 from BRASILDIS@PROD
+
 CREATE TABLE layoutdocsql
     (id                             NUMBER(9,0) NOT NULL,
     iddoc                          NUMBER(9,0) NOT NULL,
@@ -78,8 +81,8 @@ CREATE TABLE layoutdocsql
     sql_header                     VARCHAR2(4000 CHAR) DEFAULT NULL,
     sql_detalhe                    VARCHAR2(4000 CHAR) DEFAULT NULL,
     sql_treller                    VARCHAR2(4000 CHAR) DEFAULT NULL,
-    sql_detalhefilho               VARCHAR2(4000 CHAR) DEFAULT 'NULL',
-    sql_detalheneto                VARCHAR2(4000 CHAR) DEFAULT 'NULL')
+    sql_detalhefilho               VARCHAR2(4000 CHAR) DEFAULT NULL,
+    sql_detalheneto                VARCHAR2(4000 CHAR) DEFAULT NULL)
   PCTFREE     10
   INITRANS    1
   MAXTRANS    255
@@ -113,6 +116,12 @@ USING INDEX
   )
 /
 
+
+-- End of DDL Script for Table BRASILDIS.LAYOUTDOCSQL
+
+-- Start of DDL Script for Table BRASILDIS.LAYOUTDOC
+-- Generated 12/10/2021 10:30:31 from BRASILDIS@PROD
+
 CREATE TABLE layoutdoc
     (id                             NUMBER(9,0) NOT NULL,
     tipodoc                        VARCHAR2(5 CHAR) DEFAULT 'CART' NOT NULL,
@@ -143,7 +152,6 @@ CREATE TABLE layoutdoc
   LOGGING
 /
 
-
 -- Constraints for LAYOUTDOC
 
 ALTER TABLE layoutdoc
@@ -160,3 +168,6 @@ USING INDEX
     MAXEXTENTS  2147483645
   )
 /
+
+
+-- End of DDL Script for Table BRASILDIS.LAYOUTDOC

@@ -59,7 +59,7 @@ public class Dao {
         configOverrides.put("toplink.jdbc.password", Main.senhaUsuario);
         configOverrides.put("toplink.jdbc.schema", Main.sidServidor);
         // configOverrides.put("toplink.jdbc.url", "jdbc:mysql://" + Main.ipServidor + ":" + Main.portaServidor + "/" + Main.nomeSchema + "?zeroDateTimeBehavior=convertToNull");
-        configOverrides.put("toplink.jdbc.url", "jdbc:oracle:thin:" + Main.Usuario + "/" + Main.senhaUsuario + "@(DESCRIPTION =(ADDRESS =(PROTOCOL = TCP)(HOST = " + Main.ipServidor + ")(PORT = 1521))(CONNECT_DATA = (SID = " + Main.sidServidor + ")))");
+        configOverrides.put("toplink.jdbc.url", Main.getConnectionDb);
 
         if (emf == null) {
             emf = Persistence.createEntityManagerFactory("winthorPU", configOverrides);
@@ -96,7 +96,7 @@ public class Dao {
         }
         EntityTransaction trx = null;
         try {
-            trx = em.getTransaction();
+            trx = getEm().getTransaction();
             trx.begin();
             getEm().persist(o);
             getEm().flush();
@@ -160,7 +160,7 @@ public class Dao {
         }
         EntityTransaction trx = null;
         try {
-            trx = em.getTransaction();
+            trx = getEm().getTransaction();
             trx.begin();
             getEm().merge(o);
             getEm().flush();
@@ -195,7 +195,7 @@ public class Dao {
 
         EntityTransaction trx = null;
         try {
-            trx = em.getTransaction();
+            trx = getEm().getTransaction();
             trx.begin();
             getEm().persist(o);
             getEm().flush();

@@ -14,5 +14,5 @@
   <dataExpiracao>2022-01-01</dataExpiracao>
   <valorMaxCupom>5.0</valorMaxCupom>
   <AjustaFrenteLoja>N</AjustaFrenteLoja>
-  <pastaImagens>\\192.168.5.3\WINTHOR\IMAGENS</pastaImagens>
+  <pastaImagens>\\192.168.4.8\WINTHOR\IMAGENS</pastaImagens>
 </winthorDb.oracleDb.StringConectDb>
