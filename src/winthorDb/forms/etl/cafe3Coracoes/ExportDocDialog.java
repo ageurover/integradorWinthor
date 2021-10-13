@@ -97,7 +97,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         + " AND idDoc = " + edtCodDoc.getText()
                         + " AND tipoRegistro = 'D'"
                         + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
-                
+
                 sqlDetalheFilho = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
                         + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
                         + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
@@ -108,7 +108,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         + " AND idDoc = " + edtCodDoc.getText()
                         + " AND tipoRegistro = 'F'"
                         + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
-                
+
                 sqlDetalheNeto = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
                         + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
                         + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
@@ -119,7 +119,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         + " AND idDoc = " + edtCodDoc.getText()
                         + " AND tipoRegistro = 'N'"
                         + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
-                
+
                 sqlTreller = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
                         + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
                         + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
@@ -662,6 +662,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         edtRemessa = new javax.swing.JTextField();
         btnBuscarRemessa = new javax.swing.JButton();
+        cmbLayout = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -759,6 +761,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
             }
         });
 
+        cmbLayout.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CONEMB 3.1", "DOCCOB 3.0" }));
+
+        jLabel3.setText("Layout");
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -782,6 +788,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 .add(18, 18, 18)
                 .add(btnBuscarRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(cmbLayout, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 112, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel3))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 101, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -812,9 +822,13 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             .add(edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(btnBuscarRemessa))
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel7)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jLabel7)
+                            .add(jLabel3))
                         .add(3, 3, 3)
-                        .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(cmbLayout, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(btnProcessar))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1115,7 +1129,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnProcessarActionPerformed
 
     private void btnLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLayoutActionPerformed
-        LayoutRemessaDialog.open(9001, "3COR");
+        if (cmbLayout.getSelectedIndex() == 0) {
+            LayoutRemessaDialog.open(9001, "3COR");
+        } else {
+            LayoutRemessaDialog.open(9001, "3COR1");
+        }
         exibeSqlComando();
     }//GEN-LAST:event_btnLayoutActionPerformed
 
@@ -1192,6 +1210,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnProcessar;
     private javax.swing.JButton btnRemessaGerada;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cmbLayout;
     private javax.swing.JTextField edtCodCli;
     private javax.swing.JTextField edtCodDoc;
     private javax.swing.JTextField edtCodFilial;
@@ -1200,6 +1219,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JButton edtValidar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
