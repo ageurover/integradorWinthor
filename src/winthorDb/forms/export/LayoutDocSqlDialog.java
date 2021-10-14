@@ -53,9 +53,12 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
                 sqlString = "SELECT "
                         + " ('' ||id) as id, ('' ||idDoc) as idDoc, ('' ||tipoDoc) as tipoDoc, "
                         + " ('' ||sql_Header) as sql_Header, "
-                        + " ('' ||sql_Detalhe) as sql_Detalhe, "
-                        + " ('' ||sql_DetalheFilho) as sql_DetalheFilho, "
-                        + " ('' ||sql_DetalheNeto) as sql_DetalheNeto, "
+                        + " ('' ||sql_Detalhe_n0) as sql_Detalhe_n0, "
+                        + " ('' ||sql_Detalhe_n1) as sql_Detalhe_n1, "
+                        + " ('' ||sql_Detalhe_n2) as sql_Detalhe_n2, "
+                        + " ('' ||sql_Detalhe_n3) as sql_Detalhe_n3, "
+                        + " ('' ||sql_Detalhe_n4) as sql_Detalhe_n4, "
+                        + " ('' ||sql_Detalhe_n5) as sql_Detalhe_n5, "
                         + " ('' ||sql_Treller) as sql_Treller "
                         + " FROM LayoutDocSql"
                         + " WHERE idDoc = " + edtCodDoc.getText()
@@ -94,9 +97,12 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
                             if (sqlEdit != null) {
                                 edtId.setText(idSql);
                                 txtHeader.setText(sqlEdit.getSql_Header());
-                                txtDetalhe.setText(sqlEdit.getSql_Detalhe());
-                                txtDetalheFilho.setText(sqlEdit.getSqlDetalheFilho());
-                                txtDetalheNeto.setText(sqlEdit.getSqlDetalheNeto());
+                                txtDetalheN0.setText(sqlEdit.getSqlDetalhe_n0());
+                                txtDetalheN1.setText(sqlEdit.getSqlDetalhe_n1());
+                                txtDetalheN2.setText(sqlEdit.getSqlDetalhe_n2());
+                                txtDetalheN3.setText(sqlEdit.getSqlDetalhe_n3());
+                                txtDetalheN4.setText(sqlEdit.getSqlDetalhe_n4());
+                                txtDetalheN5.setText(sqlEdit.getSqlDetalhe_n5());
                                 txtTreller.setText(sqlEdit.getSql_Treller());
                             }
                         }
@@ -111,10 +117,12 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
     private void formToSqlEdit() throws Exception {
         if (sqlEdit != null) {
             sqlEdit.setSql_Header(txtHeader.getText());
-            sqlEdit.setSql_Detalhe(txtDetalhe.getText());
-            sqlEdit.setSqlDetalheFilho(txtDetalheFilho.getText());
-            sqlEdit.setSqlDetalheNeto(txtDetalheNeto.getText());
-            
+            sqlEdit.setSqlDetalhe_n0(txtDetalheN0.getText());
+            sqlEdit.setSqlDetalhe_n1(txtDetalheN1.getText());
+            sqlEdit.setSqlDetalhe_n2(txtDetalheN2.getText());
+            sqlEdit.setSqlDetalhe_n3(txtDetalheN3.getText());
+            sqlEdit.setSqlDetalhe_n4(txtDetalheN4.getText());
+            sqlEdit.setSqlDetalhe_n5(txtDetalheN5.getText());
             sqlEdit.setSql_Treller(txtTreller.getText());
         } else {
             throw new Exception("Objeto não declado!");
@@ -147,11 +155,17 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtDetalhe = new javax.swing.JTextArea();
+        txtDetalheN0 = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
-        txtDetalheFilho = new javax.swing.JTextPane();
+        txtDetalheN1 = new javax.swing.JTextPane();
         jScrollPane6 = new javax.swing.JScrollPane();
-        txtDetalheNeto = new javax.swing.JTextPane();
+        txtDetalheN2 = new javax.swing.JTextPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        txtDetalheN3 = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        txtDetalheN4 = new javax.swing.JTextArea();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        txtDetalheN5 = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtTreller = new javax.swing.JTextArea();
@@ -280,22 +294,49 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("SQL Header", jPanel3);
 
-        txtDetalhe.setColumns(20);
-        txtDetalhe.setLineWrap(true);
-        txtDetalhe.setRows(5);
-        txtDetalhe.setToolTipText("SQL comando para o DETALHE");
-        txtDetalhe.setWrapStyleWord(true);
-        jScrollPane2.setViewportView(txtDetalhe);
+        txtDetalheN0.setColumns(20);
+        txtDetalheN0.setLineWrap(true);
+        txtDetalheN0.setRows(5);
+        txtDetalheN0.setToolTipText("SQL comando para o DETALHE");
+        txtDetalheN0.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(txtDetalheN0);
 
-        jTabbedPane2.addTab("Detalhe Pai", jScrollPane2);
+        jTabbedPane2.addTab("Detalhe nivel 0", jScrollPane2);
 
-        jScrollPane5.setViewportView(txtDetalheFilho);
+        jScrollPane5.setViewportView(txtDetalheN1);
 
-        jTabbedPane2.addTab("Detalhe Filho", jScrollPane5);
+        jTabbedPane2.addTab("Detalhe nivel 1", jScrollPane5);
 
-        jScrollPane6.setViewportView(txtDetalheNeto);
+        jScrollPane6.setViewportView(txtDetalheN2);
 
-        jTabbedPane2.addTab("Detalhe Neto", jScrollPane6);
+        jTabbedPane2.addTab("Detalhe nivel 2", jScrollPane6);
+
+        txtDetalheN3.setColumns(20);
+        txtDetalheN3.setLineWrap(true);
+        txtDetalheN3.setRows(5);
+        txtDetalheN3.setToolTipText("SQL comando para o DETALHE");
+        txtDetalheN3.setWrapStyleWord(true);
+        jScrollPane7.setViewportView(txtDetalheN3);
+
+        jTabbedPane2.addTab("Detalhe nivel 3", jScrollPane7);
+
+        txtDetalheN4.setColumns(20);
+        txtDetalheN4.setLineWrap(true);
+        txtDetalheN4.setRows(5);
+        txtDetalheN4.setToolTipText("SQL comando para o DETALHE");
+        txtDetalheN4.setWrapStyleWord(true);
+        jScrollPane8.setViewportView(txtDetalheN4);
+
+        jTabbedPane2.addTab("Detalhe nivel 4", jScrollPane8);
+
+        txtDetalheN5.setColumns(20);
+        txtDetalheN5.setLineWrap(true);
+        txtDetalheN5.setRows(5);
+        txtDetalheN5.setToolTipText("SQL comando para o DETALHE");
+        txtDetalheN5.setWrapStyleWord(true);
+        jScrollPane9.setViewportView(txtDetalheN5);
+
+        jTabbedPane2.addTab("Detalhe nivel 5", jScrollPane9);
 
         org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -393,7 +434,6 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
         try {
             if (edtId.getText().isEmpty()) {
                 sqlEdit = new LayoutDocSql();
-                //sqlEdit.setId(Formato.strToInt(edtCodDoc.getText()));
                 sqlEdit.setIdDoc(Formato.strToInt(edtCodDoc.getText()));
                 sqlEdit.setTipoDoc(edtTipoDoc.getText());
             }
@@ -453,12 +493,18 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private winthorDb.util.CustomTable tblConsulta;
-    private javax.swing.JTextArea txtDetalhe;
-    private javax.swing.JTextPane txtDetalheFilho;
-    private javax.swing.JTextPane txtDetalheNeto;
+    private javax.swing.JTextArea txtDetalheN0;
+    private javax.swing.JTextPane txtDetalheN1;
+    private javax.swing.JTextPane txtDetalheN2;
+    private javax.swing.JTextArea txtDetalheN3;
+    private javax.swing.JTextArea txtDetalheN4;
+    private javax.swing.JTextArea txtDetalheN5;
     private javax.swing.JTextArea txtHeader;
     private javax.swing.JTextArea txtTreller;
     // End of variables declaration//GEN-END:variables

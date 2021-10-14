@@ -37,14 +37,23 @@ public class LayoutDocSql implements Serializable {
     @Column(name = "sql_Header", nullable = true, length=8092)
     private String sqlHeader;
         //-
-    @Column(name = "sql_Detalhe", nullable = true, length=8092)
-    private String sqlDetalhe;
+    @Column(name = "sql_Detalhe_n0", nullable = true, length=8092)
+    private String sqlDetalhe_n0;
             //-
-    @Column(name = "sql_DetalheFilho", nullable = true, length=8092)
-    private String sqlDetalheFilho;
+    @Column(name = "sql_Detalhe_n1", nullable = true, length=8092)
+    private String sqlDetalhe_n1;
             //-
-    @Column(name = "sql_DetalheNeto", nullable = true, length=8092)
-    private String sqlDetalheNeto;
+    @Column(name = "sql_Detalhe_n2", nullable = true, length=8092)
+    private String sqlDetalhe_n2;
+                //-
+    @Column(name = "sql_Detalhe_n3", nullable = true, length=8092)
+    private String sqlDetalhe_n3;
+                    //-
+    @Column(name = "sql_Detalhe_n4", nullable = true, length=8092)
+    private String sqlDetalhe_n4;
+                    //-
+    @Column(name = "sql_Detalhe_n5", nullable = true, length=8092)
+    private String sqlDetalhe_n5;
         //-
     @Column(name = "sql_Treller", nullable = true, length=8092)
     private String sqlTreller;
@@ -129,20 +138,6 @@ public class LayoutDocSql implements Serializable {
     }
 
     /**
-     * @return the sql_Detalhe
-     */
-    public String getSql_Detalhe() {
-        return sqlDetalhe;
-    }
-
-    /**
-     * @param sql_Detalhe the sql_Detalhe to set
-     */
-    public void setSql_Detalhe(String sql_Detalhe) {
-        this.sqlDetalhe = sql_Detalhe;
-    }
-
-    /**
      * @return the sql_Treller
      */
     public String getSql_Treller() {
@@ -157,31 +152,86 @@ public class LayoutDocSql implements Serializable {
     }
 
     /**
-     * @return the sqlDetalheFilho
+     * @return the sqlDetalhe_n0
      */
-    public String getSqlDetalheFilho() {
-        return sqlDetalheFilho;
+    public String getSqlDetalhe_n0() {
+        return sqlDetalhe_n0;
     }
 
     /**
-     * @param sqlDetalheFilho the sqlDetalheFilho to set
+     * @param sqlDetalhe_n0 the sqlDetalhe_n0 to set
      */
-    public void setSqlDetalheFilho(String sqlDetalheFilho) {
-        this.sqlDetalheFilho = sqlDetalheFilho;
+    public void setSqlDetalhe_n0(String sqlDetalhe_n0) {
+        this.sqlDetalhe_n0 = sqlDetalhe_n0;
     }
 
     /**
-     * @return the sqlDetalheNeto
+     * @return the sqlDetalhe_n1
      */
-    public String getSqlDetalheNeto() {
-        return sqlDetalheNeto;
+    public String getSqlDetalhe_n1() {
+        return sqlDetalhe_n1;
     }
 
     /**
-     * @param sqlDetalheNeto the sqlDetalheNeto to set
+     * @param sqlDetalhe_n1 the sqlDetalhe_n1 to set
      */
-    public void setSqlDetalheNeto(String sqlDetalheNeto) {
-        this.sqlDetalheNeto = sqlDetalheNeto;
+    public void setSqlDetalhe_n1(String sqlDetalhe_n1) {
+        this.sqlDetalhe_n1 = sqlDetalhe_n1;
     }
 
+    /**
+     * @return the sqlDetalhe_n2
+     */
+    public String getSqlDetalhe_n2() {
+        return sqlDetalhe_n2;
+    }
+
+    /**
+     * @param sqlDetalhe_n2 the sqlDetalhe_n2 to set
+     */
+    public void setSqlDetalhe_n2(String sqlDetalhe_n2) {
+        this.sqlDetalhe_n2 = sqlDetalhe_n2;
+    }
+
+    /**
+     * @return the sqlDetalhe_n3
+     */
+    public String getSqlDetalhe_n3() {
+        return sqlDetalhe_n3;
+    }
+
+    /**
+     * @param sqlDetalhe_n3 the sqlDetalhe_n3 to set
+     */
+    public void setSqlDetalhe_n3(String sqlDetalhe_n3) {
+        this.sqlDetalhe_n3 = sqlDetalhe_n3;
+    }
+
+    /**
+     * @return the sqlDetalhe_n4
+     */
+    public String getSqlDetalhe_n4() {
+        return sqlDetalhe_n4;
+    }
+
+    /**
+     * @param sqlDetalhe_n4 the sqlDetalhe_n4 to set
+     */
+    public void setSqlDetalhe_n4(String sqlDetalhe_n4) {
+        this.sqlDetalhe_n4 = sqlDetalhe_n4;
+    }
+
+    /**
+     * @return the sqlDetalhe_n5
+     */
+    public String getSqlDetalhe_n5() {
+        return sqlDetalhe_n5;
+    }
+
+    /**
+     * @param sqlDetalhe_n5 the sqlDetalhe_n5 to set
+     */
+    public void setSqlDetalhe_n5(String sqlDetalhe_n5) {
+        this.sqlDetalhe_n5 = sqlDetalhe_n5;
+    }
 }

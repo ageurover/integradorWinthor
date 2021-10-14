@@ -59,7 +59,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
                         + " FROM layoutDoc "
                         + " WHERE idDoc = " + edtIdDocumento.getText()
                         + " AND tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND tipoRegistro = '" + cmbTipoRegistro.getSelectedItem().toString().substring(0, 1) + "' "
+                        + " AND tipoRegistro = '" + cmbTipoRegistro.getSelectedItem().toString().substring(0, 2).trim() + "' "
                         + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
                 tableLayout.setTableData(sqlString);
@@ -68,13 +68,13 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
                 wint.openConectOracle();
                 String sqlSoma = "Select sum(Tamanho) from layoutDoc WHERE idDoc = " + edtIdDocumento.getText()
                         + " AND tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND tipoRegistro = '" + cmbTipoRegistro.getSelectedItem().toString().substring(0, 1) + "' ";
+                        + " AND tipoRegistro = '" + cmbTipoRegistro.getSelectedItem().toString().substring(0, 2).trim() + "' ";
 
-                lblTamanhoTotal.setText( wint.selectDados(sqlSoma).get(0).toString());
+                lblTamanhoTotal.setText(wint.selectDados(sqlSoma).get(0).toString());
 
             }
 
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             trataErro.trataException(ex, "exibeLayout");
         }
     }
@@ -110,6 +110,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             edtMascara.setText("");
             edtComentario.setText("");
             tableLayout.changeSelection(tableLayout.getRowCount() - 1, 0, false, false);
+            btnGravar.setText("Adicionar");
 
             if (tableLayout.getRowCount() > 1) {
                 proxSeq = Formato.strToInt(tableLayout.getConteudoRow("sequencia", tableLayout.getRowCount() - 1).toString()) + 1;
@@ -131,7 +132,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             LayoutDoc linha = new LayoutDoc();
             linha.setTipoDoc(edtTipoDoc.getText());
             linha.setIdDoc(Formato.strToInt(edtIdDocumento.getText()));
-            linha.setTipoRegistro(cmbTipoRegistro.getSelectedItem().toString().substring(0, 1));
+            linha.setTipoRegistro(cmbTipoRegistro.getSelectedItem().toString().substring(0, 2).trim());
             linha.setPosIncial(Formato.strToInt(edtPosInicial.getText()));
             linha.setPosFinal(Formato.strToInt(edtPosFinal.getText()));
             linha.setTamanho(Formato.strToInt(edtTamanho.getText()));
@@ -158,7 +159,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             if (linha != null) {
                 linha.setIdDoc(Formato.strToInt(edtIdDocumento.getText()));
                 linha.setTipoDoc(edtTipoDoc.getText());
-                linha.setTipoRegistro(cmbTipoRegistro.getSelectedItem().toString().substring(0, 1));
+                linha.setTipoRegistro(cmbTipoRegistro.getSelectedItem().toString().substring(0, 2).trim());
                 linha.setPosIncial(Formato.strToInt(edtPosInicial.getText()));
                 linha.setPosFinal(Formato.strToInt(edtPosFinal.getText()));
                 linha.setTamanho(Formato.strToInt(edtTamanho.getText()));
@@ -269,7 +270,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
 
         jLabel9.setText("Mascara");
 
-        cmbTipoRegistro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H - Header", "D - Detalhe Pai", "F - Detalhe Filho", "N - Detalhe Neto", "T - Treller" }));
+        cmbTipoRegistro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "H   - Header", "D   - Detalhe Nivel 0", "D1 - Detalhe Nivel 1", "D2 - Detalhe Nivel 2", "D3 - Detalhe Nivel 3", "D4 - Detalhe Nivel 4", "D5 - Detalhe Nivel 5", "T   - Treller" }));
         cmbTipoRegistro.setToolTipText("H - Header\\nD - Detalhe\\nT - Treller");
         cmbTipoRegistro.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -344,7 +345,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             }
         });
 
-        btnGravar.setText("Gravar");
+        btnGravar.setText("Adicionar");
         btnGravar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGravarActionPerformed(evt);
@@ -360,10 +361,12 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
 
         jLabel11.setText("Tipo Doc:");
 
+        edtTipoDoc.setEditable(false);
         edtTipoDoc.setToolTipText("BOL - Boleto\\nAPAC - Apac Sus");
 
-        jLabel12.setText("Codigo Documento Referenciado:");
+        jLabel12.setText("Cod. Documento:");
 
+        edtIdDocumento.setEditable(false);
         edtIdDocumento.setToolTipText("Codigo do documento originador exemplo boleto banco brasil como o id do boleto");
 
         btnSqlEdit.setText("SQL Editor");
@@ -384,56 +387,38 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(edtSequencia, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(jPanel1Layout.createSequentialGroup()
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .add(edtSequencia, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(jLabel3)
+                                .add(18, 18, 18)
+                                .add(jLabel4)
+                                .add(18, 18, 18)
+                                .add(jLabel5)
+                                .add(18, 18, 18)
+                                .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 146, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(jLabel8)
+                                .add(227, 227, 227))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(edtPosInicial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(edtPosFinal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(jPanel1Layout.createSequentialGroup()
-                                        .add(jLabel3)
-                                        .add(18, 18, 18)
-                                        .add(jLabel4)
-                                        .add(18, 18, 18)
-                                        .add(jLabel5)
-                                        .add(18, 18, 18)
-                                        .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 146, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(18, 18, 18)
-                                        .add(jLabel8)
-                                        .add(227, 227, 227))
-                                    .add(jPanel1Layout.createSequentialGroup()
-                                        .add(edtPosInicial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(18, 18, 18)
-                                        .add(edtPosFinal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                        .add(edtTamanho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                        .add(cmbTipoDado, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 147, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(18, 18, 18)
-                                        .add(edtValorDefault)
-                                        .add(15, 15, 15))))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jLabel1)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(cmbTipoRegistro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 213, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                                .add(edtTamanho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(cmbTipoDado, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 147, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(edtValorDefault)
+                                .add(15, 15, 15))))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jLabel10)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(edtId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 109, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(jLabel11)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(jLabel12)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(edtIdDocumento))
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .add(btnSqlEdit)
-                                .add(18, 18, 18)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(lblTamanhoTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(btnNovo)
@@ -449,25 +434,43 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                 .add(jLabel9)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(edtMascara, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 239, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .add(15, 15, 15))))
+                                .add(edtMascara, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 239, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabel10)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(edtId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jLabel1)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(cmbTipoRegistro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 213, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(0, 0, Short.MAX_VALUE)))
+                        .add(15, 15, 15))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jLabel12)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(edtIdDocumento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel11)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 190, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                    .add(jLabel12)
+                    .add(edtIdDocumento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel11)
+                    .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                     .add(edtId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel10)
-                    .add(jLabel11)
-                    .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel12)
-                    .add(edtIdDocumento, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(cmbTipoRegistro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(5, 5, 5)
+                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jLabel1)
+                        .add(cmbTipoRegistro, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(12, 12, 12)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
                     .add(jLabel3)
@@ -491,7 +494,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
                     .add(edtMascara, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 84, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                         .add(btnGravar)
@@ -528,7 +531,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -587,8 +590,15 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
             edtComentario.setText(tableLayout.getConteudoRowSelected("comentario").toString());
             edtMascara.setText(tableLayout.getConteudoRowSelected("mascara").toString());
             edtValorDefault.setText(tableLayout.getConteudoRowSelected("valor_default").toString());
-            Formato.comboBoxSelectedValue(cmbTipoDado, tableLayout.getConteudoRowSelected("tipoDado").toString());
-            Formato.comboBoxSelectedValue(cmbTipoRegistro, tableLayout.getConteudoRowSelected("tipoRegistro").toString());
+
+            if (!cmbTipoDado.getSelectedItem().toString().trim().equalsIgnoreCase(tableLayout.getConteudoRowSelected("tipoDado").toString())) {
+                Formato.comboBoxSelectedValue(cmbTipoDado, tableLayout.getConteudoRowSelected("tipoDado").toString());
+            }
+
+            if (!cmbTipoRegistro.getSelectedItem().toString().substring(0, 2).trim().equalsIgnoreCase(tableLayout.getConteudoRowSelected("tipoRegistro").toString())) {
+                Formato.comboBoxSelectedValue(cmbTipoRegistro, tableLayout.getConteudoRowSelected("tipoRegistro").toString());
+            }
+            btnGravar.setText("Gravar");
 
         } catch (Exception ex) {
             trataErro.trataException(ex, "tableLayoutMouseClicked");
@@ -604,6 +614,7 @@ public class LayoutRemessaDialog extends javax.swing.JDialog {
     private void cmbTipoRegistroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoRegistroItemStateChanged
         // TODO add your handling code here:
         exibeLayout();
+        limpaTela();
     }//GEN-LAST:event_cmbTipoRegistroItemStateChanged
 
     private void edtSequenciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_edtSequenciaFocusGained

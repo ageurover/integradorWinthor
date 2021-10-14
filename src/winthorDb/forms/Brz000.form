@@ -204,12 +204,20 @@
                 <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoes">
+                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesConEmb31">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o - 3 Cora&#xe7;&#xf5;es"/>
+                    <Property name="text" type="java.lang.String" value="3 Cora&#xe7;&#xf5;es CONEMB  3.1"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesConEmb31ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesDocCob30a">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="3 Cora&#xe7;&#xf5;es DOCCOB 3.0A"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesDocCob30aActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>

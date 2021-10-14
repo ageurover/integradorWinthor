@@ -32,7 +32,7 @@ public class LayoutDoc implements Serializable {
     // Codigo do documento originador exemplo boleto banco brasil como o id do boleto
     @Column(name = "idDoc", length = 11)
     private Integer idDoc;
-    //-'H - Header\nD - Detalhe\nDo - Detalhe opcional \nT - Treller'
+    //-'H - Header\nD - Detalhe\nD1 - Detalhe opcional \nT - Treller'
     @Column(name = "tipoRegistro", length = 5)
     private String tipoRegistro;
     // Sequencia de execucao da geracao do layout

@@ -67,7 +67,8 @@ public class Brz000 extends javax.swing.JFrame {
         mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
         mnuExportacao = new javax.swing.JMenu();
-        mnuExport_3coracoes = new javax.swing.JMenuItem();
+        mnuExport_3coracoesConEmb31 = new javax.swing.JMenuItem();
+        mnuExport_3coracoesDocCob30a = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -245,13 +246,21 @@ public class Brz000 extends javax.swing.JFrame {
 
         mnuExportacao.setText("Exportação");
 
-        mnuExport_3coracoes.setText("Exportação - 3 Corações");
-        mnuExport_3coracoes.addActionListener(new java.awt.event.ActionListener() {
+        mnuExport_3coracoesConEmb31.setText("3 Corações CONEMB  3.1");
+        mnuExport_3coracoesConEmb31.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuExport_3coracoesActionPerformed(evt);
+                mnuExport_3coracoesConEmb31ActionPerformed(evt);
             }
         });
-        mnuExportacao.add(mnuExport_3coracoes);
+        mnuExportacao.add(mnuExport_3coracoesConEmb31);
+
+        mnuExport_3coracoesDocCob30a.setText("3 Corações DOCCOB 3.0A");
+        mnuExport_3coracoesDocCob30a.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExport_3coracoesDocCob30aActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuExport_3coracoesDocCob30a);
 
         jMenuRotinas.add(mnuExportacao);
 
@@ -373,10 +382,14 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuAtualizaBarrasPedidoActionPerformed
 
-    private void mnuExport_3coracoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExport_3coracoesActionPerformed
+    private void mnuExport_3coracoesConEmb31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExport_3coracoesConEmb31ActionPerformed
         // TODO add your handling code here:
-        winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(9001, "3COR", "0");
-    }//GEN-LAST:event_mnuExport_3coracoesActionPerformed
+        winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(9001, "3COR_CONEMB_31", "0");
+    }//GEN-LAST:event_mnuExport_3coracoesConEmb31ActionPerformed
+
+    private void mnuExport_3coracoesDocCob30aActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExport_3coracoesDocCob30aActionPerformed
+        winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(9001, "3COR_DOCCOB_30A", "0");
+    }//GEN-LAST:event_mnuExport_3coracoesDocCob30aActionPerformed
 
     /**
      * @param args the command line arguments
@@ -433,7 +446,8 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuConsultaOs;
     private javax.swing.JMenuItem mnuConversaoEmbalagem;
     private javax.swing.JMenu mnuEstoque;
-    private javax.swing.JMenuItem mnuExport_3coracoes;
+    private javax.swing.JMenuItem mnuExport_3coracoesConEmb31;
+    private javax.swing.JMenuItem mnuExport_3coracoesDocCob30a;
     private javax.swing.JMenuItem mnuExportaProtesto;
     private javax.swing.JMenu mnuExportacao;
     private javax.swing.JMenuItem mnuFilialFaturaCarga;

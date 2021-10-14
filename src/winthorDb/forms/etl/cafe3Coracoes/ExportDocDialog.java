@@ -12,13 +12,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
 import winthorDb.forms.export.LayoutRemessaDialog;
-import winthorDb.oracleDb.IntegracaoWinthorDb;
 import winthorDb.util.Formato;
 
 /**
@@ -28,8 +26,12 @@ import winthorDb.util.Formato;
 public class ExportDocDialog extends javax.swing.JDialog {
 
     int vContaRegistroD = 0;
-    int vContaRegistroF = 0;
-    int vContaRegistroN = 0;
+    int vContaRegistroD1 = 0;
+    int vContaRegistroD2 = 0;
+    int vContaRegistroD3 = 0;
+    int vContaRegistroD4 = 0;
+    int vContaRegistroD5 = 0;
+
     int vContaRegistroH = 0;
     int vContaRegistroT = 0;
     int vContaRegistroG = 0;
@@ -63,95 +65,149 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }
 
     private void exibeSqlComando() {
-        String sqlHeader = "";
-        String sqlDetalhe = "";
-        String sqlDetalheFilho = "";
-        String sqlDetalheNeto = "";
-        String sqlTreller = "";
-        String sqlComando = "";
-        try {
-            tblDetalhe.clearTableData();
-            tblDetalhe.clearTableData();
-            tblTreller.clearTableData();
-            tblSqlConsulta.clearTableData();
+        new Thread() {//instancia nova thread já implementando o método run()
+            @Override
+            public void run() {//sobrescreve o método run()
+                String sqlHeader = "";
+                String sqlDetalhe = "";
+                String sqlDetalheN1 = "";
+                String sqlDetalheN2 = "";
+                String sqlDetalheN3 = "";
+                String sqlDetalheN4 = "";
+                String sqlDetalheN5 = "";
+                String sqlTreller = "";
+                String sqlComando = "";
+                try {
+                    tblHeader.clearTableData();
+                    tblDetalhe.clearTableData();
+                    tblDetalheN1.clearTableData();
+                    tblDetalheN2.clearTableData();
+                    tblDetalheN3.clearTableData();
+                    tblDetalheN4.clearTableData();
+                    tblDetalheN5.clearTableData();
+                    tblTreller.clearTableData();
+                    tblSqlConsulta.clearTableData();
 
-            if ((!edtCodDoc.getText().isEmpty()) && (!edtTipoDoc.getText().isEmpty())) {
-                sqlHeader = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
-                        + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
-                        + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
-                        + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
-                        + " ('' ||comentario) as comentario "
-                        + " FROM layoutDoc "
-                        + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND idDoc = " + edtCodDoc.getText()
-                        + " AND tipoRegistro = 'H'"
-                        + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
+                    if ((!edtCodDoc.getText().isEmpty()) && (!edtTipoDoc.getText().isEmpty())) {
+                        sqlHeader = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'H'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-                sqlDetalhe = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
-                        + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
-                        + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
-                        + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
-                        + " ('' ||comentario) as comentario "
-                        + " FROM layoutDoc "
-                        + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND idDoc = " + edtCodDoc.getText()
-                        + " AND tipoRegistro = 'D'"
-                        + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
+                        sqlDetalhe = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'D'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-                sqlDetalheFilho = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
-                        + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
-                        + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
-                        + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
-                        + " ('' ||comentario) as comentario "
-                        + " FROM layoutDoc "
-                        + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND idDoc = " + edtCodDoc.getText()
-                        + " AND tipoRegistro = 'F'"
-                        + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
+                        sqlDetalheN1 = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'D1'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-                sqlDetalheNeto = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
-                        + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
-                        + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
-                        + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
-                        + " ('' ||comentario) as comentario "
-                        + " FROM layoutDoc "
-                        + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND idDoc = " + edtCodDoc.getText()
-                        + " AND tipoRegistro = 'N'"
-                        + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
+                        sqlDetalheN2 = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'D2'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-                sqlTreller = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
-                        + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
-                        + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
-                        + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
-                        + " ('' ||comentario) as comentario "
-                        + " FROM layoutDoc "
-                        + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
-                        + " AND idDoc = " + edtCodDoc.getText()
-                        + " AND tipoRegistro = 'T'"
-                        + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
+                        sqlDetalheN3 = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'D3'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-                sqlComando = "SELECT "
-                        + " ('' ||id) as id, ('' ||idDoc) as idDoc, ('' ||tipoDoc) as tipoDoc, "
-                        + " ('' ||sql_Header) as sql_Header, "
-                        + " ('' ||sql_Detalhe) as sql_Detalhe, "
-                        + " ('' ||sql_DetalheFilho) as sql_DetalheFilho, "
-                        + " ('' ||sql_DetalheNeto) as sql_DetalheNeto, "
-                        + " ('' ||sql_Treller) as sql_Treller "
-                        + " FROM LayoutDocSql"
-                        + " WHERE idDoc = " + edtCodDoc.getText()
-                        + " AND tipoDoc = '" + edtTipoDoc.getText() + "' ";
+                        sqlDetalheN4 = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'D4'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-                tblHeader.setTableData(sqlHeader);
-                tblDetalhe.setTableData(sqlDetalhe);
-                tblTreller.setTableData(sqlTreller);
-                tblSqlConsulta.setTableData(sqlComando);
+                        sqlDetalheN5 = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'D5'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-            }
+                        sqlTreller = "SELECT ('' || id) as id , ('' || tipoDoc) as tipoDoc, ('' || idDoc) as idDoc, "
+                                + " ('' ||tipoRegistro) as tipoRegistro, ('' ||sequencia) as sequencia, ('' ||tipoDado) as tipoDado,  "
+                                + " ('' ||tamanho) as tamanho, ('' ||posIncial) as posInicial, ('' ||posFinal) as posFinal, ('' || sqlCampo) as sqlCampo,  "
+                                + " ('' ||valor_default) as valor_default, ('' ||mascara) as mascara,  "
+                                + " ('' ||comentario) as comentario "
+                                + " FROM layoutDoc "
+                                + " WHERE tipoDoc = '" + edtTipoDoc.getText() + "' "
+                                + " AND idDoc = " + edtCodDoc.getText()
+                                + " AND tipoRegistro = 'T'"
+                                + " ORDER BY tipoDoc, idDoc, tipoRegistro, CAST (sequencia AS INT)";
 
-        } catch (Exception ex) {
-            trataErro.trataException(ex, "exibeSqlComando");
-        }
+                        sqlComando = "SELECT "
+                                + " ('' ||id) as id, ('' ||idDoc) as idDoc, ('' ||tipoDoc) as tipoDoc, "
+                                + " ('' ||sql_Header) as sql_Header, "
+                                + " ('' ||sql_Detalhe_n0) as sql_Detalhe_n0, "
+                                + " ('' ||sql_Detalhe_n1) as sql_Detalhe_n1, "
+                                + " ('' ||sql_Detalhe_n2) as sql_Detalhe_n2, "
+                                + " ('' ||sql_Detalhe_n3) as sql_Detalhe_n3, "
+                                + " ('' ||sql_Detalhe_n4) as sql_Detalhe_n4, "
+                                + " ('' ||sql_Detalhe_n5) as sql_Detalhe_n5, "
+                                + " ('' ||sql_Treller) as sql_Treller "
+                                + " FROM LayoutDocSql"
+                                + " WHERE idDoc = " + edtCodDoc.getText()
+                                + " AND tipoDoc = '" + edtTipoDoc.getText() + "' ";
+
+                        tblHeader.setTableData(sqlHeader);
+                        tblDetalhe.setTableData(sqlDetalhe);
+                        tblDetalheN1.setTableData(sqlDetalheN1);
+                        tblDetalheN2.setTableData(sqlDetalheN2);
+                        tblDetalheN3.setTableData(sqlDetalheN3);
+                        tblDetalheN4.setTableData(sqlDetalheN4);
+                        tblDetalheN5.setTableData(sqlDetalheN5);
+                        tblTreller.setTableData(sqlTreller);
+                        tblSqlConsulta.setTableData(sqlComando);
+
+                    }
+
+                } catch (Exception ex) {
+                    trataErro.trataException(ex, "exibeSqlComando");
+                }
+            }//- Fim do Run
+        }.start();//Fim Thread
     }
 
     private void exportaDados() {
@@ -162,6 +218,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     txtExportDados.setText("");
                     vContaRegistroH = 0;
                     vContaRegistroD = 0;
+                    vContaRegistroD1 = 0;
+                    vContaRegistroD2 = 0;
+                    vContaRegistroD3 = 0;
+                    vContaRegistroD4 = 0;
+                    vContaRegistroD5 = 0;
                     vContaRegistroG = 0;
                     vContaRegistroT = 0;
 
@@ -198,14 +259,14 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     }
 
                     // executar a consulta SQL para buscar os dados
-                    String sqlDetalhe = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe").toString().replaceAll("#FILTRO_DADOS_DETALHE#", filtro_detalhe);
+                    String sqlDetalhe = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n0").toString().replaceAll("#FILTRO_DADOS_DETALHE_N0#", filtro_detalhe);
                     sqlDetalhe = sqlDetalhe.replaceAll("#NOVAS_TAGS#", fields);
 
                     if (!sqlDetalhe.isEmpty()) {
                         tblDataDetalhe.clearTableData();
                         tblDataDetalhe.setTableData(sqlDetalhe);
                         if (tblDataDetalhe.getRowCount() >= 0) {
-                            // inicia a montagem dos dados da linha de exportacao
+                            // inicia a montagem dos dados da linha de exportacao nivel 0
                             processaExport("D");
                         }
                     }
@@ -236,47 +297,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 }
             }//- Fim do Run
         }.start();//Fim Thread
-    }
-
-    private void gravaLogExport() throws Exception {
-        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
-        String sqlInsert = "";
-        String sqlUpdate = "";
-        try {
-            wint.openConectOracle();
-            for (int d = 0; d < tblDataDetalhe.getRowCount(); d++) {
-                sqlInsert = " INSERT INTO BRZ_CARTORIO ( NUMREMESSA, CODCLI, DUPLIC, PREST, DTENVIO, CODCOB, NOSSONUMBCO ) VALUES ( "
-                        + edtRemessa.getText() + " , \n"
-                        + tblDataDetalhe.getConteudoRow("codcli", d).toString() + " ,\n"
-                        + tblDataDetalhe.getConteudoRow("duplic", d).toString() + " ,\n"
-                        + "'" + tblDataDetalhe.getConteudoRow("prest", d).toString() + "' ,\n"
-                        + " SYSDATE ,\n"
-                        + "'" + tblDataDetalhe.getConteudoRow("nossonumbco", d).toString() + "' )";
-
-                wint.insertDados(sqlInsert);
-            }
-        } catch (Exception ex) {
-            trataErro.trataException(ex, "gravaLogExport");
-        } finally {
-            wint.closeConectOracle();
-        }
-    }
-
-    private void gravaUltimaRemessa() throws Exception {
-        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
-        try {
-            wint.openConectOracle();
-            if ((!edtRemessa.getText().isEmpty())) {
-//                wint.updateDados("UPDATE BRZ_CARTORIO_REMESSA SET NUMREMESSA = " + edtRemessa.getText()
-//                        + " ,DTULTREMESSA = trunc(sysdate)"
-//                        + " WHERE CODIBGE = " + edtCodIbgeCartorio.getText()
-//                        + " AND CODCONVENIO = " + edtConvenio.getText());
-            }
-        } catch (Exception ex) {
-            trataErro.trataException(ex, "gravaUltimaRemessa");
-        } finally {
-            wint.closeConectOracle();
-        }
     }
 
     private void processaExport(final String tipoReg) {
@@ -331,6 +351,21 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                         case "VCONTAREGISTROD":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
                                             break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
                                         case "VCONTAREGISTROT":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
                                             break;
@@ -361,6 +396,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         linha = "";
                     }
                     break;
+
                 case "D":
                     for (int d = 0; d < tblDataDetalhe.getRowCount(); d++) {
                         linha = "";
@@ -402,6 +438,21 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                         case "VCONTAREGISTROD":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
                                             break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
                                         case "VCONTAREGISTROT":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
                                             break;
@@ -418,7 +469,542 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
                                 MessageDialog.error("Tamanho do campo não confere com o layout "
-                                        + "\n sequencia: " + tblHeader.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n sequencia: " + tblDataDetalhe.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n tipo dado: " + tipoDado
+                                        + "\n Campo: " + vlrDefault + " | " + sqlCampo
+                                        + "\n Dado: " + campo
+                                        + "\n Tamanho: " + tamanho
+                                        + "\n calculado: " + campo.length()
+                                );
+                            }
+                            linha += campo;
+                        }
+                        txtExportDados.append(linha);
+
+                        // Exportacao do Detalhe N1 para cada linha do N0
+                        String filtro_detalhe = " AND F.codigo = '" + edtCodFilial.getText() + "' ";
+
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND P.CODCLI = " + edtCodCli.getText();
+                        }
+
+                        // executar a consulta SQL para buscar os dados
+                        String sqlDetalheBaseN1 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n1").toString();
+                        String sqlDetalheN1 = sqlDetalheBaseN1.replaceAll("#FILTRO_DADOS_DETALHE_N1#", filtro_detalhe);
+
+                        if (!sqlDetalheBaseN1.isEmpty()) {
+                            tblDataDetalheN1.clearTableData();
+                            tblDataDetalheN1.setTableData(sqlDetalheN1);
+                            if (tblDataDetalheN1.getRowCount() >= 0) {
+                                // inicia a montagem dos dados da linha de exportacao nivel 0
+                                processaExport("D1");
+                            }
+                        }
+                    }
+
+                    break;
+                case "D1":
+                    for (int d = 0; d < tblDataDetalheN1.getRowCount(); d++) {
+                        linha = "";
+                        vContaRegistroD1++;
+                        vContaRegistroG++;
+                        for (int i = 0; i < tblDetalheN1.getRowCount(); i++) {
+                            tipoDado = tblDetalheN1.getConteudoRow("tipoDado", i).toString().trim();
+                            tamanho = Formato.strToInt(tblDetalheN1.getConteudoRow("tamanho", i).toString().trim());
+                            vlrDefault = tblDetalheN1.getConteudoRow("valor_default", i).toString().trim();
+                            mascara = tblDetalheN1.getConteudoRow("mascara", i).toString().trim();
+                            sqlCampo = tblDetalheN1.getConteudoRow("sqlCampo", i).toString().trim();
+                            campo = "";
+
+                            // processa o tipo de dado solicitado
+                            switch (tipoDado.toUpperCase()) {
+                                case "ALF":
+                                    campo = Formato.strTamanhoExato(vlrDefault, tamanho);
+                                    break;
+                                case "NMR":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(vlrDefault, tamanho), tamanho);
+                                    break;
+                                case "DTA":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(Formato.dateTimeNowToStr(mascara), tamanho), tamanho);
+                                    break;
+                                case "VZA":
+                                    campo = Formato.strTamanhoExato(Formato.replicate(" ", tamanho), tamanho);
+                                    break;
+                                case "ZRO":
+                                    campo = Formato.strTamanhoExato(Formato.replicate("0", tamanho), tamanho);
+                                    break;
+                                case "NLN":
+                                    campo = "\r\n";
+                                    break;
+                                case "SQL":
+                                    campo = Formato.strTamanhoExato(tblDataDetalheN1.getConteudoRow(sqlCampo, d).toString(), tamanho);
+                                    break;
+                                case "VAR":
+                                    switch (vlrDefault.toUpperCase()) {
+                                        case "VCONTAREGISTROD":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROT":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROH":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroH, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROG":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroG, tamanho), tamanho);
+                                            break;
+                                        case "VREMESSA":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + edtRemessa.getText(), tamanho), tamanho);
+                                            break;
+                                    }
+                            }
+                            if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
+                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                        + "\n sequencia: " + tblDataDetalheN1.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n tipo dado: " + tipoDado
+                                        + "\n Campo: " + vlrDefault + " | " + sqlCampo
+                                        + "\n Dado: " + campo
+                                        + "\n Tamanho: " + tamanho
+                                        + "\n calculado: " + campo.length()
+                                );
+                            }
+                            linha += campo;
+                        }
+
+                        txtExportDados.append(linha);
+
+                        // Exportacao do Detalhe N2 para cada linha do N1
+                        String filtro_detalhe = " AND F.codigo = '" + edtCodFilial.getText() + "' ";
+
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND P.CODCLI = " + edtCodCli.getText();
+                        }
+
+                        // executar a consulta SQL para buscar os dados
+                        String sqlDetalheBaseN2 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n2").toString();
+                        String sqlDetalheN2 = sqlDetalheBaseN2.replaceAll("#FILTRO_DADOS_DETALHE_N2#", filtro_detalhe);
+
+                        if (!sqlDetalheBaseN2.isEmpty()) {
+                            tblDataDetalheN2.clearTableData();
+                            tblDataDetalheN2.setTableData(sqlDetalheN2);
+                            if (tblDataDetalheN2.getRowCount() >= 0) {
+                                // inicia a montagem dos dados da linha de exportacao nivel 0
+                                processaExport("D2");
+                            }
+                        }
+                    }
+
+                    break;
+
+                case "D2":
+                    for (int d = 0; d < tblDataDetalheN2.getRowCount(); d++) {
+                        linha = "";
+                        vContaRegistroD2++;
+                        vContaRegistroG++;
+                        for (int i = 0; i < tblDetalheN2.getRowCount(); i++) {
+                            tipoDado = tblDetalheN2.getConteudoRow("tipoDado", i).toString().trim();
+                            tamanho = Formato.strToInt(tblDetalheN2.getConteudoRow("tamanho", i).toString().trim());
+                            vlrDefault = tblDetalheN2.getConteudoRow("valor_default", i).toString().trim();
+                            mascara = tblDetalheN2.getConteudoRow("mascara", i).toString().trim();
+                            sqlCampo = tblDetalheN2.getConteudoRow("sqlCampo", i).toString().trim();
+                            campo = "";
+
+                            // processa o tipo de dado solicitado
+                            switch (tipoDado.toUpperCase()) {
+                                case "ALF":
+                                    campo = Formato.strTamanhoExato(vlrDefault, tamanho);
+                                    break;
+                                case "NMR":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(vlrDefault, tamanho), tamanho);
+                                    break;
+                                case "DTA":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(Formato.dateTimeNowToStr(mascara), tamanho), tamanho);
+                                    break;
+                                case "VZA":
+                                    campo = Formato.strTamanhoExato(Formato.replicate(" ", tamanho), tamanho);
+                                    break;
+                                case "ZRO":
+                                    campo = Formato.strTamanhoExato(Formato.replicate("0", tamanho), tamanho);
+                                    break;
+                                case "NLN":
+                                    campo = "\r\n";
+                                    break;
+                                case "SQL":
+                                    campo = Formato.strTamanhoExato(tblDataDetalheN2.getConteudoRow(sqlCampo, d).toString(), tamanho);
+                                    break;
+                                case "VAR":
+                                    switch (vlrDefault.toUpperCase()) {
+                                        case "VCONTAREGISTROD":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROT":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROH":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroH, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROG":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroG, tamanho), tamanho);
+                                            break;
+                                        case "VREMESSA":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + edtRemessa.getText(), tamanho), tamanho);
+                                            break;
+                                    }
+                            }
+                            if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
+                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                        + "\n sequencia: " + tblDataDetalheN2.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n tipo dado: " + tipoDado
+                                        + "\n Campo: " + vlrDefault + " | " + sqlCampo
+                                        + "\n Dado: " + campo
+                                        + "\n Tamanho: " + tamanho
+                                        + "\n calculado: " + campo.length()
+                                );
+                            }
+                            linha += campo;
+                        }
+                        txtExportDados.append(linha);
+
+                        // Exportacao do Detalhe N3 para cada linha do N2
+                        String filtro_detalhe = " AND F.codigo = '" + edtCodFilial.getText() + "' ";
+
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND P.CODCLI = " + edtCodCli.getText();
+                        }
+
+                        // executar a consulta SQL para buscar os dados
+                        String sqlDetalheBaseN3 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n3").toString();
+                        String sqlDetalheN3 = sqlDetalheBaseN3.replaceAll("#FILTRO_DADOS_DETALHE_N3#", filtro_detalhe);
+
+                        if (!sqlDetalheBaseN3.isEmpty()) {
+                            tblDataDetalheN3.clearTableData();
+                            tblDataDetalheN3.setTableData(sqlDetalheN3);
+                            if (tblDataDetalheN3.getRowCount() >= 0) {
+                                // inicia a montagem dos dados da linha de exportacao nivel 0
+                                processaExport("D3");
+                            }
+                        }
+                    }
+
+                    break;
+
+                case "D3":
+                    for (int d = 0; d < tblDataDetalheN3.getRowCount(); d++) {
+                        linha = "";
+                        vContaRegistroD3++;
+                        vContaRegistroG++;
+                        for (int i = 0; i < tblDetalheN3.getRowCount(); i++) {
+                            tipoDado = tblDetalheN3.getConteudoRow("tipoDado", i).toString().trim();
+                            tamanho = Formato.strToInt(tblDetalheN3.getConteudoRow("tamanho", i).toString().trim());
+                            vlrDefault = tblDetalheN3.getConteudoRow("valor_default", i).toString().trim();
+                            mascara = tblDetalheN3.getConteudoRow("mascara", i).toString().trim();
+                            sqlCampo = tblDetalheN3.getConteudoRow("sqlCampo", i).toString().trim();
+                            campo = "";
+
+                            // processa o tipo de dado solicitado
+                            switch (tipoDado.toUpperCase()) {
+                                case "ALF":
+                                    campo = Formato.strTamanhoExato(vlrDefault, tamanho);
+                                    break;
+                                case "NMR":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(vlrDefault, tamanho), tamanho);
+                                    break;
+                                case "DTA":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(Formato.dateTimeNowToStr(mascara), tamanho), tamanho);
+                                    break;
+                                case "VZA":
+                                    campo = Formato.strTamanhoExato(Formato.replicate(" ", tamanho), tamanho);
+                                    break;
+                                case "ZRO":
+                                    campo = Formato.strTamanhoExato(Formato.replicate("0", tamanho), tamanho);
+                                    break;
+                                case "NLN":
+                                    campo = "\r\n";
+                                    break;
+                                case "SQL":
+                                    campo = Formato.strTamanhoExato(tblDataDetalheN3.getConteudoRow(sqlCampo, d).toString(), tamanho);
+                                    break;
+                                case "VAR":
+                                    switch (vlrDefault.toUpperCase()) {
+                                        case "VCONTAREGISTROD":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROT":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROH":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroH, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROG":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroG, tamanho), tamanho);
+                                            break;
+                                        case "VREMESSA":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + edtRemessa.getText(), tamanho), tamanho);
+                                            break;
+                                    }
+                            }
+                            if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
+                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                        + "\n sequencia: " + tblDataDetalheN3.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n tipo dado: " + tipoDado
+                                        + "\n Campo: " + vlrDefault + " | " + sqlCampo
+                                        + "\n Dado: " + campo
+                                        + "\n Tamanho: " + tamanho
+                                        + "\n calculado: " + campo.length()
+                                );
+                            }
+                            linha += campo;
+                        }
+                        txtExportDados.append(linha);
+
+                        // Exportacao do Detalhe N4 para cada linha do N3
+                        String filtro_detalhe = " AND F.codigo = '" + edtCodFilial.getText() + "' ";
+
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND P.CODCLI = " + edtCodCli.getText();
+                        }
+
+                        // executar a consulta SQL para buscar os dados
+                        String sqlDetalheBaseN4 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n4").toString();
+                        String sqlDetalheN4 = sqlDetalheBaseN4.replaceAll("#FILTRO_DADOS_DETALHE_N4#", filtro_detalhe);
+
+                        if (!sqlDetalheBaseN4.isEmpty()) {
+                            tblDataDetalheN4.clearTableData();
+                            tblDataDetalheN4.setTableData(sqlDetalheN4);
+                            if (tblDataDetalheN4.getRowCount() >= 0) {
+                                // inicia a montagem dos dados da linha de exportacao nivel 0
+                                processaExport("D4");
+                            }
+                        }
+                    }
+
+                    break;
+
+                case "D4":
+                    for (int d = 0; d < tblDataDetalheN4.getRowCount(); d++) {
+                        linha = "";
+                        vContaRegistroD4++;
+                        vContaRegistroG++;
+                        for (int i = 0; i < tblDetalheN4.getRowCount(); i++) {
+                            tipoDado = tblDetalheN4.getConteudoRow("tipoDado", i).toString().trim();
+                            tamanho = Formato.strToInt(tblDetalheN4.getConteudoRow("tamanho", i).toString().trim());
+                            vlrDefault = tblDetalheN4.getConteudoRow("valor_default", i).toString().trim();
+                            mascara = tblDetalheN4.getConteudoRow("mascara", i).toString().trim();
+                            sqlCampo = tblDetalheN4.getConteudoRow("sqlCampo", i).toString().trim();
+                            campo = "";
+
+                            // processa o tipo de dado solicitado
+                            switch (tipoDado.toUpperCase()) {
+                                case "ALF":
+                                    campo = Formato.strTamanhoExato(vlrDefault, tamanho);
+                                    break;
+                                case "NMR":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(vlrDefault, tamanho), tamanho);
+                                    break;
+                                case "DTA":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(Formato.dateTimeNowToStr(mascara), tamanho), tamanho);
+                                    break;
+                                case "VZA":
+                                    campo = Formato.strTamanhoExato(Formato.replicate(" ", tamanho), tamanho);
+                                    break;
+                                case "ZRO":
+                                    campo = Formato.strTamanhoExato(Formato.replicate("0", tamanho), tamanho);
+                                    break;
+                                case "NLN":
+                                    campo = "\r\n";
+                                    break;
+                                case "SQL":
+                                    campo = Formato.strTamanhoExato(tblDataDetalheN4.getConteudoRow(sqlCampo, d).toString(), tamanho);
+                                    break;
+                                case "VAR":
+                                    switch (vlrDefault.toUpperCase()) {
+                                        case "VCONTAREGISTROD":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROT":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROH":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroH, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROG":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroG, tamanho), tamanho);
+                                            break;
+                                        case "VREMESSA":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + edtRemessa.getText(), tamanho), tamanho);
+                                            break;
+                                    }
+                            }
+                            if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
+                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                        + "\n sequencia: " + tblDataDetalheN4.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n tipo dado: " + tipoDado
+                                        + "\n Campo: " + vlrDefault + " | " + sqlCampo
+                                        + "\n Dado: " + campo
+                                        + "\n Tamanho: " + tamanho
+                                        + "\n calculado: " + campo.length()
+                                );
+                            }
+                            linha += campo;
+                        }
+                        txtExportDados.append(linha);
+
+                        // Exportacao do Detalhe N5 para cada linha do N4
+                        String filtro_detalhe = " AND F.codigo = '" + edtCodFilial.getText() + "' ";
+
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND P.CODCLI = " + edtCodCli.getText();
+                        }
+
+                        // executar a consulta SQL para buscar os dados
+                        String sqlDetalheBaseN5 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n5").toString();
+                        String sqlDetalheN5 = sqlDetalheBaseN5.replaceAll("#FILTRO_DADOS_DETALHE_N5#", filtro_detalhe);
+
+                        if (!sqlDetalheBaseN5.isEmpty()) {
+                            tblDataDetalheN5.clearTableData();
+                            tblDataDetalheN5.setTableData(sqlDetalheN5);
+                            if (tblDataDetalheN5.getRowCount() >= 0) {
+                                // inicia a montagem dos dados da linha de exportacao nivel 0
+                                processaExport("D5");
+                            }
+                        }
+                    }
+
+                    break;
+
+                case "D5":
+                    for (int d = 0; d < tblDataDetalheN5.getRowCount(); d++) {
+                        linha = "";
+                        vContaRegistroD5++;
+                        vContaRegistroG++;
+                        for (int i = 0; i < tblDetalheN5.getRowCount(); i++) {
+                            tipoDado = tblDetalheN5.getConteudoRow("tipoDado", i).toString().trim();
+                            tamanho = Formato.strToInt(tblDetalheN5.getConteudoRow("tamanho", i).toString().trim());
+                            vlrDefault = tblDetalheN5.getConteudoRow("valor_default", i).toString().trim();
+                            mascara = tblDetalheN5.getConteudoRow("mascara", i).toString().trim();
+                            sqlCampo = tblDetalheN5.getConteudoRow("sqlCampo", i).toString().trim();
+                            campo = "";
+
+                            // processa o tipo de dado solicitado
+                            switch (tipoDado.toUpperCase()) {
+                                case "ALF":
+                                    campo = Formato.strTamanhoExato(vlrDefault, tamanho);
+                                    break;
+                                case "NMR":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(vlrDefault, tamanho), tamanho);
+                                    break;
+                                case "DTA":
+                                    campo = Formato.strTamanhoExato(Formato.zerosEsquerda(Formato.dateTimeNowToStr(mascara), tamanho), tamanho);
+                                    break;
+                                case "VZA":
+                                    campo = Formato.strTamanhoExato(Formato.replicate(" ", tamanho), tamanho);
+                                    break;
+                                case "ZRO":
+                                    campo = Formato.strTamanhoExato(Formato.replicate("0", tamanho), tamanho);
+                                    break;
+                                case "NLN":
+                                    campo = "\r\n";
+                                    break;
+                                case "SQL":
+                                    campo = Formato.strTamanhoExato(tblDataDetalheN5.getConteudoRow(sqlCampo, d).toString(), tamanho);
+                                    break;
+                                case "VAR":
+                                    switch (vlrDefault.toUpperCase()) {
+                                        case "VCONTAREGISTROD":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROT":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROH":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroH, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROG":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroG, tamanho), tamanho);
+                                            break;
+                                        case "VREMESSA":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + edtRemessa.getText(), tamanho), tamanho);
+                                            break;
+                                    }
+                            }
+                            if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
+                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                        + "\n sequencia: " + tblDataDetalheN5.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
                                         + "\n Dado: " + campo
@@ -473,6 +1059,21 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                         case "VCONTAREGISTROD":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD, tamanho), tamanho);
                                             break;
+                                        case "VCONTAREGISTROD1":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD1, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD2":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD2, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD3":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD3, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD4":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD4, tamanho), tamanho);
+                                            break;
+                                        case "VCONTAREGISTROD5":
+                                            campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroD5, tamanho), tamanho);
+                                            break;
                                         case "VCONTAREGISTROT":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + vContaRegistroT, tamanho), tamanho);
                                             break;
@@ -489,7 +1090,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
                                 MessageDialog.error("Tamanho do campo não confere com o layout "
-                                        + "\n sequencia: " + tblHeader.getConteudoRow("sequencia", i).toString().trim()
+                                        + "\n sequencia: " + tblTreller.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
                                         + "\n Dado: " + campo
@@ -603,41 +1204,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
     }
 
-    private String proximaRemssa(String cidadeIbge, String codConvenio) throws Exception {
-        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
-        String ret = "1";
-        try {
-            String strSelect = "SELECT MAX(NUMREMESSA) +1 REMESSA "
-                    + "  FROM BRZ_CARTORIO_REMESSA \n"
-                    + "   WHERE CODIBGE = " + cidadeIbge
-                    + "   AND CODCONVENIO = " + codConvenio;
-
-            wint.openConectOracle();
-            List lst = wint.selectDados(strSelect);
-
-            // se nao existir o codibge para o convenio informado deve ser criado o registro na tabela
-            if (lst != null) {
-                if (!lst.isEmpty()) {
-                    if (lst.get(0).toString().equalsIgnoreCase("[null]")) {
-                        wint.insertDados("INSERT INTO BRZ_CARTORIO_REMESSA ( CODIBGE,CODCONVENIO,NUMREMESSA,DTULTREMESSA) "
-                                + " VALUES ( " + cidadeIbge + " , " + codConvenio + " , 1 , trunc(sysdate) ) ");
-                    } else {
-                        ret = lst.get(0).toString();
-                    }
-                }
-            } else {
-                wint.insertDados("INSERT INTO BRZ_CARTORIO_REMESSA ( CODIBGE,CODCONVENIO,NUMREMESSA,DTULTREMESSA) "
-                        + " VALUES ( " + cidadeIbge + " , " + codConvenio + " , 1 , trunc(sysdate) ) ");
-            }
-            return ret;
-        } catch (Exception ex) {
-            trataErro.trataException(ex, "proximaRemssa");
-            throw ex;
-        } finally {
-            wint.closeConectOracle();
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -661,15 +1227,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         edtCodCli = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         edtRemessa = new javax.swing.JTextField();
-        btnBuscarRemessa = new javax.swing.JButton();
-        cmbLayout = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnLayout = new javax.swing.JButton();
         edtValidar = new javax.swing.JButton();
-        btnRemessaGerada = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -682,9 +1244,15 @@ public class ExportDocDialog extends javax.swing.JDialog {
         jScrollPane8 = new javax.swing.JScrollPane();
         tblDataDetalhe = new winthorDb.util.CustomTable();
         jScrollPane10 = new javax.swing.JScrollPane();
-        tblDataDetalheFilho = new winthorDb.util.CustomTable();
+        tblDataDetalheN1 = new winthorDb.util.CustomTable();
         jScrollPane11 = new javax.swing.JScrollPane();
-        tblDataDetalheNeto = new winthorDb.util.CustomTable();
+        tblDataDetalheN2 = new winthorDb.util.CustomTable();
+        jScrollPane15 = new javax.swing.JScrollPane();
+        tblDataDetalheN3 = new winthorDb.util.CustomTable();
+        jScrollPane16 = new javax.swing.JScrollPane();
+        tblDataDetalheN4 = new winthorDb.util.CustomTable();
+        jScrollPane17 = new javax.swing.JScrollPane();
+        tblDataDetalheN5 = new winthorDb.util.CustomTable();
         jScrollPane9 = new javax.swing.JScrollPane();
         tblDataTreller = new winthorDb.util.CustomTable();
         jPanel6 = new javax.swing.JPanel();
@@ -697,9 +1265,18 @@ public class ExportDocDialog extends javax.swing.JDialog {
         jScrollPane6 = new javax.swing.JScrollPane();
         tblTreller = new winthorDb.util.CustomTable();
         jScrollPane12 = new javax.swing.JScrollPane();
-        tblDetalheFilho = new winthorDb.util.CustomTable();
+        tblDetalheN1 = new winthorDb.util.CustomTable();
         jScrollPane13 = new javax.swing.JScrollPane();
-        tblDetalheNeto = new winthorDb.util.CustomTable();
+        tblDetalheN2 = new winthorDb.util.CustomTable();
+        jScrollPane18 = new javax.swing.JScrollPane();
+        tblDetalheN3 = new winthorDb.util.CustomTable();
+        jScrollPane19 = new javax.swing.JScrollPane();
+        tblDetalheN4 = new winthorDb.util.CustomTable();
+        jScrollPane20 = new javax.swing.JScrollPane();
+        tblDetalheN5 = new winthorDb.util.CustomTable();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         mnuRemessaNova.setText("Listar Remessa");
         mnuRemessaNova.setComponentPopupMenu(pMenuRemessa);
@@ -734,7 +1311,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("Tipo Doc.");
+        jLabel2.setText("Tipo Documento");
 
         jLabel5.setText("Cod. Filial");
 
@@ -752,19 +1329,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         jLabel7.setText("Remessa");
 
-        btnBuscarRemessa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/icons/filter.png"))); // NOI18N
-        btnBuscarRemessa.setToolTipText("Filtrar os dados");
-        btnBuscarRemessa.setComponentPopupMenu(pMenuRemessa);
-        btnBuscarRemessa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarRemessaActionPerformed(evt);
-            }
-        });
-
-        cmbLayout.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CONEMB 3.1", "DOCCOB 3.0" }));
-
-        jLabel3.setText("Layout");
-
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -774,9 +1338,13 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     .add(edtCodDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel1))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 61, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -785,52 +1353,36 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(edtCodCli)
                     .add(jLabel6))
-                .add(18, 18, 18)
-                .add(btnBuscarRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(cmbLayout, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 112, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel3))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 101, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
                 .add(btnProcessar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(jPanel1Layout.createSequentialGroup()
-                            .add(jLabel2)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(edtTipoDoc))
-                        .add(jPanel1Layout.createSequentialGroup()
-                            .add(jLabel1)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(edtCodDoc)))
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(jPanel1Layout.createSequentialGroup()
-                            .add(jLabel6)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(edtCodCli, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
-                        .add(jPanel1Layout.createSequentialGroup()
-                            .add(jLabel5)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(btnBuscarRemessa))
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                            .add(jLabel1)
+                            .add(jLabel2))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                            .add(edtCodDoc)
+                            .add(edtTipoDoc)))
+                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                        .add(jPanel1Layout.createSequentialGroup()
                             .add(jLabel7)
-                            .add(jLabel3))
-                        .add(3, 3, 3)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(cmbLayout, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(btnProcessar))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(btnProcessar)
+                        .add(jPanel1Layout.createSequentialGroup()
+                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel6)
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel5))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                                .add(edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(edtCodCli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE)))))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(new java.awt.Component[] {edtCodCli, edtCodDoc, edtCodFilial, edtTipoDoc}, org.jdesktop.layout.GroupLayout.VERTICAL);
@@ -863,13 +1415,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
             }
         });
 
-        btnRemessaGerada.setText("Geradas");
-        btnRemessaGerada.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemessaGeradaActionPerformed(evt);
-            }
-        });
-
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -879,8 +1424,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 .add(btnLayout)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(edtValidar)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(btnRemessaGerada)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(btnSalvar)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -892,8 +1435,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 .add(btnCancelar)
                 .add(btnSalvar)
                 .add(btnLayout)
-                .add(edtValidar)
-                .add(btnRemessaGerada))
+                .add(edtValidar))
         );
 
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 400));
@@ -918,7 +1460,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -938,19 +1480,40 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         jTabbedPane3.addTab("Detalhe", jScrollPane8);
 
-        tblDataDetalheFilho.setToolTipText("");
-        tblDataDetalheFilho.setCellSelectionEnabled(true);
-        tblDataDetalheFilho.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jScrollPane10.setViewportView(tblDataDetalheFilho);
+        tblDataDetalheN1.setToolTipText("");
+        tblDataDetalheN1.setCellSelectionEnabled(true);
+        tblDataDetalheN1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane10.setViewportView(tblDataDetalheN1);
 
-        jTabbedPane3.addTab("Detalhe Filho", jScrollPane10);
+        jTabbedPane3.addTab("Detalhe Nivel 1", jScrollPane10);
 
-        tblDataDetalheNeto.setToolTipText("");
-        tblDataDetalheNeto.setCellSelectionEnabled(true);
-        tblDataDetalheNeto.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jScrollPane11.setViewportView(tblDataDetalheNeto);
+        tblDataDetalheN2.setToolTipText("");
+        tblDataDetalheN2.setCellSelectionEnabled(true);
+        tblDataDetalheN2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane11.setViewportView(tblDataDetalheN2);
 
-        jTabbedPane3.addTab("Detalhe Neto", jScrollPane11);
+        jTabbedPane3.addTab("Detalhe Nivel 2", jScrollPane11);
+
+        tblDataDetalheN3.setToolTipText("");
+        tblDataDetalheN3.setCellSelectionEnabled(true);
+        tblDataDetalheN3.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane15.setViewportView(tblDataDetalheN3);
+
+        jTabbedPane3.addTab("Detalhe Nivel 3", jScrollPane15);
+
+        tblDataDetalheN4.setToolTipText("");
+        tblDataDetalheN4.setCellSelectionEnabled(true);
+        tblDataDetalheN4.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane16.setViewportView(tblDataDetalheN4);
+
+        jTabbedPane3.addTab("Detalhe Nivel 4", jScrollPane16);
+
+        tblDataDetalheN5.setToolTipText("");
+        tblDataDetalheN5.setCellSelectionEnabled(true);
+        tblDataDetalheN5.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane17.setViewportView(tblDataDetalheN5);
+
+        jTabbedPane3.addTab("Detalhe Nivel 5", jScrollPane17);
 
         jTabbedPane2.addTab("Detalhe", jTabbedPane3);
 
@@ -973,7 +1536,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -999,15 +1562,30 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblTreller.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jScrollPane6.setViewportView(tblTreller);
 
-        tblDetalheFilho.setToolTipText("");
-        tblDetalheFilho.setCellSelectionEnabled(true);
-        tblDetalheFilho.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jScrollPane12.setViewportView(tblDetalheFilho);
+        tblDetalheN1.setToolTipText("");
+        tblDetalheN1.setCellSelectionEnabled(true);
+        tblDetalheN1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane12.setViewportView(tblDetalheN1);
 
-        tblDetalheNeto.setToolTipText("");
-        tblDetalheNeto.setCellSelectionEnabled(true);
-        tblDetalheNeto.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        jScrollPane13.setViewportView(tblDetalheNeto);
+        tblDetalheN2.setToolTipText("");
+        tblDetalheN2.setCellSelectionEnabled(true);
+        tblDetalheN2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane13.setViewportView(tblDetalheN2);
+
+        tblDetalheN3.setToolTipText("");
+        tblDetalheN3.setCellSelectionEnabled(true);
+        tblDetalheN3.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane18.setViewportView(tblDetalheN3);
+
+        tblDetalheN4.setToolTipText("");
+        tblDetalheN4.setCellSelectionEnabled(true);
+        tblDetalheN4.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane19.setViewportView(tblDetalheN4);
+
+        tblDetalheN5.setToolTipText("");
+        tblDetalheN5.setCellSelectionEnabled(true);
+        tblDetalheN5.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        jScrollPane20.setViewportView(tblDetalheN5);
 
         org.jdesktop.layout.GroupLayout jPanel6Layout = new org.jdesktop.layout.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1016,15 +1594,24 @@ public class ExportDocDialog extends javax.swing.JDialog {
             .add(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
-                    .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
-                    .add(jScrollPane5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
-                    .add(jPanel6Layout.createSequentialGroup()
-                        .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 269, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 269, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane4)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(jScrollPane6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .add(jScrollPane5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 420, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel6Layout.createSequentialGroup()
+                        .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(jScrollPane12, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                            .add(jScrollPane19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .add(jScrollPane20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -1037,25 +1624,52 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jScrollPane6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jScrollPane5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                    .add(jScrollPane5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Layouts", jPanel6);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Variaveis Filtros de dados para os comandos SQL:\n\n#FILTRO_DADOS_HEADER# - usar no select para filtar os dados\n#FILTRO_DADOS_DETALHE_N0# - usar no select para filtrar os dados detalhes principal\n#FILTRO_DADOS_DETALHE_N1# - Usar no select n1 para cada principal vai filtrar o N1\n#FILTRO_DADOS_DETALHE_N2# - Usar no select n2 para cada N1 vai filtrar o N2\n#FILTRO_DADOS_DETALHE_N3# - Usar no select n3 para cada N2 vai filtrar o N3\n#FILTRO_DADOS_DETALHE_N4# - Usar no select n4 para cada N3 vai filtrar o N4\n#FILTRO_DADOS_DETALHE_N5# - Usar no select n5 para cada N4 vai filtrar o N5\n\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\nTotalizadores:\n");
+        jScrollPane14.setViewportView(jTextArea1);
+
+        org.jdesktop.layout.GroupLayout jPanel5Layout = new org.jdesktop.layout.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Ajuda", jPanel5);
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+            .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1063,10 +1677,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -1096,10 +1709,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
                     bufferOut.write(fdata);
                 }
-                // grava o log no banco de dados
-                gravaLogExport();
-                gravaUltimaRemessa();
-                MessageDialog.info("Log Salvo em :\n" + val);
                 MessageDialog.saveSucess();
                 jfc = null;
             }
@@ -1129,11 +1738,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnProcessarActionPerformed
 
     private void btnLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLayoutActionPerformed
-        if (cmbLayout.getSelectedIndex() == 0) {
-            LayoutRemessaDialog.open(9001, "3COR");
-        } else {
-            LayoutRemessaDialog.open(9001, "3COR1");
-        }
+        LayoutRemessaDialog.open(9001, edtTipoDoc.getText());
         exibeSqlComando();
     }//GEN-LAST:event_btnLayoutActionPerformed
 
@@ -1149,18 +1754,27 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
                         while (br.ready()) {
                             String linha = br.readLine();
-                            MessageDialog.info(linha.substring(0, 1));
-                            if (linha.substring(0, 1).equalsIgnoreCase("0")) {
+                            MessageDialog.info(linha.substring(0, 3));
+                            if (linha.substring(0, 1).equalsIgnoreCase("000")) {
                                 processaValidarExport("H", linha);
                             }
-                            if (linha.substring(0, 1).equalsIgnoreCase("1")) {
+                            if (linha.substring(0, 3).equalsIgnoreCase("1")) {
                                 processaValidarExport("D", linha);
                             }
-                            if (linha.substring(0, 1).equalsIgnoreCase("1")) {
-                                processaValidarExport("F", linha);
+                            if (linha.substring(0, 3).equalsIgnoreCase("1")) {
+                                processaValidarExport("D1", linha);
                             }
-                            if (linha.substring(0, 1).equalsIgnoreCase("1")) {
-                                processaValidarExport("N", linha);
+                            if (linha.substring(0, 3).equalsIgnoreCase("1")) {
+                                processaValidarExport("D2", linha);
+                            }
+                            if (linha.substring(0, 3).equalsIgnoreCase("1")) {
+                                processaValidarExport("D3", linha);
+                            }
+                            if (linha.substring(0, 3).equalsIgnoreCase("1")) {
+                                processaValidarExport("D4", linha);
+                            }
+                            if (linha.substring(0, 3).equalsIgnoreCase("1")) {
+                                processaValidarExport("D5", linha);
                             }
                             if (linha.substring(0, 1).equalsIgnoreCase("9")) {
                                 processaValidarExport("T", linha);
@@ -1174,17 +1788,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_edtValidarActionPerformed
-
-    private void btnRemessaGeradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemessaGeradaActionPerformed
-        // TODO add your handling code here:
-        ConsultaRemessaGerada.open();
-    }//GEN-LAST:event_btnRemessaGeradaActionPerformed
-
-    private void btnBuscarRemessaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarRemessaActionPerformed
-        // TODO add your handling code here:
-
-
-    }//GEN-LAST:event_btnBuscarRemessaActionPerformed
 
     private void mnuRemessaBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRemessaBuscarActionPerformed
         // TODO add your handling code here:
@@ -1204,13 +1807,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscarRemessa;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnLayout;
     private javax.swing.JButton btnProcessar;
-    private javax.swing.JButton btnRemessaGerada;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<String> cmbLayout;
     private javax.swing.JTextField edtCodCli;
     private javax.swing.JTextField edtCodDoc;
     private javax.swing.JTextField edtCodFilial;
@@ -1219,7 +1819,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JButton edtValidar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1227,12 +1826,20 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane15;
+    private javax.swing.JScrollPane jScrollPane16;
+    private javax.swing.JScrollPane jScrollPane17;
+    private javax.swing.JScrollPane jScrollPane18;
+    private javax.swing.JScrollPane jScrollPane19;
+    private javax.swing.JScrollPane jScrollPane20;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -1243,17 +1850,24 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JMenuItem mnuRemessaBuscar;
     private javax.swing.JMenuItem mnuRemessaNova;
     private javax.swing.JPopupMenu pMenuRemessa;
     private winthorDb.util.CustomTable tblDataDetalhe;
-    private winthorDb.util.CustomTable tblDataDetalheFilho;
-    private winthorDb.util.CustomTable tblDataDetalheNeto;
+    private winthorDb.util.CustomTable tblDataDetalheN1;
+    private winthorDb.util.CustomTable tblDataDetalheN2;
+    private winthorDb.util.CustomTable tblDataDetalheN3;
+    private winthorDb.util.CustomTable tblDataDetalheN4;
+    private winthorDb.util.CustomTable tblDataDetalheN5;
     private winthorDb.util.CustomTable tblDataHeader;
     private winthorDb.util.CustomTable tblDataTreller;
     private winthorDb.util.CustomTable tblDetalhe;
-    private winthorDb.util.CustomTable tblDetalheFilho;
-    private winthorDb.util.CustomTable tblDetalheNeto;
+    private winthorDb.util.CustomTable tblDetalheN1;
+    private winthorDb.util.CustomTable tblDetalheN2;
+    private winthorDb.util.CustomTable tblDetalheN3;
+    private winthorDb.util.CustomTable tblDetalheN4;
+    private winthorDb.util.CustomTable tblDetalheN5;
     private winthorDb.util.CustomTable tblHeader;
     private winthorDb.util.CustomTable tblSqlConsulta;
     private winthorDb.util.CustomTable tblTreller;
