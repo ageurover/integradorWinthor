@@ -523,7 +523,11 @@ public class Formato {
                     break;
 
                 default:
-                    retorno = currencyFormat.format(ndouble);
+                    if (casas > 6) {
+                        retorno = seisFormat.format(ndouble);
+                    } else {
+                        retorno = currencyFormat.format(ndouble);
+                    }
                     break;
             }
             return retorno;
@@ -568,7 +572,11 @@ public class Formato {
                     break;
 
                 default:
-                    retorno = currencyFormat.format(bdecimal.doubleValue());
+                    if (casas > 6) {
+                        retorno = seisFormat.format(bdecimal.doubleValue());
+                    } else {
+                        retorno = currencyFormat.format(bdecimal.doubleValue());
+                    }
                     break;
             }
 

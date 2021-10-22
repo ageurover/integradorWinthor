@@ -13,7 +13,10 @@ import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -246,7 +249,7 @@ public class CustomTable extends javax.swing.JTable {
     }
 
     @SuppressWarnings("UseOfObsoleteCollectionType")
-    public void setTableData(ResultSet data) {
+    public void setTableData(ResultSet data) throws IOException {
 
         Vector columnHeads = new Vector();
 
@@ -354,7 +357,7 @@ public class CustomTable extends javax.swing.JTable {
     }
 
     @SuppressWarnings("UseSpecificCatch")
-    public Vector getNextRow(ResultSet rs, ResultSetMetaData rsmd) {
+    public Vector getNextRow(ResultSet rs, ResultSetMetaData rsmd) throws IOException {
         Vector currentRow = new Vector();
         int x = 0;
         try {
@@ -399,70 +402,88 @@ public class CustomTable extends javax.swing.JTable {
                             break;
                         case Types.INTEGER:
                             try {
-                                currentRow.addElement(Formato.intToStr(rs.getInt(i)));
-                                tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.intToStr(rs.getInt(i)).length());
-                            } catch (SQLException ex) {
-                                currentRow.addElement(Formato.intToStr(0));
-                                //ex.printStackTrace();
-                            }
+                            currentRow.addElement(Formato.intToStr(rs.getInt(i)));
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.intToStr(rs.getInt(i)).length());
+                        } catch (SQLException ex) {
+                            currentRow.addElement(Formato.intToStr(0));
+                            //ex.printStackTrace();
+                        }
 
-                            break;
+                        break;
                         case Types.BIGINT:
                             try {
-                                currentRow.addElement(rs.getLong(i));
-                                tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], 10);
-                            } catch (SQLException ex) {
-                                currentRow.addElement(Formato.intToStr(0));
-                                //ex.printStackTrace();
-                            }
+                            currentRow.addElement(rs.getLong(i));
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], 10);
+                        } catch (SQLException ex) {
+                            currentRow.addElement(Formato.intToStr(0));
+                            //ex.printStackTrace();
+                        }
 
-                            break;
+                        break;
                         case Types.DATE:
                             try {
-                                currentRow.addElement(Formato.dateToStr(rs.getDate(i)));
-                                tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.dateToStr(rs.getDate(i)).length());
-                            } catch (SQLException ex) {
-                                currentRow.addElement(Formato.intToStr(0));
-                                //ex.printStackTrace();
-                            }
+                            currentRow.addElement(Formato.dateToStr(rs.getDate(i)));
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.dateToStr(rs.getDate(i)).length());
+                        } catch (SQLException ex) {
+                            currentRow.addElement(Formato.intToStr(0));
+                            //ex.printStackTrace();
+                        }
 
-                            break;
+                        break;
                         case Types.DECIMAL:
                             try {
-                                currentRow.addElement(Formato.decimalToCurrStr(rs.getBigDecimal(i)));
-                                tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.decimalToCurrStr(rs.getBigDecimal(i)).length());
-                            } catch (SQLException ex) {
-                                currentRow.addElement(Formato.intToStr(0));
-                                //ex.printStackTrace();
-                            }
+                            currentRow.addElement(Formato.decimalToCurrStr(rs.getBigDecimal(i),rs.getBigDecimal(i).precision()));
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.decimalToCurrStr(rs.getBigDecimal(i)).length());
+                        } catch (SQLException ex) {
+                            currentRow.addElement(Formato.intToStr(0));
+                            //ex.printStackTrace();
+                        }
 
-                            break;
+                        break;
                         case Types.DOUBLE:
                             try {
-                                currentRow.addElement(Formato.doubleToCurrStr(rs.getDouble(i)));
-                                tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.doubleToCurrStr(rs.getDouble(i)).length());
-                            } catch (SQLException ex) {
-                                currentRow.addElement(Formato.intToStr(0));
-                                //ex.printStackTrace();
+                            currentRow.addElement(Formato.doubleToCurrStr(rs.getDouble(i),6));
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.doubleToCurrStr(rs.getDouble(i)).length());
+                        } catch (SQLException ex) {
+                            currentRow.addElement(Formato.intToStr(0));
+                            //ex.printStackTrace();
+                        }
+                        break;
+                        case Types.CLOB:
+                            try {
+                            Blob blob = rs.getBlob(i);
+                            InputStream in = blob.getBinaryStream();
+                            StringBuilder ret = new StringBuilder();
+                            int lidos = 0;
+                            byte b[] = new byte[2048];
+                            String temp = null;
+                            while ((lidos = in.read(b)) != -1) {
+                                temp = new String(b, 0, lidos);
+                                ret.append(temp);
                             }
-
-                            break;
+                            currentRow.addElement(ret.toString());
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x],ret.toString().length());
+                        } catch (SQLException ex) {
+                            currentRow.addElement("CLOB");
+                            //ex.printStackTrace();
+                        }
+                        break;
                         default:
                             try {
-                                if (rs.getObject(i) != null) {
-                                    if (!rs.getObject(i).toString().isEmpty()) {
-                                        currentRow.addElement(rs.getObject(i).toString());
-                                        tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], rs.getObject(i).toString().length() + 1);
-                                    } else {
-                                        currentRow.addElement(" ");
-                                    }
+                            if (rs.getObject(i) != null) {
+                                if (!rs.getObject(i).toString().isEmpty()) {
+                                    currentRow.addElement(rs.getObject(i).toString());
+                                    tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], rs.getObject(i).toString().length() + 1);
                                 } else {
                                     currentRow.addElement(" ");
                                 }
-                            } catch (SQLException ex) {
-                                currentRow.addElement("<Erro> " + ex.getMessage());
-                                //ex.printStackTrace();
+                            } else {
+                                currentRow.addElement(" ");
                             }
+                        } catch (SQLException ex) {
+                            currentRow.addElement("<Erro> " + ex.getMessage());
+                            //ex.printStackTrace();
+                        }
                     }
                 }
                 x++;
