@@ -1,4 +1,4 @@
-/*
+ /*
  * ExportDocDialog.java
  *
  * Created on 22 de Outubro de 2018, 22:10
@@ -294,10 +294,19 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
                     fields = " ";
 
-                    String filtro_treller = " AND F.codigo = '" + edtCodFilial.getText() + "' ";
+                    String filtro_treller = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
 
                     if (!edtCodCli.getText().isEmpty()) {
-                        filtro_treller += " AND P.CODCLI = " + edtCodCli.getText();
+                        filtro_treller += " AND CLIENTE.CODCLI = " + edtCodCli.getText();
+                    }
+                    if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
+                        if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
+                            filtro_treller += "AND PCNFSAID.DTSAIDA BETWEEN "
+                                    + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
+                                    + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
+                        } else {
+                            MessageDialog.error("Intervalo de datas de saida invalido!");
+                        }
                     }
                     // executar a consulta SQL para buscar os dados
                     String sqlTreller = tblSqlConsulta.getConteudoRowSelected("sql_Treller").toString().replaceAll("#FILTRO_DADOS_TRELLER#", filtro_treller);
@@ -751,7 +760,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             }
                         }
 
-
+                        
+                        filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRowSelected("NUMERO_NOTA").toString() + ") ";
+                        
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN3 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n3").toString();
                         String sqlDetalheN3 = sqlDetalheBaseN3.replaceAll("#FILTRO_DADOS_DETALHE_N3#", filtro_detalhe);
@@ -1789,7 +1800,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
 //        FileWriter file = null;
         try {
-            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/B" + edtRemessa.getText();
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/" + edtTipoDoc.getText() + edtRemessa.getText() + ".txt";
             JFileChooser jfc = new JFileChooser();
             jfc.setSelectedFile(new File(nomeFile));
             //abre janela para pastas
