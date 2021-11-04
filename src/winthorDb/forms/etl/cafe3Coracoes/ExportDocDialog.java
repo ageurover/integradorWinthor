@@ -1,4 +1,4 @@
- /*
+/*
  * ExportDocDialog.java
  *
  * Created on 22 de Outubro de 2018, 22:10
@@ -760,9 +760,13 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             }
                         }
 
+                        if (edtTipoDoc.getText().equalsIgnoreCase("3COR_CONEMB_31")) {
+                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA",d).toString() + ") ";
+                        }
                         
-                        filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRowSelected("NUMERO_NOTA").toString() + ") ";
-                        
+                        if (edtTipoDoc.getText().equalsIgnoreCase("3COR_DOCCOB_30A")) {
+                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA",d).toString() + ") ";
+                        }
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN3 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n3").toString();
                         String sqlDetalheN3 = sqlDetalheBaseN3.replaceAll("#FILTRO_DADOS_DETALHE_N3#", filtro_detalhe);
@@ -864,23 +868,12 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         txtExportDados.append(linha);
 
                         // Exportacao do Detalhe N4 para cada linha do N3
-                        String filtro_detalhe = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
-
-                        if (!edtCodCli.getText().isEmpty()) {
-                            filtro_detalhe += " AND CLIENTE.CODCLI = " + edtCodCli.getText();
+                        String filtro_detalhe = " " ;
+                        
+                        if (edtTipoDoc.getText().equalsIgnoreCase("3COR_DOCCOB_30A")) {
+                            filtro_detalhe += " AND CFI.NUMTRANSCONHEC = " + tblDataDetalheN3.getConteudoRow("NUMTRANSVENDACONHEC",d).toString() ;
                         }
-
-                        if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
-                            if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                                filtro_detalhe += "AND PCNFSAID.DTSAIDA BETWEEN "
-                                        + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
-                                        + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
-                            } else {
-                                MessageDialog.error("Intervalo de datas de saida invalido!");
-                            }
-                        }
-
-
+                        
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN4 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n4").toString();
                         String sqlDetalheN4 = sqlDetalheBaseN4.replaceAll("#FILTRO_DADOS_DETALHE_N4#", filtro_detalhe);
@@ -982,22 +975,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         txtExportDados.append(linha);
 
                         // Exportacao do Detalhe N5 para cada linha do N4
-                        String filtro_detalhe = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
-
-                        if (!edtCodCli.getText().isEmpty()) {
-                            filtro_detalhe += " AND CLIENTE.CODCLI = " + edtCodCli.getText();
-                        }
-
-                        if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
-                            if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                                filtro_detalhe += "AND PCNFSAID.DTSAIDA BETWEEN "
-                                        + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
-                                        + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
-                            } else {
-                                MessageDialog.error("Intervalo de datas de saida invalido!");
-                            }
-                        }
-
+                        String filtro_detalhe = " ";
 
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN5 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n5").toString();
