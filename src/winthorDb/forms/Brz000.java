@@ -61,14 +61,14 @@ public class Brz000 extends javax.swing.JFrame {
         mnuFinanceiro = new javax.swing.JMenu();
         mnuExportaProtesto = new javax.swing.JMenuItem();
         mnuImportaFolhaCnab240 = new javax.swing.JMenuItem();
+        mnuExportacao = new javax.swing.JMenu();
+        mnuExport_3coracoesConEmb31 = new javax.swing.JMenuItem();
+        mnuExport_3coracoesDocCob30a = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
-        mnuExportacao = new javax.swing.JMenu();
-        mnuExport_3coracoesConEmb31 = new javax.swing.JMenuItem();
-        mnuExport_3coracoesDocCob30a = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -77,16 +77,16 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Intergrado (Rover Tecnologia de informação) -> Versão: 1.0.7");
+        setTitle("Intergrado (kimtec -> Winthor)");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png"))); // NOI18N
-        jLabel1.setText("www.rovertecnologia.com.br");
+        jLabel1.setText("www.kimtec.com.br");
 
         lblVersao.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblVersao.setText("Versão:");
 
-        jMenuRotinas.setText("Rotinas");
+        jMenuRotinas.setText("Menu");
 
         mnuVendas.setText("Vendas");
 
@@ -212,6 +212,26 @@ public class Brz000 extends javax.swing.JFrame {
 
         jMenuRotinas.add(mnuFinanceiro);
 
+        mnuExportacao.setText("Exportação");
+
+        mnuExport_3coracoesConEmb31.setText("3 Corações CONEMB  3.1");
+        mnuExport_3coracoesConEmb31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExport_3coracoesConEmb31ActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuExport_3coracoesConEmb31);
+
+        mnuExport_3coracoesDocCob30a.setText("3 Corações DOCCOB 3.0A");
+        mnuExport_3coracoesDocCob30a.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExport_3coracoesDocCob30aActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuExport_3coracoesDocCob30a);
+
+        jMenuRotinas.add(mnuExportacao);
+
         mnuColetor.setText("Coletor");
 
         mnuConsultaOs.setText("Consulta OS");
@@ -243,26 +263,6 @@ public class Brz000 extends javax.swing.JFrame {
         mnuConfig.add(mnuConfigDb);
 
         jMenuRotinas.add(mnuConfig);
-
-        mnuExportacao.setText("Exportação");
-
-        mnuExport_3coracoesConEmb31.setText("3 Corações CONEMB  3.1");
-        mnuExport_3coracoesConEmb31.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuExport_3coracoesConEmb31ActionPerformed(evt);
-            }
-        });
-        mnuExportacao.add(mnuExport_3coracoesConEmb31);
-
-        mnuExport_3coracoesDocCob30a.setText("3 Corações DOCCOB 3.0A");
-        mnuExport_3coracoesDocCob30a.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuExport_3coracoesDocCob30aActionPerformed(evt);
-            }
-        });
-        mnuExportacao.add(mnuExport_3coracoesDocCob30a);
-
-        jMenuRotinas.add(mnuExportacao);
 
         jMenuBar1.add(jMenuRotinas);
 

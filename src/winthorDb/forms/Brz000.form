@@ -25,7 +25,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuRotinas">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Rotinas"/>
+            <Property name="text" type="java.lang.String" value="Menu"/>
           </Properties>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="mnuVendas">
@@ -161,6 +161,29 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuExportacao">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesConEmb31">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="3 Cora&#xe7;&#xf5;es CONEMB  3.1"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesConEmb31ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesDocCob30a">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="3 Cora&#xe7;&#xf5;es DOCCOB 3.0A"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesDocCob30aActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <Menu class="javax.swing.JMenu" name="mnuColetor">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Coletor"/>
@@ -199,29 +222,6 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="mnuExportacao">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o"/>
-              </Properties>
-              <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesConEmb31">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="3 Cora&#xe7;&#xf5;es CONEMB  3.1"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesConEmb31ActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesDocCob30a">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="3 Cora&#xe7;&#xf5;es DOCCOB 3.0A"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesDocCob30aActionPerformed"/>
-                  </Events>
-                </MenuItem>
-              </SubComponents>
-            </Menu>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -229,7 +229,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Intergrado (Rover Tecnologia de informa&#xe7;&#xe3;o) -&gt; Vers&#xe3;o: 1.0.7"/>
+    <Property name="title" type="java.lang.String" value="Intergrado (kimtec -&gt; Winthor)"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
@@ -272,7 +272,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/winthorDb/forms/RoverTecnologiaIcone.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="www.rovertecnologia.com.br"/>
+        <Property name="text" type="java.lang.String" value="www.kimtec.com.br"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblVersao">

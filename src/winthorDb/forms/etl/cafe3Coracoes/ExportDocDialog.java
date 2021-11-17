@@ -6,6 +6,7 @@
 package winthorDb.forms.etl.cafe3Coracoes;
 
 import java.awt.HeadlessException;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +60,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         edtCodDoc.setText("" + idDoc);
         edtTipoDoc.setText(tipoDoc);
-        edtRemessa.setText(Formato.dateTimeNowToStr("ddMMyyHHmms"));
+        edtRemessa.setText(Formato.strTamanhoExato(Formato.dateTimeNowToStr("ddMMhhmmsss"), 9));
 
         exibeSqlComando();
     }
@@ -320,6 +321,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             processaExport("T");
                         }
                     }
+                    
+                    MessageDialog.info("Exportação finalizada!");
+                    
                 } catch (Exception ex) {
                     trataErro.trataException(ex, "exportaDados \n " + this.getName());
                 }
@@ -727,6 +731,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                         case "VREMESSA":
                                             campo = Formato.strTamanhoExato(Formato.zerosEsquerda("" + edtRemessa.getText(), tamanho), tamanho);
                                             break;
+                                        case "VNOTASFISCAIS":
+                                            String notas = notasConhecimento(tblDataDetalheN2.getConteudoRow("NUMTRANSVENDACONHEC", d).toString()).trim();
+                                            campo = Formato.strTamanhoExato(notas + Formato.zerosEsquerda("", tamanho - notas.length()), tamanho);
+                                            break;
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
@@ -761,11 +769,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         }
 
                         if (edtTipoDoc.getText().equalsIgnoreCase("3COR_CONEMB_31")) {
-                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA",d).toString() + ") ";
+                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA", d).toString() + ") ";
                         }
-                        
+
                         if (edtTipoDoc.getText().equalsIgnoreCase("3COR_DOCCOB_30A")) {
-                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA",d).toString() + ") ";
+                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA", d).toString() + ") ";
                         }
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN3 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n3").toString();
@@ -788,6 +796,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         linha = "";
                         vContaRegistroD3++;
                         vContaRegistroG++;
+
                         for (int i = 0; i < tblDetalheN3.getRowCount(); i++) {
                             tipoDado = tblDetalheN3.getConteudoRow("tipoDado", i).toString().trim();
                             tamanho = Formato.strToInt(tblDetalheN3.getConteudoRow("tamanho", i).toString().trim());
@@ -868,12 +877,12 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         txtExportDados.append(linha);
 
                         // Exportacao do Detalhe N4 para cada linha do N3
-                        String filtro_detalhe = " " ;
-                        
+                        String filtro_detalhe = " ";
+
                         if (edtTipoDoc.getText().equalsIgnoreCase("3COR_DOCCOB_30A")) {
-                            filtro_detalhe += " AND CFI.NUMTRANSCONHEC = " + tblDataDetalheN3.getConteudoRow("NUMTRANSVENDACONHEC",d).toString() ;
+                            filtro_detalhe += " AND CFI.NUMTRANSCONHEC = " + tblDataDetalheN3.getConteudoRow("NUMTRANSVENDACONHEC", d).toString();
                         }
-                        
+
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN4 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n4").toString();
                         String sqlDetalheN4 = sqlDetalheBaseN4.replaceAll("#FILTRO_DADOS_DETALHE_N4#", filtro_detalhe);
@@ -1265,6 +1274,30 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
     }
 
+    private String notasConhecimento(String numTrans) {
+        String ret = "";
+        String sqlFiltro = "SELECT replace(to_char(trim(CFI.SERIE), '000') || to_char(trim(CFI.NUMNOTA), '00000000'), ' ','') as notas "
+                + " FROM PCCONHECIMENTOFRETEI CFI \n"
+                + " WHERE CFI.NUMNOTA IS NOT NULL \n"
+                + " AND CFI.NUMTRANSCONHEC = " + numTrans;
+
+        try {
+            if (!sqlFiltro.isEmpty() && (!numTrans.isEmpty())) {
+                tblDataExtra.clearTableData();
+                tblDataExtra.setTableData(sqlFiltro);
+                if (tblDataExtra.getRowCount() >= 0) {
+                    for (int i = 0; i < tblDataExtra.getRowCount(); i++) {
+                        ret = tblDataExtra.getConteudoRow("notas", i).toString();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "notasConhecimento");
+        }
+
+        return ret;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1276,6 +1309,16 @@ public class ExportDocDialog extends javax.swing.JDialog {
         pMenuRemessa = new javax.swing.JPopupMenu();
         mnuRemessaNova = new javax.swing.JMenuItem();
         mnuRemessaBuscar = new javax.swing.JMenuItem();
+        mnuExportaTableData = new javax.swing.JPopupMenu();
+        exportHeader = new javax.swing.JMenuItem();
+        exportDetalhe = new javax.swing.JMenuItem();
+        exportDetalhe1 = new javax.swing.JMenuItem();
+        exportDetalhe2 = new javax.swing.JMenuItem();
+        exportDetalhe3 = new javax.swing.JMenuItem();
+        exportDetalhe4 = new javax.swing.JMenuItem();
+        exportDetalhe5 = new javax.swing.JMenuItem();
+        exportExtra = new javax.swing.JMenuItem();
+        exportTrealler = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         edtCodDoc = new javax.swing.JTextField();
@@ -1318,6 +1361,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN4 = new winthorDb.util.CustomTable();
         jScrollPane17 = new javax.swing.JScrollPane();
         tblDataDetalheN5 = new winthorDb.util.CustomTable();
+        jScrollPane21 = new javax.swing.JScrollPane();
+        tblDataExtra = new winthorDb.util.CustomTable();
         jScrollPane9 = new javax.swing.JScrollPane();
         tblDataTreller = new winthorDb.util.CustomTable();
         jPanel6 = new javax.swing.JPanel();
@@ -1355,6 +1400,78 @@ public class ExportDocDialog extends javax.swing.JDialog {
             }
         });
         pMenuRemessa.add(mnuRemessaBuscar);
+
+        exportHeader.setText("Exporta Header");
+        exportHeader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportHeaderActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportHeader);
+
+        exportDetalhe.setText("Exporta Detalhe");
+        exportDetalhe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDetalheActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportDetalhe);
+
+        exportDetalhe1.setText("Exporta Detalhe 1");
+        exportDetalhe1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDetalhe1ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportDetalhe1);
+
+        exportDetalhe2.setText("Exporta Detalhe 2");
+        exportDetalhe2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDetalhe2ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportDetalhe2);
+
+        exportDetalhe3.setText("Exporta Detalhe 3");
+        exportDetalhe3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDetalhe3ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportDetalhe3);
+
+        exportDetalhe4.setText("Exporta Detalhe 4");
+        exportDetalhe4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDetalhe4ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportDetalhe4);
+
+        exportDetalhe5.setText("Exporta Detalhe 5");
+        exportDetalhe5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDetalhe5ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportDetalhe5);
+
+        exportExtra.setText("Exporta Extra");
+        exportExtra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportExtraActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportExtra);
+
+        exportTrealler.setText("Exporta Trealler");
+        exportTrealler.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportTreallerActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportTrealler);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -1552,6 +1669,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataHeader.setToolTipText("");
         tblDataHeader.setCellSelectionEnabled(true);
         tblDataHeader.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataHeader.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataHeaderMouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(tblDataHeader);
 
         jTabbedPane2.addTab("Header", jScrollPane7);
@@ -1559,6 +1681,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalhe.setToolTipText("");
         tblDataDetalhe.setCellSelectionEnabled(true);
         tblDataDetalhe.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataDetalhe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataDetalheMouseClicked(evt);
+            }
+        });
         jScrollPane8.setViewportView(tblDataDetalhe);
 
         jTabbedPane3.addTab("Detalhe", jScrollPane8);
@@ -1566,6 +1693,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN1.setToolTipText("");
         tblDataDetalheN1.setCellSelectionEnabled(true);
         tblDataDetalheN1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataDetalheN1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataDetalheN1MouseClicked(evt);
+            }
+        });
         jScrollPane10.setViewportView(tblDataDetalheN1);
 
         jTabbedPane3.addTab("Detalhe Nivel 1", jScrollPane10);
@@ -1573,6 +1705,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN2.setToolTipText("");
         tblDataDetalheN2.setCellSelectionEnabled(true);
         tblDataDetalheN2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataDetalheN2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataDetalheN2MouseClicked(evt);
+            }
+        });
         jScrollPane11.setViewportView(tblDataDetalheN2);
 
         jTabbedPane3.addTab("Detalhe Nivel 2", jScrollPane11);
@@ -1580,6 +1717,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN3.setToolTipText("");
         tblDataDetalheN3.setCellSelectionEnabled(true);
         tblDataDetalheN3.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataDetalheN3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataDetalheN3MouseClicked(evt);
+            }
+        });
         jScrollPane15.setViewportView(tblDataDetalheN3);
 
         jTabbedPane3.addTab("Detalhe Nivel 3", jScrollPane15);
@@ -1587,6 +1729,11 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN4.setToolTipText("");
         tblDataDetalheN4.setCellSelectionEnabled(true);
         tblDataDetalheN4.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataDetalheN4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataDetalheN4MouseClicked(evt);
+            }
+        });
         jScrollPane16.setViewportView(tblDataDetalheN4);
 
         jTabbedPane3.addTab("Detalhe Nivel 4", jScrollPane16);
@@ -1594,15 +1741,37 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN5.setToolTipText("");
         tblDataDetalheN5.setCellSelectionEnabled(true);
         tblDataDetalheN5.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataDetalheN5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataDetalheN5MouseClicked(evt);
+            }
+        });
         jScrollPane17.setViewportView(tblDataDetalheN5);
 
         jTabbedPane3.addTab("Detalhe Nivel 5", jScrollPane17);
+
+        tblDataExtra.setToolTipText("");
+        tblDataExtra.setCellSelectionEnabled(true);
+        tblDataExtra.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataExtra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataExtraMouseClicked(evt);
+            }
+        });
+        jScrollPane21.setViewportView(tblDataExtra);
+
+        jTabbedPane3.addTab("Extra", jScrollPane21);
 
         jTabbedPane2.addTab("Detalhe", jTabbedPane3);
 
         tblDataTreller.setToolTipText("");
         tblDataTreller.setCellSelectionEnabled(true);
         tblDataTreller.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataTreller.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataTrellerMouseClicked(evt);
+            }
+        });
         jScrollPane9.setViewportView(tblDataTreller);
 
         jTabbedPane2.addTab("Trealler", jScrollPane9);
@@ -1877,6 +2046,287 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
     }//GEN-LAST:event_mnuRemessaBuscarActionPerformed
 
+    private void exportHeaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportHeaderActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_header_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataHeader.writeToDisk(tblDataHeader.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportHeaderActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportHeaderActionPerformed");
+        }
+
+
+    }//GEN-LAST:event_exportHeaderActionPerformed
+
+    private void tblDataHeaderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataHeaderMouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataHeader, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataHeaderMouseClicked
+
+    private void exportDetalheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDetalheActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_detalhe_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataDetalhe.writeToDisk(tblDataDetalhe.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportDetalheActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportDetalheActionPerformed");
+        }
+    }//GEN-LAST:event_exportDetalheActionPerformed
+
+    private void exportDetalhe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDetalhe1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_detalhe1_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataDetalheN1.writeToDisk(tblDataDetalheN1.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportDetalhe1ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportDetalhe1ActionPerformed");
+        }
+    }//GEN-LAST:event_exportDetalhe1ActionPerformed
+
+    private void exportDetalhe2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDetalhe2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_detalhe2_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataDetalheN2.writeToDisk(tblDataDetalheN2.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportDetalhe2ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportDetalhe2ActionPerformed");
+        }
+    }//GEN-LAST:event_exportDetalhe2ActionPerformed
+
+    private void exportDetalhe3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDetalhe3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_detalhe3_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataDetalheN3.writeToDisk(tblDataDetalheN3.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportDetalhe3ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportDetalhe3ActionPerformed");
+        }
+    }//GEN-LAST:event_exportDetalhe3ActionPerformed
+
+    private void exportDetalhe4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDetalhe4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_detalhe4_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataDetalheN4.writeToDisk(tblDataDetalheN4.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportDetalhe4ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportDetalhe4ActionPerformed");
+        }
+    }//GEN-LAST:event_exportDetalhe4ActionPerformed
+
+    private void exportDetalhe5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDetalhe5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_detalhe5_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataDetalheN5.writeToDisk(tblDataDetalheN5.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportDetalhe5ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportDetalhe5ActionPerformed");
+        }
+    }//GEN-LAST:event_exportDetalhe5ActionPerformed
+
+    private void exportExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportExtraActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_extra_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataExtra.writeToDisk(tblDataExtra.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportExtraActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportExtraActionPerformed");
+        }
+    }//GEN-LAST:event_exportExtraActionPerformed
+
+    private void tblDataDetalheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheMouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataDetalhe, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataDetalheMouseClicked
+
+    private void tblDataDetalheN1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN1MouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataDetalheN1, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataDetalheN1MouseClicked
+
+    private void tblDataDetalheN2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN2MouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataDetalheN2, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataDetalheN2MouseClicked
+
+    private void tblDataDetalheN3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN3MouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataDetalheN3, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataDetalheN3MouseClicked
+
+    private void tblDataDetalheN4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN4MouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataDetalheN4, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataDetalheN4MouseClicked
+
+    private void tblDataDetalheN5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN5MouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataDetalheN5, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataDetalheN5MouseClicked
+
+    private void tblDataExtraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataExtraMouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataExtra, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataExtraMouseClicked
+
+    private void tblDataTrellerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataTrellerMouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataTreller, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataTrellerMouseClicked
+
+    private void exportTreallerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTreallerActionPerformed
+        // TODO add your handling code here:
+                try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_Trealler_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataTreller.writeToDisk(tblDataTreller.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportTreallerActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportTreallerActionPerformed");
+        }
+    }//GEN-LAST:event_exportTreallerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1900,6 +2350,15 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JTextField edtRemessa;
     private javax.swing.JTextField edtTipoDoc;
     private javax.swing.JButton edtValidar;
+    private javax.swing.JMenuItem exportDetalhe;
+    private javax.swing.JMenuItem exportDetalhe1;
+    private javax.swing.JMenuItem exportDetalhe2;
+    private javax.swing.JMenuItem exportDetalhe3;
+    private javax.swing.JMenuItem exportDetalhe4;
+    private javax.swing.JMenuItem exportDetalhe5;
+    private javax.swing.JMenuItem exportExtra;
+    private javax.swing.JMenuItem exportHeader;
+    private javax.swing.JMenuItem exportTrealler;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1925,6 +2384,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane19;
     private javax.swing.JScrollPane jScrollPane20;
+    private javax.swing.JScrollPane jScrollPane21;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -1936,6 +2396,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JPopupMenu mnuExportaTableData;
     private javax.swing.JMenuItem mnuRemessaBuscar;
     private javax.swing.JMenuItem mnuRemessaNova;
     private javax.swing.JPopupMenu pMenuRemessa;
@@ -1945,6 +2406,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private winthorDb.util.CustomTable tblDataDetalheN3;
     private winthorDb.util.CustomTable tblDataDetalheN4;
     private winthorDb.util.CustomTable tblDataDetalheN5;
+    private winthorDb.util.CustomTable tblDataExtra;
     private winthorDb.util.CustomTable tblDataHeader;
     private winthorDb.util.CustomTable tblDataTreller;
     private winthorDb.util.CustomTable tblDetalhe;
