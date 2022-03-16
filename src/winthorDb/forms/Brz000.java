@@ -45,13 +45,13 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuRotinas = new javax.swing.JMenu();
         mnuVendas = new javax.swing.JMenu();
+        mnuProcessoPedidoCarga = new javax.swing.JMenuItem();
         mnuProcessoPedidoCupom = new javax.swing.JMenuItem();
-        mnuCadastroSintegra = new javax.swing.JMenuItem();
         mnuAtualizaBarrasPedido = new javax.swing.JMenuItem();
         mnuPedidoViradaMes = new javax.swing.JMenuItem();
         mnuFilialFaturaCarga = new javax.swing.JMenuItem();
         mnuProcessoDevolucaoCupom = new javax.swing.JMenuItem();
-        mnuProcessoPedidoCarga = new javax.swing.JMenuItem();
+        mnuCadastroSintegra = new javax.swing.JMenuItem();
         mnuEstoque = new javax.swing.JMenu();
         mnuProcessarImagens = new javax.swing.JMenuItem();
         mnuBaixaLancProducao = new javax.swing.JMenuItem();
@@ -90,6 +90,14 @@ public class Brz000 extends javax.swing.JFrame {
 
         mnuVendas.setText("Vendas");
 
+        mnuProcessoPedidoCarga.setText("Processo Pedido/Cupom (Carga)");
+        mnuProcessoPedidoCarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuProcessoPedidoCargaActionPerformed(evt);
+            }
+        });
+        mnuVendas.add(mnuProcessoPedidoCarga);
+
         mnuProcessoPedidoCupom.setText("Processo Pedido/Cupom (Pedido)");
         mnuProcessoPedidoCupom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,14 +105,6 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         mnuVendas.add(mnuProcessoPedidoCupom);
-
-        mnuCadastroSintegra.setText("Cadastro de Cliente Sintegra");
-        mnuCadastroSintegra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuCadastroSintegraActionPerformed(evt);
-            }
-        });
-        mnuVendas.add(mnuCadastroSintegra);
 
         mnuAtualizaBarrasPedido.setText("Atualiza Cod. Barras Pedido Venda");
         mnuAtualizaBarrasPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -138,13 +138,13 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuVendas.add(mnuProcessoDevolucaoCupom);
 
-        mnuProcessoPedidoCarga.setText("Processo Pedido/Cupom (Carga)");
-        mnuProcessoPedidoCarga.addActionListener(new java.awt.event.ActionListener() {
+        mnuCadastroSintegra.setText("Cadastro de Cliente Sintegra");
+        mnuCadastroSintegra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuProcessoPedidoCargaActionPerformed(evt);
+                mnuCadastroSintegraActionPerformed(evt);
             }
         });
-        mnuVendas.add(mnuProcessoPedidoCarga);
+        mnuVendas.add(mnuCadastroSintegra);
 
         jMenuRotinas.add(mnuVendas);
 

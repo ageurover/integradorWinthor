@@ -8,10 +8,10 @@
   <CodConsumidorDb>2</CodConsumidorDb>
   <CodFilial>1</CodFilial>
   <CodFilialFatura>1</CodFilialFatura>
-  <Licenca>HnRTA8hIR9Zks8w33WLcAox9FqlX80CLF0RJG9GfAiI=</Licenca>
+  <Licenca>HnRTA8hIR9Zks8w33WLcAjS09JY85cSs0OItMjuxqhE=</Licenca>
   <CnpjMatriz>00735882000133</CnpjMatriz>
   <qtdeMaxUsuario>005</qtdeMaxUsuario>
-  <dataExpiracao>2022-01-01</dataExpiracao>
+  <dataExpiracao>2022-12-31</dataExpiracao>
   <valorMaxCupom>5.0</valorMaxCupom>
   <AjustaFrenteLoja>N</AjustaFrenteLoja>
   <pastaImagens>\\192.168.4.8\WINTHOR\IMAGENS</pastaImagens>

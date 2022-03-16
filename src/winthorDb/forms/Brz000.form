@@ -33,20 +33,20 @@
                 <Property name="text" type="java.lang.String" value="Vendas"/>
               </Properties>
               <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCarga">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Carga)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCargaActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCupom">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Pedido)"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCupomActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="mnuCadastroSintegra">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Cadastro de Cliente Sintegra"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuCadastroSintegraActionPerformed"/>
                   </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuAtualizaBarrasPedido">
@@ -81,12 +81,12 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoDevolucaoCupomActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="mnuProcessoPedidoCarga">
+                <MenuItem class="javax.swing.JMenuItem" name="mnuCadastroSintegra">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Processo Pedido/Cupom (Carga)"/>
+                    <Property name="text" type="java.lang.String" value="Cadastro de Cliente Sintegra"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcessoPedidoCargaActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuCadastroSintegraActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>

@@ -5,6 +5,7 @@
  */
 package winthorDb.forms;
 
+import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -418,12 +419,10 @@ public class Brz009 extends javax.swing.JFrame {
             // altera a filial fatura do cliente
             // 28/01 - Gravacao da dtultcomp no cadastro do cliente, o winthor estava 
             //         marcando esse cliente como inativo quando so compra no cupom
-            
             if (result >= 0) {
                 updString = "update pcclient set tipoDocumento = 'A', codfilialnf = " + codFilial
-                        + " , DTULTCOMP = TO_DATE('" + Formato.dateToStr(new Date())+ "', 'DD/MM/YYYY') "
+                        + " , DTULTCOMP = TO_DATE('" + Formato.dateToStr(new Date()) + "', 'DD/MM/YYYY') "
                         + " WHERE codcli =  " + codCliente;
-                
 
                 result = wint.updateDados(updString);
                 edtDetalhePedido.append("Registros Atualizados: " + result + "\n");
@@ -484,6 +483,66 @@ public class Brz009 extends javax.swing.JFrame {
             edtDetalhePedido.append("Processo de Vinculação ao cliente e a carga concluidos pode continuar o faturamento da carga\n");
         } catch (Exception ex) {
             trataErro.trataException(ex, "vinculaTitulos");
+            throw ex;
+        } finally {
+            wint.closeConectOracle();
+        }
+        return ret;
+    }
+
+    private void pesquisaCargaNfce() {
+        try {
+            if (!edtNumCargaNfce1.getText().isEmpty()) {
+                buscaCargaNfce(edtNumCargaNfce1.getText());
+                if (tblCargaNfce.getRowCount() >= 0) {
+                    btnConvertePedidoNfce.setEnabled(true);
+                    btnVinculaTitulo.setEnabled(true);
+                } else {
+                    btnConvertePedidoNfce.setEnabled(false);
+                    btnVinculaTitulo.setEnabled(false);
+                }
+            } else {
+                MessageDialog.error("Favor informar o numero do carregamento NFC-e!!");
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "btnPesquisaConversaoActionPerformed");
+        }
+    }
+
+    /**
+     * DesVincula o cupom fiscal gerado pela rotina 2075 ao cliente original do
+     * pedido, este processo deve ser usado apos a geração do cupom fiscal pela
+     * 2075 para que o romaneio da carga seja gerado de forma correta.
+     *
+     * @param numPedido Numero do pedido digitado no sistema winthor
+     * @param codCliente Codigo do cliente no qual o pedido foi digitado
+     * @param codFilial Codigo da filial onde o pedido foi digitado
+     * @param numCarga numero da carga a qual o pedido esta vinculado no
+     * processo de separação de mercadorias
+     * @param numCupom numero do cupom fiscal gerado pela rotina 2075 no
+     * processo de faturamento da venda
+     */
+    private boolean desvinculaTitulos(String numPedido, String numCargaNfce) throws Exception {
+        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
+        boolean ret = false;
+        int result = 0;
+        String updString = "";
+        try {
+            wint.openConectOracle();
+            // marca como desvinculado na tabela rv_carregamento
+            if (result >= 0) {
+                updString = "update rv_carregamento  set vinculado ='N' "
+                        + " where numcarganfce = " + numCargaNfce + " AND numpedido=" + numPedido;
+
+                result = wint.updateDados(updString);
+                edtDetalhePedido.append("Registros Atualizados: " + result + "\n");
+                edtDetalhePedido.append("O rv_carregemento desvinculado na base de dados do winthor\n");
+                ret = (result != 0);
+            }
+
+            edtDetalhePedido.append("Processo de desVinculação ao cliente e a carga concluidos pode continuar o faturamento da carga\n");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "desvinculaTitulos");
             throw ex;
         } finally {
             wint.closeConectOracle();
@@ -667,6 +726,8 @@ public class Brz009 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mnuTblConversao = new javax.swing.JPopupMenu();
+        mniDesVincular = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -697,6 +758,14 @@ public class Brz009 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         edtDetalhePedido = new javax.swing.JTextArea();
         btnImprimeLog = new javax.swing.JButton();
+
+        mniDesVincular.setText("Forçar Revincular");
+        mniDesVincular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniDesVincularActionPerformed(evt);
+            }
+        });
+        mnuTblConversao.add(mniDesVincular);
 
         setTitle("Conversão de Pedidos");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -843,6 +912,11 @@ public class Brz009 extends javax.swing.JFrame {
 
         jtpSteps.addTab("1 - Selecionar Pedidos", jPanel2);
 
+        tblCargaNfce.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCargaNfceMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblCargaNfce);
 
         btnVinculaTitulo.setText("Vincular Titulos");
@@ -1056,6 +1130,7 @@ public class Brz009 extends javax.swing.JFrame {
                     MessageDialog.info("Pedidos Selecionados, vinculados os clientes originais!");
                 }
             }
+            pesquisaCargaNfce();
         } catch (Exception ex) {
             trataErro.trataException(ex, "btnVinculaTituloActionPerformed");
         }
@@ -1228,23 +1303,35 @@ public class Brz009 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConvertePedidoNfceActionPerformed
 
     private void btnPesquisaConversaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaConversaoActionPerformed
+        pesquisaCargaNfce();
+    }//GEN-LAST:event_btnPesquisaConversaoActionPerformed
+
+    private void mniDesVincularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDesVincularActionPerformed
+        // TODO add your handling code here:
         try {
-            if (!edtNumCargaNfce1.getText().isEmpty()) {
-                buscaCargaNfce(edtNumCargaNfce1.getText());
-                if (tblCargaNfce.getRowCount() >= 0) {
-                    btnConvertePedidoNfce.setEnabled(true);
-                    btnVinculaTitulo.setEnabled(true);
-                } else {
-                    btnConvertePedidoNfce.setEnabled(false);
-                    btnVinculaTitulo.setEnabled(false);
-                }
+            String numeroPedido = tblCargaNfce.getConteudoRowSelected("numpedido").toString(); // tabela rv_carregamento
+            String numCargaNfce = tblCargaNfce.getConteudoRowSelected("numcarganfce").toString();// tabela rv_carregamento
+            if ((!numeroPedido.isEmpty()) && (!numCargaNfce.isEmpty())) {
+                desvinculaTitulos(numeroPedido, numCargaNfce);
+                pesquisaCargaNfce();
             } else {
-                MessageDialog.error("Favor informar o numero do carregamento NFC-e!!");
+                trataErro.lstErros.clear();
+                trataErro.addListaErros("ATENÇÃO: Deve ser informado, numero do pedido , o numero da carganfce !");
+                trataErro.mostraListaErros();
+                trataErro.lstErros.clear();
             }
         } catch (Exception ex) {
-            trataErro.trataException(ex, "btnPesquisaConversaoActionPerformed");
+            trataErro.trataException(ex, "mniDesVincularActionPerformed");
         }
-    }//GEN-LAST:event_btnPesquisaConversaoActionPerformed
+    }//GEN-LAST:event_mniDesVincularActionPerformed
+
+    private void tblCargaNfceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCargaNfceMouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuTblConversao.show(tblCargaNfce, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblCargaNfceMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1308,6 +1395,8 @@ public class Brz009 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jtpSteps;
+    private javax.swing.JMenuItem mniDesVincular;
+    private javax.swing.JPopupMenu mnuTblConversao;
     private winthorDb.util.CustomTable tblCargaNfce;
     private winthorDb.util.CustomTable tblPedidoCarga;
     // End of variables declaration//GEN-END:variables
