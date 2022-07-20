@@ -10,10 +10,19 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="mniDesVincular">
           <Properties>
-            <Property name="text" type="java.lang.String" value="For&#xe7;ar Revincular"/>
+            <Property name="text" type="java.lang.String" value="For&#xe7;ar Vincular"/>
+            <Property name="actionCommand" type="java.lang.String" value="For&#xe7;ar Vincular"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mniDesVincularActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="mnuDesConverter">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="For&#xe7;ar Converter"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuDesConverterActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>

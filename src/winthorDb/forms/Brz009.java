@@ -550,6 +550,47 @@ public class Brz009 extends javax.swing.JFrame {
         return ret;
     }
 
+/**
+     * DesVincula o cupom fiscal gerado pela rotina 2075 ao cliente original do
+     * pedido, este processo deve ser usado apos a geração do cupom fiscal pela
+     * 2075 para que o romaneio da carga seja gerado de forma correta.
+     *
+     * @param numPedido Numero do pedido digitado no sistema winthor
+     * @param codCliente Codigo do cliente no qual o pedido foi digitado
+     * @param codFilial Codigo da filial onde o pedido foi digitado
+     * @param numCarga numero da carga a qual o pedido esta vinculado no
+     * processo de separação de mercadorias
+     * @param numCupom numero do cupom fiscal gerado pela rotina 2075 no
+     * processo de faturamento da venda
+     */
+    private boolean forcarConverterPedido(String numPedido, String numCargaNfce) throws Exception {
+        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
+        boolean ret = false;
+        int result = 0;
+        String updString = "";
+        try {
+            wint.openConectOracle();
+            // marca como desvinculado na tabela rv_carregamento
+            if (result >= 0) {
+                updString = "update rv_carregamento  set convertido ='N' "
+                        + " where numcarganfce = " + numCargaNfce + " AND numpedido=" + numPedido;
+
+                result = wint.updateDados(updString);
+                edtDetalhePedido.append("Registros Atualizados: " + result + "\n");
+                edtDetalhePedido.append("O rv_carregemento Forçado a conversão na base de dados do winthor\n");
+                ret = (result != 0);
+            }
+
+            edtDetalhePedido.append("Processo de Forçar a conversão concluido, pode continuar o faturamento da carga\n");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "forcarConverterPedido");
+            throw ex;
+        } finally {
+            wint.closeConectOracle();
+        }
+        return ret;
+    }
+    
     /**
      * busca os dados do contas a receber gerados pelo sistema winthor apos o
      * processo de faturamento da rotina 2075
@@ -728,6 +769,7 @@ public class Brz009 extends javax.swing.JFrame {
 
         mnuTblConversao = new javax.swing.JPopupMenu();
         mniDesVincular = new javax.swing.JMenuItem();
+        mnuDesConverter = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -759,13 +801,22 @@ public class Brz009 extends javax.swing.JFrame {
         edtDetalhePedido = new javax.swing.JTextArea();
         btnImprimeLog = new javax.swing.JButton();
 
-        mniDesVincular.setText("Forçar Revincular");
+        mniDesVincular.setText("Forçar Vincular");
+        mniDesVincular.setActionCommand("Forçar Vincular");
         mniDesVincular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mniDesVincularActionPerformed(evt);
             }
         });
         mnuTblConversao.add(mniDesVincular);
+
+        mnuDesConverter.setText("Forçar Converter");
+        mnuDesConverter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDesConverterActionPerformed(evt);
+            }
+        });
+        mnuTblConversao.add(mnuDesConverter);
 
         setTitle("Conversão de Pedidos");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1110,7 +1161,10 @@ public class Brz009 extends javax.swing.JFrame {
                     numCupom = tblCargaNfce.getConteudoRow("numcupom", i).toString(); // tabela pcpedc
                     dtfatura = tblCargaNfce.getConteudoRow("dtfat", i).toString(); // tabela pcpedc
 
-                    if ((!numeroPedido.isEmpty()) && (!codCliente.isEmpty()) && (!codFilial.isEmpty()) && (!codFilialFatura.isEmpty()) && (!dtfatura.isEmpty()) && (!numCupom.isEmpty()) && (!numCarga.isEmpty()) && (!numCargaNfce.isEmpty())) {
+                    if ((!numeroPedido.trim().isEmpty()) && (!codCliente.trim().isEmpty()) 
+                            && (!codFilial.trim().isEmpty()) && (!codFilialFatura.trim().isEmpty()) 
+                            && (!dtfatura.trim().isEmpty()) && (!numCupom.trim().isEmpty()) 
+                            && (!numCarga.trim().isEmpty()) && (!numCargaNfce.trim().isEmpty())) {
                         if (vinculado.equalsIgnoreCase("N")) {
                             valida = vinculaTitulos(numeroPedido, codCliente, codFilial, codFilialFatura, numCarga, numCupom, numCargaNfce);
                             if (!valida) {
@@ -1333,6 +1387,24 @@ public class Brz009 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblCargaNfceMouseClicked
 
+    private void mnuDesConverterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDesConverterActionPerformed
+               try {
+            String numeroPedido = tblCargaNfce.getConteudoRowSelected("numpedido").toString(); // tabela rv_carregamento
+            String numCargaNfce = tblCargaNfce.getConteudoRowSelected("numcarganfce").toString();// tabela rv_carregamento
+            if ((!numeroPedido.isEmpty()) && (!numCargaNfce.isEmpty())) {
+                forcarConverterPedido(numeroPedido, numCargaNfce);
+                pesquisaCargaNfce();
+            } else {
+                trataErro.lstErros.clear();
+                trataErro.addListaErros("ATENÇÃO: Deve ser informado, numero do pedido , o numero da carganfce !");
+                trataErro.mostraListaErros();
+                trataErro.lstErros.clear();
+            }
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "mnuDesConverterActionPerformed");
+        }
+    }//GEN-LAST:event_mnuDesConverterActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1396,6 +1468,7 @@ public class Brz009 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jtpSteps;
     private javax.swing.JMenuItem mniDesVincular;
+    private javax.swing.JMenuItem mnuDesConverter;
     private javax.swing.JPopupMenu mnuTblConversao;
     private winthorDb.util.CustomTable tblCargaNfce;
     private winthorDb.util.CustomTable tblPedidoCarga;
