@@ -187,7 +187,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                 + " ('' ||sql_Detalhe_n3) as sql_Detalhe_n3, "
                                 + " ('' ||sql_Detalhe_n4) as sql_Detalhe_n4, "
                                 + " ('' ||sql_Detalhe_n5) as sql_Detalhe_n5, "
-                                + " ('' ||sql_Treller) as sql_Treller "
+                                + " ('' ||sql_Treller) as sql_Treller, "
+                                + " ('' ||sql_Extra_1) as sql_Extra_1, "
+                                + " ('' ||sql_Extra_2) as sql_Extra_2 "
                                 + " FROM LayoutDocSql"
                                 + " WHERE idDoc = " + edtCodDoc.getText()
                                 + " AND tipoDoc = '" + edtTipoDoc.getText() + "' ";
@@ -321,9 +323,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             processaExport("T");
                         }
                     }
-                    
+
                     MessageDialog.info("Exportação finalizada!");
-                    
+
                 } catch (Exception ex) {
                     trataErro.trataException(ex, "exportaDados \n " + this.getName());
                 }
@@ -1317,8 +1319,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
         exportDetalhe3 = new javax.swing.JMenuItem();
         exportDetalhe4 = new javax.swing.JMenuItem();
         exportDetalhe5 = new javax.swing.JMenuItem();
-        exportExtra = new javax.swing.JMenuItem();
         exportTrealler = new javax.swing.JMenuItem();
+        exportExtra = new javax.swing.JMenuItem();
+        reprocessaExtra2 = new javax.swing.JMenuItem();
+        exportaExtra2 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         edtCodDoc = new javax.swing.JTextField();
@@ -1363,6 +1367,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
         tblDataDetalheN5 = new winthorDb.util.CustomTable();
         jScrollPane21 = new javax.swing.JScrollPane();
         tblDataExtra = new winthorDb.util.CustomTable();
+        jScrollPane22 = new javax.swing.JScrollPane();
+        tblDataExtra2 = new winthorDb.util.CustomTable();
         jScrollPane9 = new javax.swing.JScrollPane();
         tblDataTreller = new winthorDb.util.CustomTable();
         jPanel6 = new javax.swing.JPanel();
@@ -1457,14 +1463,6 @@ public class ExportDocDialog extends javax.swing.JDialog {
         });
         mnuExportaTableData.add(exportDetalhe5);
 
-        exportExtra.setText("Exporta Extra");
-        exportExtra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportExtraActionPerformed(evt);
-            }
-        });
-        mnuExportaTableData.add(exportExtra);
-
         exportTrealler.setText("Exporta Trealler");
         exportTrealler.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1473,9 +1471,33 @@ public class ExportDocDialog extends javax.swing.JDialog {
         });
         mnuExportaTableData.add(exportTrealler);
 
+        exportExtra.setText("Exporta Extra");
+        exportExtra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportExtraActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportExtra);
+
+        reprocessaExtra2.setText("Processa Extra 2");
+        reprocessaExtra2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reprocessaExtra2ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(reprocessaExtra2);
+
+        exportaExtra2.setText("Exporta Extra 2");
+        exportaExtra2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportaExtra2ActionPerformed(evt);
+            }
+        });
+        mnuExportaTableData.add(exportaExtra2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, null));
 
         jLabel1.setText("Código");
 
@@ -1577,7 +1599,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     .add(org.jdesktop.layout.GroupLayout.CENTER, jPanel1Layout.createSequentialGroup()
                         .add(20, 20, 20)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodCli, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodCli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(org.jdesktop.layout.GroupLayout.CENTER, edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(org.jdesktop.layout.GroupLayout.CENTER, edtTipoDoc)
@@ -1660,7 +1682,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1762,6 +1784,18 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         jTabbedPane3.addTab("Extra", jScrollPane21);
 
+        tblDataExtra2.setToolTipText("");
+        tblDataExtra2.setCellSelectionEnabled(true);
+        tblDataExtra2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        tblDataExtra2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataExtra2MouseClicked(evt);
+            }
+        });
+        jScrollPane22.setViewportView(tblDataExtra2);
+
+        jTabbedPane3.addTab("Extra 2", jScrollPane22);
+
         jTabbedPane2.addTab("Detalhe", jTabbedPane3);
 
         tblDataTreller.setToolTipText("");
@@ -1788,7 +1822,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1883,7 +1917,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     .add(jScrollPane20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                    .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                     .add(jScrollPane5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1909,7 +1943,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .add(jScrollPane14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1929,7 +1963,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -1955,7 +1989,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             int ret = jfc.showSaveDialog(this);
             if (ret == JFileChooser.APPROVE_OPTION) {
                 String val = jfc.getSelectedFile().getAbsolutePath();
-                try (OutputStreamWriter bufferOut = new OutputStreamWriter(
+                try ( OutputStreamWriter bufferOut = new OutputStreamWriter(
                         new FileOutputStream(val), "UTF-8")) {
                     String fdata = txtExportDados.getText();
 
@@ -2003,7 +2037,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jfc.getSelectedFile();
-                    try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                    try ( BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
                         while (br.ready()) {
                             String linha = br.readLine();
                             MessageDialog.info(linha.substring(0, 3));
@@ -2306,7 +2340,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
     private void exportTreallerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTreallerActionPerformed
         // TODO add your handling code here:
-                try {
+        try {
             String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_Trealler_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
             JFileChooser jfc = new JFileChooser();
             jfc.setSelectedFile(new File(nomeFile));
@@ -2326,6 +2360,73 @@ public class ExportDocDialog extends javax.swing.JDialog {
             trataErro.trataException(ex, "exportTreallerActionPerformed");
         }
     }//GEN-LAST:event_exportTreallerActionPerformed
+
+    private void reprocessaExtra2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reprocessaExtra2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String filtro_extra2 = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+
+            if (!edtCodCli.getText().isEmpty()) {
+                filtro_extra2 += " AND CLIENTE.CODCLI = " + edtCodCli.getText();
+            }
+
+            if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
+                if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
+                    filtro_extra2 += "AND PCNFSAID.DTSAIDA BETWEEN "
+                            + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
+                            + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
+                } else {
+                    MessageDialog.error("Intervalo de datas de saida invalido!");
+                }
+            }
+
+            // executar a consulta SQL para buscar os dados
+            String sqlBaseExtra2 = tblSqlConsulta.getConteudoRowSelected("sql_Extra_2").toString();
+            String sqlFiltroExtra2 = sqlBaseExtra2.replaceAll("#FILTRO_DADOS_EXTRA_2#", filtro_extra2);
+
+            if (!sqlFiltroExtra2.isEmpty()) {
+                tblDataExtra2.clearTableData();
+                tblDataExtra2.setTableData(sqlFiltroExtra2);
+            }
+            
+            
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "reprocessaExtra2ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "reprocessaExtra2ActionPerformed");
+        }
+    }//GEN-LAST:event_reprocessaExtra2ActionPerformed
+
+    private void tblDataExtra2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataExtra2MouseClicked
+        // TODO add your handling code here:
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            // Exibe o popup menu na posição do mouse.
+            mnuExportaTableData.show(tblDataExtra2, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tblDataExtra2MouseClicked
+
+    private void exportaExtra2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportaExtra2ActionPerformed
+        // TODO add your handling code here:
+                try {
+            String nomeFile = FileSystemView.getFileSystemView().getHomeDirectory() + "/export_extra2_" + edtTipoDoc.getText() + edtRemessa.getText() + ".csv";
+            JFileChooser jfc = new JFileChooser();
+            jfc.setSelectedFile(new File(nomeFile));
+            //abre janela para pastas
+
+            int ret = jfc.showSaveDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                String file = jfc.getSelectedFile().getAbsolutePath();
+                tblDataExtra2.writeToDisk(tblDataExtra2.getTableData(), file);
+                MessageDialog.saveSucess();
+                jfc = null;
+            }
+
+        } catch (HeadlessException | IOException ex) {
+            trataErro.trataException(ex, "exportaExtra2ActionPerformed");
+        } catch (Exception ex) {
+            trataErro.trataException(ex, "exportaExtra2ActionPerformed");
+        }
+    }//GEN-LAST:event_exportaExtra2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2359,6 +2460,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JMenuItem exportExtra;
     private javax.swing.JMenuItem exportHeader;
     private javax.swing.JMenuItem exportTrealler;
+    private javax.swing.JMenuItem exportaExtra2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2385,6 +2487,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane19;
     private javax.swing.JScrollPane jScrollPane20;
     private javax.swing.JScrollPane jScrollPane21;
+    private javax.swing.JScrollPane jScrollPane22;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -2400,6 +2503,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JMenuItem mnuRemessaBuscar;
     private javax.swing.JMenuItem mnuRemessaNova;
     private javax.swing.JPopupMenu pMenuRemessa;
+    private javax.swing.JMenuItem reprocessaExtra2;
     private winthorDb.util.CustomTable tblDataDetalhe;
     private winthorDb.util.CustomTable tblDataDetalheN1;
     private winthorDb.util.CustomTable tblDataDetalheN2;
@@ -2407,6 +2511,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private winthorDb.util.CustomTable tblDataDetalheN4;
     private winthorDb.util.CustomTable tblDataDetalheN5;
     private winthorDb.util.CustomTable tblDataExtra;
+    private winthorDb.util.CustomTable tblDataExtra2;
     private winthorDb.util.CustomTable tblDataHeader;
     private winthorDb.util.CustomTable tblDataTreller;
     private winthorDb.util.CustomTable tblDetalhe;

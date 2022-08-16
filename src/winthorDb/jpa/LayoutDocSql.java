@@ -57,6 +57,12 @@ public class LayoutDocSql implements Serializable {
         //-
     @Column(name = "sql_Treller", nullable = true, length=8092)
     private String sqlTreller;
+        //-
+    @Column(name = "sql_extra_1", nullable = true, length=8092)
+    private String sqlExtra1;
+        //-
+    @Column(name = "sql_extra_2", nullable = true, length=8092)
+    private String sqlExtra2;
     
     public LayoutDocSql() {
     }
@@ -127,28 +133,28 @@ public class LayoutDocSql implements Serializable {
      * @return the sql_Header
      */
     public String getSql_Header() {
-        return sqlHeader;
+        return getSqlHeader();
     }
 
     /**
      * @param sql_Header the sql_Header to set
      */
     public void setSql_Header(String sql_Header) {
-        this.sqlHeader = sql_Header;
+        this.setSqlHeader(sql_Header);
     }
 
     /**
      * @return the sql_Treller
      */
     public String getSql_Treller() {
-        return sqlTreller;
+        return getSqlTreller();
     }
 
     /**
      * @param sql_Treller the sql_Treller to set
      */
     public void setSql_Treller(String sql_Treller) {
-        this.sqlTreller = sql_Treller;
+        this.setSqlTreller(sql_Treller);
     }
 
     /**
@@ -233,5 +239,61 @@ public class LayoutDocSql implements Serializable {
      */
     public void setSqlDetalhe_n5(String sqlDetalhe_n5) {
         this.sqlDetalhe_n5 = sqlDetalhe_n5;
+    }
+
+    /**
+     * @return the sqlHeader
+     */
+    public String getSqlHeader() {
+        return sqlHeader;
+    }
+
+    /**
+     * @param sqlHeader the sqlHeader to set
+     */
+    public void setSqlHeader(String sqlHeader) {
+        this.sqlHeader = sqlHeader;
+    }
+
+    /**
+     * @return the sqlTreller
+     */
+    public String getSqlTreller() {
+        return sqlTreller;
+    }
+
+    /**
+     * @param sqlTreller the sqlTreller to set
+     */
+    public void setSqlTreller(String sqlTreller) {
+        this.sqlTreller = sqlTreller;
+    }
+
+    /**
+     * @return the sqlExtra1
+     */
+    public String getSqlExtra1() {
+        return sqlExtra1;
+    }
+
+    /**
+     * @param sqlExtra1 the sqlExtra1 to set
+     */
+    public void setSqlExtra1(String sqlExtra1) {
+        this.sqlExtra1 = sqlExtra1;
+    }
+
+    /**
+     * @return the sqlExtra2
+     */
+    public String getSqlExtra2() {
+        return sqlExtra2;
+    }
+
+    /**
+     * @param sqlExtra2 the sqlExtra2 to set
+     */
+    public void setSqlExtra2(String sqlExtra2) {
+        this.sqlExtra2 = sqlExtra2;
     }
 }

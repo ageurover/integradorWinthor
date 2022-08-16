@@ -59,7 +59,9 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
                         + " ('' ||sql_Detalhe_n3) as sql_Detalhe_n3, "
                         + " ('' ||sql_Detalhe_n4) as sql_Detalhe_n4, "
                         + " ('' ||sql_Detalhe_n5) as sql_Detalhe_n5, "
-                        + " ('' ||sql_Treller) as sql_Treller "
+                        + " ('' ||sql_Treller) as sql_Treller, "
+                        + " ('' ||sql_extra_1) as sql_Extra_1, "
+                        + " ('' ||sql_extra_2) as sql_Extra_2 "
                         + " FROM LayoutDocSql"
                         + " WHERE idDoc = " + edtCodDoc.getText()
                         + " AND tipoDoc = '" + edtTipoDoc.getText() + "' ";
@@ -104,6 +106,8 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
                                 txtDetalheN4.setText(sqlEdit.getSqlDetalhe_n4());
                                 txtDetalheN5.setText(sqlEdit.getSqlDetalhe_n5());
                                 txtTreller.setText(sqlEdit.getSql_Treller());
+                                txtExtra.setText(sqlEdit.getSqlExtra1());
+                                txtExtra2.setText(sqlEdit.getSqlExtra2());
                             }
                         }
                     }
@@ -124,6 +128,8 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
             sqlEdit.setSqlDetalhe_n4(txtDetalheN4.getText());
             sqlEdit.setSqlDetalhe_n5(txtDetalheN5.getText());
             sqlEdit.setSql_Treller(txtTreller.getText());
+            sqlEdit.setSqlExtra1(txtExtra.getText());
+            sqlEdit.setSqlExtra2(txtExtra2.getText());
         } else {
             throw new Exception("Objeto não declado!");
 
@@ -166,6 +172,10 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
         txtDetalheN4 = new javax.swing.JTextArea();
         jScrollPane9 = new javax.swing.JScrollPane();
         txtDetalheN5 = new javax.swing.JTextArea();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        txtExtra = new javax.swing.JTextArea();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        txtExtra2 = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtTreller = new javax.swing.JTextArea();
@@ -174,8 +184,6 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
         tblConsulta = new winthorDb.util.CustomTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel1.setText("Código Documento");
 
@@ -288,7 +296,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -338,6 +346,24 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
 
         jTabbedPane2.addTab("Detalhe nivel 5", jScrollPane9);
 
+        txtExtra.setColumns(20);
+        txtExtra.setLineWrap(true);
+        txtExtra.setRows(5);
+        txtExtra.setToolTipText("SQL comando para o Extra");
+        txtExtra.setWrapStyleWord(true);
+        jScrollPane10.setViewportView(txtExtra);
+
+        jTabbedPane2.addTab("Extra", jScrollPane10);
+
+        txtExtra2.setColumns(20);
+        txtExtra2.setLineWrap(true);
+        txtExtra2.setRows(5);
+        txtExtra2.setToolTipText("SQL comando para o Extra");
+        txtExtra2.setWrapStyleWord(true);
+        jScrollPane11.setViewportView(txtExtra2);
+
+        jTabbedPane2.addTab("Extra 2", jScrollPane11);
+
         org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -346,7 +372,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+            .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("SQL Detalhe", jPanel4);
@@ -368,7 +394,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -392,7 +418,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
             jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .add(jScrollPane4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -416,7 +442,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -488,6 +514,8 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -505,6 +533,8 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
     private javax.swing.JTextArea txtDetalheN3;
     private javax.swing.JTextArea txtDetalheN4;
     private javax.swing.JTextArea txtDetalheN5;
+    private javax.swing.JTextArea txtExtra;
+    private javax.swing.JTextArea txtExtra2;
     private javax.swing.JTextArea txtHeader;
     private javax.swing.JTextArea txtTreller;
     // End of variables declaration//GEN-END:variables
