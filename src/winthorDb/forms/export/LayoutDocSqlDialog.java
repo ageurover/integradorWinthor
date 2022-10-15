@@ -85,9 +85,9 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
     }
 
     private void mostraDados() {
-        new Thread() {//instancia nova thread já implementando o método run()
+        new Thread() {//instancia nova thread jï¿½ implementando o mï¿½todo run()
             @Override
-            public void run() {//sobrescreve o método run()
+            public void run() {//sobrescreve o mï¿½todo run()
                 String idSql = "";
                 try {
                     idSql = tblConsulta.getConteudoRowSelected("id").toString();
@@ -131,7 +131,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
             sqlEdit.setSqlExtra1(txtExtra.getText());
             sqlEdit.setSqlExtra2(txtExtra2.getText());
         } else {
-            throw new Exception("Objeto não declado!");
+            throw new Exception("Objeto nï¿½o declado!");
 
         }
     }
@@ -185,7 +185,7 @@ public class LayoutDocSqlDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Código Documento");
+        jLabel1.setText("Cï¿½digo Documento");
 
         edtCodDoc.setEditable(false);
         edtCodDoc.addFocusListener(new java.awt.event.FocusAdapter() {

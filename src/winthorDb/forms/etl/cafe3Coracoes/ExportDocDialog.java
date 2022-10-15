@@ -66,9 +66,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }
 
     private void exibeSqlComando() {
-        new Thread() {//instancia nova thread já implementando o método run()
+        new Thread() {//instancia nova thread jï¿½ implementando o mï¿½todo run()
             @Override
-            public void run() {//sobrescreve o método run()
+            public void run() {//sobrescreve o mï¿½todo run()
                 String sqlHeader = "";
                 String sqlDetalhe = "";
                 String sqlDetalheN1 = "";
@@ -214,9 +214,9 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }
 
     private void exportaDados() {
-        new Thread() {//instancia nova thread já implementando o método run()
+        new Thread() {//instancia nova thread jï¿½ implementando o mï¿½todo run()
             @Override
-            public void run() {//sobrescreve o método run()
+            public void run() {//sobrescreve o mï¿½todo run()
                 try {
                     txtExportDados.setText("");
                     vContaRegistroH = 0;
@@ -324,7 +324,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         }
                     }
 
-                    MessageDialog.info("Exportação finalizada!");
+                    MessageDialog.info("Exportaï¿½ï¿½o finalizada!");
 
                 } catch (Exception ex) {
                     trataErro.trataException(ex, "exportaDados \n " + this.getName());
@@ -415,7 +415,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblHeader.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -502,7 +502,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblDataDetalhe.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -618,7 +618,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblDataDetalheN1.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -740,7 +740,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblDataDetalheN2.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -865,7 +865,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblDataDetalheN3.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -972,7 +972,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblDataDetalheN4.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -1075,7 +1075,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblDataDetalheN5.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -1161,7 +1161,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                                     }
                             }
                             if ((!tipoDado.equalsIgnoreCase("NLN")) && (campo.length() != tamanho)) {
-                                MessageDialog.error("Tamanho do campo não confere com o layout "
+                                MessageDialog.error("Tamanho do campo nï¿½o confere com o layout "
                                         + "\n sequencia: " + tblTreller.getConteudoRow("sequencia", i).toString().trim()
                                         + "\n tipo dado: " + tipoDado
                                         + "\n Campo: " + vlrDefault + " | " + sqlCampo
@@ -1187,8 +1187,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
     }
 
     /*
-     Gera um arquivo CSV com os campos de cabeçalho e os dados separados por 
-     ponto e virgula, para poder usar o execel para verificar se as posiçoes 
+     Gera um arquivo CSV com os campos de cabeï¿½alho e os dados separados por 
+     ponto e virgula, para poder usar o execel para verificar se as posiï¿½oes 
      estao corretas conforme o layout
      */
     private void processaValidarExport(final String tipoReg, final String dados) {
@@ -1499,7 +1499,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, null));
 
-        jLabel1.setText("Código");
+        jLabel1.setText("Cï¿½digo");
 
         edtCodDoc.setEditable(false);
         edtCodDoc.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -1533,7 +1533,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         jLabel7.setText("Remessa");
 
-        jLabel3.setText("até");
+        jLabel3.setText("atï¿½");
 
         jLabel4.setText("Periodo de Saida");
 
@@ -2108,7 +2108,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataHeaderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataHeaderMouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataHeader, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataHeaderMouseClicked
@@ -2277,7 +2277,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataDetalheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheMouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataDetalhe, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataDetalheMouseClicked
@@ -2285,7 +2285,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataDetalheN1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN1MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataDetalheN1, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataDetalheN1MouseClicked
@@ -2293,7 +2293,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataDetalheN2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN2MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataDetalheN2, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataDetalheN2MouseClicked
@@ -2301,7 +2301,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataDetalheN3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN3MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataDetalheN3, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataDetalheN3MouseClicked
@@ -2309,7 +2309,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataDetalheN4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN4MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataDetalheN4, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataDetalheN4MouseClicked
@@ -2317,7 +2317,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataDetalheN5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataDetalheN5MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataDetalheN5, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataDetalheN5MouseClicked
@@ -2325,7 +2325,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataExtraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataExtraMouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataExtra, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataExtraMouseClicked
@@ -2333,7 +2333,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataTrellerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataTrellerMouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataTreller, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataTrellerMouseClicked
@@ -2400,7 +2400,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private void tblDataExtra2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataExtra2MouseClicked
         // TODO add your handling code here:
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            // Exibe o popup menu na posição do mouse.
+            // Exibe o popup menu na posiï¿½ï¿½o do mouse.
             mnuExportaTableData.show(tblDataExtra2, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_tblDataExtra2MouseClicked
