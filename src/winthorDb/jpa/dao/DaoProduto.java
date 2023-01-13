@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import winthorDb.error.MessageDialog;
 
 import winthorDb.jpa.bean.BeanProduto;
@@ -180,19 +179,12 @@ public class DaoProduto {
                 }
             }
             if (produto.getPcestendereco().equalsIgnoreCase("N")) {
-                java.util.Date utilDate = new java.util.Date();
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                
-                // System.out.println("utilDate:" + utilDate);
-                // System.out.println("sqlDate:" + sqlDate);
-
-                sqlEstEndereco = "INSERT INTO PCESTENDERECO(CODPROD,CODENDERECO,QT,DTVAL)  "
-                        + " VALUES ( ? , ? , ? , ? )";
+                sqlEstEndereco = "INSERT INTO PCESTENDERECO(CODPROD,CODENDERECO,QT)  "
+                        + " VALUES ( ? , ? , ? )";
                 PreparedStatement insEstEnd = connection.prepareStatement(sqlEstEndereco);
                 insEstEnd.setLong(1, produto.getCodprod());
                 insEstEnd.setLong(2, produto.getCodenderecoloja());
                 insEstEnd.setDouble(3, 0.0);
-                insEstEnd.setDate(4, sqlDate);
                 ret = insEstEnd.executeUpdate();
 
                 if (ret > 0) {
@@ -260,7 +252,7 @@ public class DaoProduto {
             e.printStackTrace();
             try {
                 connection.rollback();
-                MessageDialog.error("Transação abortada!");
+                MessageDialog.error("Transação abortada -> Atualizar!");
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
