@@ -265,56 +265,33 @@ public class CustomTable extends javax.swing.JTable {
                 columnHeads.addElement(rsmd.getColumnLabel(i));
                 // carega o tamanho das colunas do resultset
                 tamanhoColuna[x] = rsmd.getColumnLabel(i).length() + 1;
-//                if (rsmd.getColumnDisplaySize(i) > 60) {
-//                    tamanhoColuna[x] = 60;
-//                } else {
-//                    if (rsmd.getColumnType(i) == Types.DECIMAL || rsmd.getColumnType(i) == Types.DATE) {
-//                        tamanhoColuna[x] = 15;
-//                    } else {
-//                        if (rsmd.getColumnType(i) == Types.INTEGER) {
-//                            tamanhoColuna[x] = 10;
-//                        } else {
-//                            tamanhoColuna[x] = rsmd.getColumnDisplaySize(i);
-//                        }
-//                    }
-//                }
                 x++;
-
             }
-
             while (data.next()) {
                 dataRows.addElement(getNextRow(data, rsmd));
             }
 
-//            // carega os dados do resultset
-//            data.first();
-//
-//            do {
-//                dataRows.addElement(getNextRow(data, rsmd));
-//            } while (data.next());
+            setModel(new DefaultTableModel(dataRows, columnHeads));
+
+            if (tamanhoColuna != null) {
+                setColumnWidthsAndOffset(tamanhoColuna);
+            }
+
+            if (autoFit) {
+                autoFitTable(this);
+            }
+
+            if (columnWidths != null) {
+                setColumnWidths(columnWidths);
+            }
+
+            // colcoa o foco no primero elemento da tabela
+            if (getRowCount() >= 0) {
+                clearSelection();
+                changeSelection(0, 0, false, false);
+            }
         } catch (SQLException e) {
         }
-
-        setModel(new DefaultTableModel(dataRows, columnHeads));
-
-        if (tamanhoColuna != null) {
-            setColumnWidthsAndOffset(tamanhoColuna);
-        }
-
-        if (autoFit) {
-            autoFitTable(this);
-        }
-
-        if (columnWidths != null) {
-            setColumnWidths(columnWidths);
-        }
-
-        // colcoa o foco no primero elemento da tabela
-        if (getRowCount() >= 0) {
-            clearSelection();
-            changeSelection(0, 0, false, false);
-        }
-
     }
 
     @SuppressWarnings("UseOfObsoleteCollectionType")
@@ -432,7 +409,7 @@ public class CustomTable extends javax.swing.JTable {
                         break;
                         case Types.DECIMAL:
                             try {
-                            currentRow.addElement(Formato.decimalToCurrStr(rs.getBigDecimal(i),rs.getBigDecimal(i).precision()));
+                            currentRow.addElement(Formato.decimalToCurrStr(rs.getBigDecimal(i), rs.getBigDecimal(i).precision()));
                             tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.decimalToCurrStr(rs.getBigDecimal(i)).length());
                         } catch (SQLException ex) {
                             currentRow.addElement(Formato.intToStr(0));
@@ -442,7 +419,7 @@ public class CustomTable extends javax.swing.JTable {
                         break;
                         case Types.DOUBLE:
                             try {
-                            currentRow.addElement(Formato.doubleToCurrStr(rs.getDouble(i),6));
+                            currentRow.addElement(Formato.doubleToCurrStr(rs.getDouble(i), 6));
                             tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], Formato.doubleToCurrStr(rs.getDouble(i)).length());
                         } catch (SQLException ex) {
                             currentRow.addElement(Formato.intToStr(0));
@@ -462,7 +439,7 @@ public class CustomTable extends javax.swing.JTable {
                                 ret.append(temp);
                             }
                             currentRow.addElement(ret.toString());
-                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x],ret.toString().length());
+                            tamanhoColuna[x] = calculaTamanho(tamanhoColuna[x], ret.toString().length());
                         } catch (SQLException ex) {
                             currentRow.addElement("CLOB");
                             //ex.printStackTrace();
@@ -526,9 +503,9 @@ public class CustomTable extends javax.swing.JTable {
      */
     public void writeToDisk(Object[][] aData, String file) throws Exception {
         //Headers
-        try (FileOutputStream fout = new FileOutputStream(file, false)) {
+        try ( FileOutputStream fout = new FileOutputStream(file, false)) {
             //Headers
-            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout))) {
+            try ( BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout))) {
                 //Headers
                 for (int col = 0; col < getColumnCount(); col++) {
                     bw.append(getColumnName(col));

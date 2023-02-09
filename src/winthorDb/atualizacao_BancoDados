@@ -178,3 +178,97 @@ USING INDEX
 
 
 -- End of DDL Script for Table BRASILDIS.LAYOUTDOC
+
+-- Start of DDL Script for Table KT_TBL_GRUPOCONTA
+CREATE TABLE kt_tbl_grupoconta
+    (codgrupo                       NUMBER,
+    tipo                           VARCHAR2(50 BYTE),
+    codigo                         NUMBER,
+    codepto                        NUMBER,
+    codfilial                      VARCHAR2(2 BYTE),
+    codsec                         NUMBER)
+  PCTFREE     10
+  INITRANS    1
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+  NOCACHE
+  MONITORING
+  NOPARALLEL
+  LOGGING
+/
+
+-- Start of DDL Script for Table BRASILDIS.KT_TBL_APURACAO_DRE
+-- Generated 8-fev-2023 17:32:27 from BRASILDIS@PROD
+
+CREATE TABLE kt_tbl_apuracao_dre
+    (datainicial                    DATE NOT NULL,
+    datafinal                      DATE NOT NULL,
+    codfilial                      VARCHAR2(2 BYTE) NOT NULL,
+    codepto                        NUMBER NOT NULL,
+    codsec                         NUMBER NOT NULL,
+    vlfaturamento                  NUMBER DEFAULT 0,
+    vlcustoreal                    NUMBER DEFAULT 0,
+    vllucro                        NUMBER DEFAULT 0,
+    vlpercas                       NUMBER DEFAULT 0,
+    vlinventario                   NUMBER DEFAULT 0,
+    vlverbarecebida                NUMBER DEFAULT 0,
+    vlverbaaplicada                NUMBER DEFAULT 0,
+    vlverbasaldo                   NUMBER DEFAULT 0,
+    vladicaocusto                  NUMBER DEFAULT 0,
+    vlfolhapagto                   NUMBER DEFAULT 0,
+    vlenergia                      NUMBER DEFAULT 0,
+    vlmanutencao                   NUMBER DEFAULT 0,
+    perclucro                      NUMBER DEFAULT 0,
+    percadicaocusto                NUMBER DEFAULT 0,
+    vldespadm                      NUMBER DEFAULT 0,
+    vlconsumointerno               NUMBER DEFAULT 0,
+    vlfolhapagtoadm                NUMBER DEFAULT 0,
+    percdespdepto                  NUMBER DEFAULT 0,
+    percdespsecao                  NUMBER DEFAULT 0)
+  PCTFREE     10
+  INITRANS    1
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+  NOCACHE
+  MONITORING
+  NOPARALLEL
+  LOGGING
+/
+
+-- Indexes for KT_TBL_APURACAO_DRE
+
+CREATE UNIQUE INDEX idx_kt_apuracao_dre ON kt_tbl_apuracao_dre
+  (
+    codfilial                       ASC,
+    datainicial                     ASC,
+    datafinal                       ASC,
+    codepto                         ASC,
+    codsec                          ASC
+  )
+  PCTFREE     10
+  INITRANS    2
+  MAXTRANS    255
+  TABLESPACE  ts_dados
+  STORAGE   (
+    INITIAL     65536
+    NEXT        1048576
+    MINEXTENTS  1
+    MAXEXTENTS  2147483645
+  )
+NOPARALLEL
+LOGGING
+/
+
+-- End of DDL Script for Table BRASILDIS.KT_TBL_APURACAO_DRE

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import winthorDb.Main;
 import winthorDb.forms.coletor.consultaOS;
 import winthorDb.forms.coletor.vinculaEnderecoLoja;
+import winthorDb.forms.dre.DreGrupoConta;
 
 /**
  *
@@ -61,6 +62,7 @@ public class Brz000 extends javax.swing.JFrame {
         mnuFinanceiro = new javax.swing.JMenu();
         mnuExportaProtesto = new javax.swing.JMenuItem();
         mnuImportaFolhaCnab240 = new javax.swing.JMenuItem();
+        mnuDreGrupoConta = new javax.swing.JMenuItem();
         mnuExportacao = new javax.swing.JMenu();
         mnuExport_3coracoesConEmb31 = new javax.swing.JMenuItem();
         mnuExport_3coracoesDocCob30a = new javax.swing.JMenuItem();
@@ -209,6 +211,14 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         mnuFinanceiro.add(mnuImportaFolhaCnab240);
+
+        mnuDreGrupoConta.setText("DRE - Grupo Conta");
+        mnuDreGrupoConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuDreGrupoContaActionPerformed(evt);
+            }
+        });
+        mnuFinanceiro.add(mnuDreGrupoConta);
 
         jMenuRotinas.add(mnuFinanceiro);
 
@@ -391,6 +401,12 @@ public class Brz000 extends javax.swing.JFrame {
         winthorDb.forms.etl.cafe3Coracoes.ExportDocDialog.open(9001, "3COR_DOCCOB_30A", "0");
     }//GEN-LAST:event_mnuExport_3coracoesDocCob30aActionPerformed
 
+    private void mnuDreGrupoContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuDreGrupoContaActionPerformed
+        // TODO add your handling code here:
+        Main.dialog = new DreGrupoConta();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuDreGrupoContaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -445,6 +461,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuConfigDb;
     private javax.swing.JMenuItem mnuConsultaOs;
     private javax.swing.JMenuItem mnuConversaoEmbalagem;
+    private javax.swing.JMenuItem mnuDreGrupoConta;
     private javax.swing.JMenu mnuEstoque;
     private javax.swing.JMenuItem mnuExport_3coracoesConEmb31;
     private javax.swing.JMenuItem mnuExport_3coracoesDocCob30a;

@@ -74,7 +74,7 @@ public class IntegracaoWinthorDb {
         }
     }
 
-     /**
+    /**
      *
      * @param sqlInsert
      * @return retorna o numero de linhas atualizadas
@@ -123,7 +123,7 @@ public class IntegracaoWinthorDb {
             return ret;
         }
     }
-    
+
     /**
      *
      * @param sqlUpdate
@@ -149,6 +149,60 @@ public class IntegracaoWinthorDb {
 
         } catch (SQLException e) {
             trataErro.trataException(e, "updateDados -> " + sqlUpdate);
+            throw e;
+        } finally {
+            if (rset != null) {
+                try {
+                    rset.close();
+                } catch (SQLException | RuntimeException sqe) {
+                    // logar excecao
+                    trataErro.trataException(sqe);
+                    throw sqe;
+                }
+            }
+
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException | RuntimeException sqe) {
+                    // logar excecao
+                    trataErro.trataException(sqe);
+                    throw sqe;
+                }
+            }
+            return ret;
+        }
+    }
+
+    /**
+     *
+     * @param sqlDelete comando SQL para remover os dados
+     * @return retorna o numero de linhas apagadas
+     * @throws SQLException
+     * @throws Exception
+     */
+    @SuppressWarnings("FinallyDiscardsException")
+    public int deleteDados(String sqlDelete) throws SQLException, Exception {
+        int ret = 0;
+        if (connOrigem == null) {
+            throw new NullPointerException("Falha na conexao com o banco de dados");
+        }
+        
+        // Create a statement
+        PreparedStatement ps = null;
+        ResultSet rset = null;
+        
+        try {
+
+            // Execute the query
+            ps = connOrigem.prepareStatement(sqlDelete);
+            ret = ps.executeUpdate(sqlDelete);
+
+            // connOrigem.commit();
+            // ps.close();
+
+        } catch (SQLException e) {
+            trataErro.trataException(e, "deleteDados -> " + sqlDelete);
             throw e;
         } finally {
             if (rset != null) {
@@ -393,72 +447,72 @@ public class IntegracaoWinthorDb {
                         break;
                     case Types.INTEGER:
                         try {
-                            //currentRow.add(Formato.intToStr(rs.getInt(i)));
-                            currentRow.add(rs.getString(i));
-                        } catch (SQLException ex) {
-                            currentRow.add(Formato.intToStr(0));
-                            //ex.printStackTrace();
-                        }
-                        break;
+                        //currentRow.add(Formato.intToStr(rs.getInt(i)));
+                        currentRow.add(rs.getString(i));
+                    } catch (SQLException ex) {
+                        currentRow.add(Formato.intToStr(0));
+                        //ex.printStackTrace();
+                    }
+                    break;
                     case Types.BIGINT:
                         try {
-                            currentRow.add(rs.getLong(i));
-                        } catch (SQLException ex) {
-                            currentRow.add(Formato.intToStr(0));
-                        }
+                        currentRow.add(rs.getLong(i));
+                    } catch (SQLException ex) {
+                        currentRow.add(Formato.intToStr(0));
+                    }
 
-                        break;
+                    break;
                     case Types.DATE:
                         try {
-                            currentRow.add(Formato.dateToStr(rs.getDate(i)));
-                        } catch (SQLException ex) {
-                            currentRow.add(Formato.intToStr(0));
-                        }
+                        currentRow.add(Formato.dateToStr(rs.getDate(i)));
+                    } catch (SQLException ex) {
+                        currentRow.add(Formato.intToStr(0));
+                    }
 
-                        break;
+                    break;
                     case Types.DECIMAL:
                         try {
-                            //currentRow.add(Formato.decimalToCurrStr(rs.getBigDecimal(i)));
-                            currentRow.add(rs.getString(i));
-                        } catch (SQLException ex) {
-                            currentRow.add(Formato.intToStr(0));
-                        }
+                        //currentRow.add(Formato.decimalToCurrStr(rs.getBigDecimal(i)));
+                        currentRow.add(rs.getString(i));
+                    } catch (SQLException ex) {
+                        currentRow.add(Formato.intToStr(0));
+                    }
 
-                        break;
+                    break;
                     case Types.DOUBLE:
                         try {
-                            //currentRow.add(Formato.doubleToCurrStr(rs.getDouble(i)));
-                            currentRow.add(rs.getString(i));
-                        } catch (SQLException ex) {
-                            currentRow.add(Formato.intToStr(0));
-                        }
+                        //currentRow.add(Formato.doubleToCurrStr(rs.getDouble(i)));
+                        currentRow.add(rs.getString(i));
+                    } catch (SQLException ex) {
+                        currentRow.add(Formato.intToStr(0));
+                    }
 
-                        break;
+                    break;
                     case Types.FLOAT:
                         try {
-                            //currentRow.add(Formato.doubleToCurrStr(rs.getFloat(i)));
-                            currentRow.add(rs.getString(i));
-                        } catch (SQLException ex) {
-                            currentRow.add(Formato.intToStr(0));
-                        }
+                        //currentRow.add(Formato.doubleToCurrStr(rs.getFloat(i)));
+                        currentRow.add(rs.getString(i));
+                    } catch (SQLException ex) {
+                        currentRow.add(Formato.intToStr(0));
+                    }
 
-                        break;
+                    break;
                     case Types.NUMERIC:
                         try {
-                            //currentRow.add(Formato.doubleToCurrStr(rs.getFloat(i)));
-                            //currentRow.add(Formato.doubleToCurrStr(rs.getDouble(i)));
-                            currentRow.add(rs.getString(i));
-                        } catch (SQLException ex) {
-                            currentRow.add(rs.getString(i));
-                        }
+                        //currentRow.add(Formato.doubleToCurrStr(rs.getFloat(i)));
+                        //currentRow.add(Formato.doubleToCurrStr(rs.getDouble(i)));
+                        currentRow.add(rs.getString(i));
+                    } catch (SQLException ex) {
+                        currentRow.add(rs.getString(i));
+                    }
 
-                        break;
+                    break;
                     default:
                         try {
-                            currentRow.add(rs.getString(i));
-                        } catch (SQLException ex) {
-                            currentRow.add("<Erro> " + ex.getMessage());
-                        }
+                        currentRow.add(rs.getString(i));
+                    } catch (SQLException ex) {
+                        currentRow.add("<Erro> " + ex.getMessage());
+                    }
 
                 }
                 x++;
