@@ -60,38 +60,36 @@ public class Brz013 extends javax.swing.JFrame {
                 edtFileName.setText(selectedFile.getCanonicalPath());
 
                 if (!edtFileName.getText().isEmpty()) {
-                    FileReader reader = new FileReader(edtFileName.getText());
-                    BufferedReader bufferedReader = new BufferedReader(reader);
-
-                    String line, line_A, line_B, seg, cnpjFilial, filial[] = new String[6];
-                    
-                    getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                    while ((line = bufferedReader.readLine()) != null) {
-                        //System.out.println(line);
-                        seg = line.substring(13, 14);
-
-                        if (seg.equalsIgnoreCase("0")) {
-                            cnpjFilial = line.substring(18, 32);
-                            filial = buscaFilial(cnpjFilial);
-                            if (!filial[0].equalsIgnoreCase(edtCodFilial.getText())) {
-                                getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                                MessageDialog.error("Filial informada é diferente do arquivo a ser processado!");
-                                reader.close();
-                                return;
+                    try (FileReader reader = new FileReader(edtFileName.getText())) {
+                        BufferedReader bufferedReader = new BufferedReader(reader);
+                        String line, seg, cnpjFilial, filial[] = new String[6];
+                        getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                        while ((line = bufferedReader.readLine()) != null) {
+                            //System.out.println(line);
+                            seg = line.substring(13, 14);
+                            
+                            if (seg.equalsIgnoreCase("0")) {
+                                cnpjFilial = line.substring(18, 32);
+                                filial = buscaFilial(cnpjFilial);
+                                if (!filial[0].equalsIgnoreCase(edtCodFilial.getText())) {
+                                    getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                    MessageDialog.error("Filial informada é diferente do arquivo a ser processado!");
+                                    reader.close();
+                                    return;
+                                }
+                                
                             }
-
-                        }
-                        if (seg.equalsIgnoreCase("A")) {
-                            nomeFornecedor = line.substring(43, 73);
-                        }
-                        if (seg.equalsIgnoreCase("B")) {
-                            processaLinha(line);
-                            nomeFornecedor = "";
+                            if (seg.equalsIgnoreCase("A")) {
+                                nomeFornecedor = line.substring(43, 73);
+                            }
+                            if (seg.equalsIgnoreCase("B")) {
+                                processaLinha(line);
+                                nomeFornecedor = "";
+                            }
                         }
                     }
-                    reader.close();
                     getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                    if (contasPagar.size() > 0) {
+                    if (!contasPagar.isEmpty()) {
                         btnGravarContasPagar.setEnabled(true);
                         for (Object cp : contasPagar) {
                             edtLog.append(cp.toString() + "\n");
@@ -186,7 +184,7 @@ public class Brz013 extends javax.swing.JFrame {
 
             wint.openConectOracle();
             dados = wint.selectDados(strSelect);
-            if (dados.size() > 0) {
+            if (!dados.isEmpty()) {
                 fornec = (List) dados.get(0);
                 ret[0] = fornec.get(0).toString().replace("[", "").replace("]", "").trim();
                 ret[1] = fornec.get(1).toString().replace("[", "").replace("]", "").trim();
@@ -204,19 +202,18 @@ public class Brz013 extends javax.swing.JFrame {
         List number = new ArrayList();
         List dados = new ArrayList();
         String ret[] = new String[3];
-        int exec = 0;
         String strSelect = "";
         try {
             strSelect = "Select PROXNUMLANC+1 from PCCONSUM ";
             wint.openConectOracle();
             dados = wint.selectDados(strSelect);
-            if (dados.size() > 0) {
+            if (!dados.isEmpty()) {
                 number = (List) dados.get(0);
                 ret[0] = number.get(0).toString().replace("[", "").replace("]", "").trim();
                 // ret[1] = number.get(1).toString().replace("[", "").replace("]", "").trim();
                 // ret[2] = number.get(2).toString().replace("[", "").replace("]", "").trim();
 
-                exec = wint.updateDados("UPDATE PCCONSUM SET PROXNUMLANC = " + ret[0] );
+                wint.updateDados("UPDATE PCCONSUM SET PROXNUMLANC = " + ret[0] );
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "buscaNumerador");
@@ -239,7 +236,7 @@ public class Brz013 extends javax.swing.JFrame {
 
             wint.openConectOracle();
             dados = wint.selectDados(strSelect);
-            if (dados.size() > 0) {
+            if (!dados.isEmpty()) {
                 filial = (List) dados.get(0);
                 ret[0] = filial.get(0).toString().replace("[", "").replace("]", "").trim(); // codigo
                 ret[1] = filial.get(1).toString().replace("[", "").replace("]", "").trim(); // cgc
@@ -551,7 +548,7 @@ public class Brz013 extends javax.swing.JFrame {
             getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             gravarContasPagar();
             getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            if (trataErro.lstErros.size() > 0) {
+            if (!trataErro.lstErros.isEmpty()) {
                 trataErro.mostraListaErros();
             } else {
                 MessageDialog.saveSucess();

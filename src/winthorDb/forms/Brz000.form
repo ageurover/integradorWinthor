@@ -171,7 +171,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="mnuExportacao">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o"/>
+                <Property name="text" type="java.lang.String" value="Exporta&#xe7;&#xe3;o 3C"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuExport_3coracoesConEmb31">
@@ -188,6 +188,14 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExport_3coracoesDocCob30aActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuNotaServico">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Nota de Servi&#xe7;o"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuNotaServicoActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
@@ -211,6 +219,21 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="mnuContabil">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Contabilidade"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuImportarSped">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Importar Sped"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuImportarSpedActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>

@@ -417,7 +417,7 @@ public class DreGrupoConta extends javax.swing.JFrame {
 
         jLabel5.setText("DRE - Grupo:");
 
-        cmbDreGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 - FATURAMENTO", "2 - PERDAS", "3 - ENERGIA", "4 - CONSUMO_INTERNO", "5 - MANUTENCAO", "6 - INVENTARIO" }));
+        cmbDreGrupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 - FATURAMENTO", "2 - PERDAS", "3 - ENERGIA", "4 - CONSUMO_INTERNO", "5 - MANUTENCAO", "6 - INVENTARIO4", "7 - ADMINISTRATIVO" }));
         cmbDreGrupo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbDreGrupoItemStateChanged(evt);
@@ -569,6 +569,20 @@ public class DreGrupoConta extends javax.swing.JFrame {
                         }
                         break;
                     case "INVENTARIO":
+                        // Carrega os dados para o tipo global de despesa
+                        if ((!codFilial.isEmpty()) && (!codGrupo.isEmpty()) && (!tipo.isEmpty()) && (!codigo.isEmpty())) {
+                            insert = "INSERT INTO KT_TBL_GRUPOCONTA (CODGRUPO,TIPO,CODFILIAL,CODIGO) \n"
+                                    + "VALUES( "
+                                    + codGrupo
+                                    + " , '" + tipo + "'"
+                                    + " , '" + codFilial + "'"
+                                    + " , " + codigo
+                                    + " ) ";
+                        } else {
+                            insert = "";
+                        }
+                        break;
+                    case "ADMINISTRATIVO":
                         // Carrega os dados para o tipo global de despesa
                         if ((!codFilial.isEmpty()) && (!codGrupo.isEmpty()) && (!tipo.isEmpty()) && (!codigo.isEmpty())) {
                             insert = "INSERT INTO KT_TBL_GRUPOCONTA (CODGRUPO,TIPO,CODFILIAL,CODIGO) \n"

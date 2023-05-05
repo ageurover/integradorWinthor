@@ -66,9 +66,12 @@ public class Brz000 extends javax.swing.JFrame {
         mnuExportacao = new javax.swing.JMenu();
         mnuExport_3coracoesConEmb31 = new javax.swing.JMenuItem();
         mnuExport_3coracoesDocCob30a = new javax.swing.JMenuItem();
+        mnuNotaServico = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        mnuContabil = new javax.swing.JMenu();
+        mnuImportarSped = new javax.swing.JMenuItem();
         mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
 
@@ -222,7 +225,7 @@ public class Brz000 extends javax.swing.JFrame {
 
         jMenuRotinas.add(mnuFinanceiro);
 
-        mnuExportacao.setText("Exportação");
+        mnuExportacao.setText("Exportação 3C");
 
         mnuExport_3coracoesConEmb31.setText("3 Corações CONEMB  3.1");
         mnuExport_3coracoesConEmb31.addActionListener(new java.awt.event.ActionListener() {
@@ -239,6 +242,14 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         mnuExportacao.add(mnuExport_3coracoesDocCob30a);
+
+        mnuNotaServico.setText("Nota de Serviço");
+        mnuNotaServico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuNotaServicoActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuNotaServico);
 
         jMenuRotinas.add(mnuExportacao);
 
@@ -261,6 +272,18 @@ public class Brz000 extends javax.swing.JFrame {
         mnuColetor.add(jMenuItem4);
 
         jMenuRotinas.add(mnuColetor);
+
+        mnuContabil.setText("Contabilidade");
+
+        mnuImportarSped.setText("Importar Sped");
+        mnuImportarSped.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuImportarSpedActionPerformed(evt);
+            }
+        });
+        mnuContabil.add(mnuImportarSped);
+
+        jMenuRotinas.add(mnuContabil);
 
         mnuConfig.setText("Configuração");
 
@@ -407,6 +430,15 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuDreGrupoContaActionPerformed
 
+    private void mnuImportarSpedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuImportarSpedActionPerformed
+        Main.dialog = new Brz015();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuImportarSpedActionPerformed
+
+    private void mnuNotaServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuNotaServicoActionPerformed
+        winthorDb.forms.etl.cafe3Coracoes.LancarNotaServico.open();
+    }//GEN-LAST:event_mnuNotaServicoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -460,6 +492,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenuItem mnuConfigDb;
     private javax.swing.JMenuItem mnuConsultaOs;
+    private javax.swing.JMenu mnuContabil;
     private javax.swing.JMenuItem mnuConversaoEmbalagem;
     private javax.swing.JMenuItem mnuDreGrupoConta;
     private javax.swing.JMenu mnuEstoque;
@@ -470,6 +503,8 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuFilialFaturaCarga;
     private javax.swing.JMenu mnuFinanceiro;
     private javax.swing.JMenuItem mnuImportaFolhaCnab240;
+    private javax.swing.JMenuItem mnuImportarSped;
+    private javax.swing.JMenuItem mnuNotaServico;
     private javax.swing.JMenuItem mnuPedidoViradaMes;
     private javax.swing.JMenuItem mnuProcessarImagens;
     private javax.swing.JMenuItem mnuProcessoDevolucaoCupom;

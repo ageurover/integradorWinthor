@@ -975,6 +975,26 @@ public class Formato {
         return newDados;
     }
 
+        /**
+     * Coloca zeros a direita do texto informado
+     *
+     * @param strDados
+     * @param tamanho
+     * @return Retorna o Texto informado com espa?os a Direita
+     */
+    public static String zerosDireita(String strDados, int tamanho) {
+        String newDados = ""; //strDados;
+        int tam = strDados.length();
+        if (strDados != null) {
+            newDados = strDados;
+        }
+
+        for (int i = 0; i < (tamanho - tam); i++) {
+            newDados += "0";
+        }
+        return newDados;
+    }
+
     /**
      * Coloca espaços a esquerda do texto informado
      *
