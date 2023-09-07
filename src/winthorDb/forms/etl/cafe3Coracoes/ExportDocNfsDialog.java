@@ -24,7 +24,7 @@ import winthorDb.util.Formato;
  *
  * @author Ageu Elias Rover
  */
-public class ExportDocDialog extends javax.swing.JDialog {
+public class ExportDocNfsDialog extends javax.swing.JDialog {
 
     int vContaRegistroD = 0;
     int vContaRegistroD1 = 0;
@@ -38,7 +38,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
     int vContaRegistroG = 0;
 
     public static void open(int idDoc, String tipoDoc, String idFaturamento) {
-        new ExportDocDialog(null, true, idDoc, tipoDoc, idFaturamento).setVisible(true);
+        new ExportDocNfsDialog(null, true, idDoc, tipoDoc, idFaturamento).setVisible(true);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
      * @param idFaturamento
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public ExportDocDialog(java.awt.Frame parent, boolean modal, int idDoc, String tipoDoc, String idFaturamento) {
+    public ExportDocNfsDialog(java.awt.Frame parent, boolean modal, int idDoc, String tipoDoc, String idFaturamento) {
         super(parent, modal);
         initComponents();
 
@@ -233,23 +233,25 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     String fields = "";
 
                     // Exportacao do Header
-                    String filtro_header = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+                    String filtro_header = " AND fl.codigo = '" + edtCodFilial.getText() + "' ";
 
-                    if (!edtCodCli3Cor.getText().isEmpty()) {
-                        filtro_header += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+                    if (!edtCodCli.getText().isEmpty()) {
+                        filtro_header += " AND dest.CODCLI = " + edtCodCli.getText();
                     }
                     if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
                         if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                            filtro_header += "AND PCNFSAID.DTSAIDA BETWEEN "
-                                    + " TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
+                            filtro_header += "AND ns.dataemissao BETWEEN "
+                                    + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
                                     + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
                         } else {
                             MessageDialog.error("Intervalo de datas de saida invalido!");
                         }
                     }
-                    if (!edtCodDestinatario.getText().isEmpty()) {
-                        filtro_header += " AND NVL(DESTINATARIO.CODCLI, PCNFSAID.CODCLI) = " + edtCodDestinatario.getText();
+                    
+                    if (!edtNumeroNota.getText().isEmpty()){
+                        filtro_header += "AND ns.numero = " + edtNumeroNota.getText();
                     }
+                    
                     // executar a consulta SQL para buscar os dados
                     String sqlHeader = tblSqlConsulta.getConteudoRowSelected("sql_header").toString().replaceAll("#FILTRO_DADOS_HEADER#", filtro_header);
                     sqlHeader = sqlHeader.replaceAll("#NOVAS_TAGS#", fields);
@@ -267,24 +269,24 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     // Campos variaveis de tele para o Select   #NOVAS_TAGS#
                     fields = " ";
 
-                    String filtro_detalhe = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+                    String filtro_detalhe = " AND fl.codigo = '" + edtCodFilial.getText() + "' ";
 
-                    if (!edtCodCli3Cor.getText().isEmpty()) {
-                        filtro_detalhe += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+                    if (!edtCodCli.getText().isEmpty()) {
+                        filtro_detalhe += " AND dest.CODCLI = " + edtCodCli.getText();
                     }
 
                     if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
                         if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                            filtro_detalhe += "AND PCNFSAID.DTSAIDA BETWEEN "
-                                    + " TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
+                            filtro_detalhe += "AND ns.dataemissao BETWEEN "
+                                    + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
                                     + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
                         } else {
                             MessageDialog.error("Intervalo de datas de saida invalido!");
                         }
                     }
 
-                    if (!edtCodDestinatario.getText().isEmpty()) {
-                        filtro_detalhe += " AND NVL(DESTINATARIO.CODCLI, PCNFSAID.CODCLI) = " + edtCodDestinatario.getText();
+                    if (!edtNumeroNota.getText().isEmpty()){
+                        filtro_detalhe += "AND ns.numero = " + edtNumeroNota.getText();
                     }
 
                     // executar a consulta SQL para buscar os dados
@@ -304,25 +306,24 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
                     fields = " ";
 
-                    String filtro_treller = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+                    String filtro_treller = " AND fl.codigo = '" + edtCodFilial.getText() + "' ";
 
-                    if (!edtCodCli3Cor.getText().isEmpty()) {
-                        filtro_treller += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+                    if (!edtCodCli.getText().isEmpty()) {
+                        filtro_treller += "  AND dest.CODCLI = " + edtCodCli.getText();
                     }
                     if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
                         if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                            filtro_treller += "AND PCNFSAID.DTSAIDA BETWEEN "
-                                    + " TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
+                            filtro_treller += "AND ns.dataemissao BETWEEN "
+                                    + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
                                     + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
                         } else {
                             MessageDialog.error("Intervalo de datas de saida invalido!");
                         }
                     }
-
-                    if (!edtCodDestinatario.getText().isEmpty()) {
-                        filtro_treller += " AND NVL(DESTINATARIO.CODCLI, PCNFSAID.CODCLI) = " + edtCodDestinatario.getText();
+                    
+                    if (!edtNumeroNota.getText().isEmpty()){
+                        filtro_treller += "AND ns.numero = " + edtNumeroNota.getText();
                     }
-
                     // executar a consulta SQL para buscar os dados
                     String sqlTreller = tblSqlConsulta.getConteudoRowSelected("sql_Treller").toString().replaceAll("#FILTRO_DADOS_TRELLER#", filtro_treller);
                     sqlTreller = sqlTreller.replaceAll("#NOVAS_TAGS#", fields);
@@ -528,26 +529,25 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         txtExportDados.append(linha);
 
                         // Exportacao do Detalhe N1 para cada linha do N0
-                        String filtro_detalhe = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+                        String filtro_detalhe = " AND fl.codigo = '" + edtCodFilial.getText() + "' ";
 
-                        if (!edtCodCli3Cor.getText().isEmpty()) {
-                            filtro_detalhe += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND dest.CODCLI = " + edtCodCli.getText();
                         }
 
                         if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
                             if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                                filtro_detalhe += "AND PCNFSAID.DTSAIDA BETWEEN "
-                                        + " TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
+                                filtro_detalhe += "AND ns.dataemissao BETWEEN "
+                                        + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
                                         + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
                             } else {
                                 MessageDialog.error("Intervalo de datas de saida invalido!");
                             }
                         }
 
-                        if (!edtCodDestinatario.getText().isEmpty()) {
-                            filtro_detalhe += " AND NVL(DESTINATARIO.CODCLI, PCNFSAID.CODCLI) = " + edtCodDestinatario.getText();
+                        if (!edtNumeroNota.getText().isEmpty()){
+                         filtro_detalhe += " AND ns.numero = " + edtNumeroNota.getText();
                         }
-
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN1 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n1").toString();
                         String sqlDetalheN1 = sqlDetalheBaseN1.replaceAll("#FILTRO_DADOS_DETALHE_N1#", filtro_detalhe);
@@ -649,15 +649,15 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         txtExportDados.append(linha);
 
                         // Exportacao do Detalhe N2 para cada linha do N1
-                        String filtro_detalhe = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+                        String filtro_detalhe = " AND fl.codigo = '" + edtCodFilial.getText() + "' ";
 
-                        if (!edtCodCli3Cor.getText().isEmpty()) {
-                            filtro_detalhe += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND dest.CODCLI = " + edtCodCli.getText();
                         }
 
                         if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
                             if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                                filtro_detalhe += "AND PCNFSAID.DTSAIDA BETWEEN "
+                                filtro_detalhe += "AND ns.dataemissao BETWEEN "
                                         + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
                                         + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
                             } else {
@@ -665,9 +665,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
                             }
                         }
 
-                        if (!edtCodDestinatario.getText().isEmpty()) {
-                            filtro_detalhe += " AND NVL(DESTINATARIO.CODCLI, PCNFSAID.CODCLI) = " + edtCodDestinatario.getText();
+                        if (!edtNumeroNota.getText().isEmpty()){
+                         filtro_detalhe += " AND ns.numero = " + edtNumeroNota.getText();
                         }
+                        
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN2 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n2").toString();
                         String sqlDetalheN2 = sqlDetalheBaseN2.replaceAll("#FILTRO_DADOS_DETALHE_N2#", filtro_detalhe);
@@ -773,32 +774,32 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         txtExportDados.append(linha);
 
                         // Exportacao do Detalhe N3 para cada linha do N2
-                        String filtro_detalhe = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
+                        String filtro_detalhe = " AND fl.codigo = '" + edtCodFilial.getText() + "' ";
 
-                        if (!edtCodCli3Cor.getText().isEmpty()) {
-                            filtro_detalhe += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+                        if (!edtCodCli.getText().isEmpty()) {
+                            filtro_detalhe += " AND dest.CODCLI = " + edtCodCli.getText();
                         }
 
                         if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
                             if (txtDataInicial.getDate().before(txtDataFinal.getDate())) {
-                                filtro_detalhe += "AND PCNFSAID.DTSAIDA BETWEEN "
+                                filtro_detalhe += "AND ns.dataemissao BETWEEN "
                                         + "TO_DATE('" + Formato.dateToStr(txtDataInicial.getDate()) + "','DD/MM/YYYY') "
                                         + " AND TO_DATE('" + Formato.dateToStr(txtDataFinal.getDate()) + "','DD/MM/YYYY') ";
                             } else {
                                 MessageDialog.error("Intervalo de datas de saida invalido!");
                             }
                         }
-
-                        if (!edtCodDestinatario.getText().isEmpty()) {
-                            filtro_detalhe += " AND NVL(DESTINATARIO.CODCLI, PCNFSAID.CODCLI) = " + edtCodDestinatario.getText();
+                        
+                        if (!edtNumeroNota.getText().isEmpty()){
+                         filtro_detalhe += " AND ns.numero = " + edtNumeroNota.getText();
                         }
-                                                
-                        if (edtTipoDoc.getText().equalsIgnoreCase("3COR_CONEMB_31")) {
-                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA", d).toString() + ") ";
+                        
+                        if (edtTipoDoc.getText().equalsIgnoreCase("NS_3COR_CONEMB_31")) {
+                            filtro_detalhe += " AND ns.numero IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA", d).toString() + ") ";
                         }
 
-                        if (edtTipoDoc.getText().equalsIgnoreCase("3COR_DOCCOB_30A")) {
-                            filtro_detalhe += " AND PCNFSAID.NUMNOTA IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA", d).toString() + ") ";
+                        if (edtTipoDoc.getText().equalsIgnoreCase("NS_3COR_DOCCOB_30A")) {
+                            filtro_detalhe += " AND ns.numero IN (" + tblDataDetalheN2.getConteudoRow("NUMERO_NOTA", d).toString() + ") ";
                         }
                         // executar a consulta SQL para buscar os dados
                         String sqlDetalheBaseN3 = tblSqlConsulta.getConteudoRowSelected("sql_Detalhe_n3").toString();
@@ -904,8 +905,12 @@ public class ExportDocDialog extends javax.swing.JDialog {
                         // Exportacao do Detalhe N4 para cada linha do N3
                         String filtro_detalhe = " ";
 
-                        if (edtTipoDoc.getText().equalsIgnoreCase("3COR_DOCCOB_30A")) {
-                            filtro_detalhe += " AND CFI.NUMTRANSCONHEC = " + tblDataDetalheN3.getConteudoRow("NUMTRANSVENDACONHEC", d).toString();
+                        if (!edtNumeroNota.getText().isEmpty()){
+                         filtro_detalhe += " AND ns.numero = " + edtNumeroNota.getText();
+                        }
+                        
+                        if (edtTipoDoc.getText().equalsIgnoreCase("NS_3COR_DOCCOB_30A")) {
+                            filtro_detalhe += " AND NS.numero = " + tblDataDetalheN3.getConteudoRow("NUMTRANSVENDACONHEC", d).toString();
                         }
 
                         // executar a consulta SQL para buscar os dados
@@ -1355,7 +1360,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         edtCodFilial = new javax.swing.JTextField();
         btnProcessar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        edtCodCli3Cor = new javax.swing.JTextField();
+        edtCodCli = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         edtRemessa = new javax.swing.JTextField();
         txtDataInicial = new com.toedter.calendar.JDateChooser();
@@ -1363,7 +1368,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        edtCodDestinatario = new javax.swing.JTextField();
+        edtNumeroNota = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -1552,7 +1557,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel6.setText("Cod. 3 Corações");
+        jLabel6.setText("Cod. Cliente");
 
         jLabel7.setText("Remessa");
 
@@ -1560,93 +1565,92 @@ public class ExportDocDialog extends javax.swing.JDialog {
 
         jLabel4.setText("Periodo de Saida");
 
-        jLabel8.setText("Cod. Destinatário");
+        jLabel8.setText("Num. Nota");
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(edtCodDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel1))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(edtCodCli)
+                    .add(jLabel6))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(edtCodDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jLabel1))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(edtTipoDoc, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 55, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(18, 18, 18)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
-                            .add(edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .add(18, 18, 18)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(edtCodCli3Cor)
-                            .add(jLabel6))
-                        .add(18, 18, 18)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(edtCodDestinatario)
-                            .add(jLabel8)))
+                        .add(jLabel8)
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(edtNumeroNota))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel4)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(txtDataInicial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel3)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(txtDataFinal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(btnProcessar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .add(txtDataFinal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 115, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabel4))
+                .add(18, 18, 18)
+                .add(btnProcessar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(btnProcessar)
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
-                            .add(jLabel1)
-                            .add(jLabel2))
-                        .add(jLabel7)
-                        .add(org.jdesktop.layout.GroupLayout.CENTER, jPanel1Layout.createSequentialGroup()
-                            .add(20, 20, 20)
-                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(org.jdesktop.layout.GroupLayout.CENTER, edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(org.jdesktop.layout.GroupLayout.CENTER, edtTipoDoc)
-                                .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodDoc))))
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                        .add(jPanel1Layout.createSequentialGroup()
-                            .add(jLabel8)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(edtCodDestinatario, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel6)
-                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel5))
-                            .add(org.jdesktop.layout.GroupLayout.CENTER, jPanel1Layout.createSequentialGroup()
-                                .add(20, 20, 20)
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                                    .add(jLabel1)
+                                    .add(jLabel2))
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodCli3Cor, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
-                                    .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel4)
-                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
-                        .add(txtDataInicial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jLabel3)
-                        .add(txtDataFinal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .add(jLabel7)
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel6)
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel5))
+                                .add(org.jdesktop.layout.GroupLayout.CENTER, jPanel1Layout.createSequentialGroup()
+                                    .add(20, 20, 20)
+                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodCli, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                                        .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodFilial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(org.jdesktop.layout.GroupLayout.CENTER, edtRemessa, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(org.jdesktop.layout.GroupLayout.CENTER, edtTipoDoc)
+                                        .add(org.jdesktop.layout.GroupLayout.CENTER, edtCodDoc)))
+                                .add(jPanel1Layout.createSequentialGroup()
+                                    .add(3, 3, 3)
+                                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(jPanel1Layout.createSequentialGroup()
+                                            .add(jLabel4)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                                                .add(txtDataInicial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                                .add(jLabel3)
+                                                .add(txtDataFinal, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                        .add(btnProcessar))))
+                            .add(jLabel8))
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(20, 20, 20)
+                        .add(edtNumeroNota)))
+                .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(new java.awt.Component[] {edtCodCli3Cor, edtCodDoc, edtCodFilial, edtTipoDoc}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        jPanel1Layout.linkSize(new java.awt.Component[] {edtCodCli, edtCodDoc, edtCodFilial, edtTipoDoc}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -1721,7 +1725,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1861,7 +1865,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1956,7 +1960,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
                     .add(jScrollPane20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 72, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+                    .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                     .add(jScrollPane5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1982,7 +1986,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
             jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .add(jScrollPane14, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2000,8 +2004,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -2404,8 +2408,8 @@ public class ExportDocDialog extends javax.swing.JDialog {
         try {
             String filtro_extra2 = " AND NVL(PCNFSAID.CODFILIALNF,PCNFSAID.CODFILIAL) = '" + edtCodFilial.getText() + "' ";
 
-            if (!edtCodCli3Cor.getText().isEmpty()) {
-                filtro_extra2 += " AND CLIENTE.CODCLI = " + edtCodCli3Cor.getText();
+            if (!edtCodCli.getText().isEmpty()) {
+                filtro_extra2 += " AND CLIENTE.CODCLI = " + edtCodCli.getText();
             }
 
             if ((txtDataInicial.getDate() != null) && (txtDataFinal.getDate() != null)) {
@@ -2472,7 +2476,7 @@ public class ExportDocDialog extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ExportDocDialog(new javax.swing.JFrame(), true, 0, null, null).setVisible(true);
+                new ExportDocNfsDialog(new javax.swing.JFrame(), true, 0, null, null).setVisible(true);
             }
         });
     }
@@ -2482,10 +2486,10 @@ public class ExportDocDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnLayout;
     private javax.swing.JButton btnProcessar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JTextField edtCodCli3Cor;
-    private javax.swing.JTextField edtCodDestinatario;
+    private javax.swing.JTextField edtCodCli;
     private javax.swing.JTextField edtCodDoc;
     private javax.swing.JTextField edtCodFilial;
+    private javax.swing.JTextField edtNumeroNota;
     private javax.swing.JTextField edtRemessa;
     private javax.swing.JTextField edtTipoDoc;
     private javax.swing.JButton edtValidar;

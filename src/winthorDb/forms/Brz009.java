@@ -65,7 +65,7 @@ public class Brz009 extends javax.swing.JFrame {
                     + " AND p.condvenda in (1) "
                     + " AND u.codusur = p.codusur "
                     + " AND c.codcli = p.codcli "
-                    + " AND p.codCob in ('DH','D','CH','CHV','CHP') "
+                    + " AND p.codCob in ('DH','D','CH','CHV','CHP','PIX') "
                     + " AND p.vlatend < 9999.00 "
                     + " AND p.numped not in (select it.numped from pcpedi it where it.numcar = p.numcar and it.bonific in ('S','F') and it.pbonific > 0 ) "
                     + " AND p.numcar = " + numCarga

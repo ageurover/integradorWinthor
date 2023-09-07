@@ -67,6 +67,8 @@ public class Brz000 extends javax.swing.JFrame {
         mnuExport_3coracoesConEmb31 = new javax.swing.JMenuItem();
         mnuExport_3coracoesDocCob30a = new javax.swing.JMenuItem();
         mnuNotaServico = new javax.swing.JMenuItem();
+        mnuExpNs_conemb31 = new javax.swing.JMenuItem();
+        mnuExpNs_doccob30a = new javax.swing.JMenuItem();
         mnuColetor = new javax.swing.JMenu();
         mnuConsultaOs = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -250,6 +252,22 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         mnuExportacao.add(mnuNotaServico);
+
+        mnuExpNs_conemb31.setText("Exp. Nota Serv CONEMB 3.1");
+        mnuExpNs_conemb31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExpNs_conemb31ActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuExpNs_conemb31);
+
+        mnuExpNs_doccob30a.setText("Exp. Nota Serv DOCCOB 3.0A");
+        mnuExpNs_doccob30a.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExpNs_doccob30aActionPerformed(evt);
+            }
+        });
+        mnuExportacao.add(mnuExpNs_doccob30a);
 
         jMenuRotinas.add(mnuExportacao);
 
@@ -439,6 +457,15 @@ public class Brz000 extends javax.swing.JFrame {
         winthorDb.forms.etl.cafe3Coracoes.LancarNotaServico.open();
     }//GEN-LAST:event_mnuNotaServicoActionPerformed
 
+    private void mnuExpNs_conemb31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExpNs_conemb31ActionPerformed
+        winthorDb.forms.etl.cafe3Coracoes.ExportDocNfsDialog.open(9002, "NS_3COR_CONEMB_31", "0");
+    }//GEN-LAST:event_mnuExpNs_conemb31ActionPerformed
+
+    private void mnuExpNs_doccob30aActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExpNs_doccob30aActionPerformed
+        // TODO add your handling code here:
+        winthorDb.forms.etl.cafe3Coracoes.ExportDocNfsDialog.open(9002, "NS_3COR_DOCCOB_30A", "0");
+    }//GEN-LAST:event_mnuExpNs_doccob30aActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -496,6 +523,8 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuConversaoEmbalagem;
     private javax.swing.JMenuItem mnuDreGrupoConta;
     private javax.swing.JMenu mnuEstoque;
+    private javax.swing.JMenuItem mnuExpNs_conemb31;
+    private javax.swing.JMenuItem mnuExpNs_doccob30a;
     private javax.swing.JMenuItem mnuExport_3coracoesConEmb31;
     private javax.swing.JMenuItem mnuExport_3coracoesDocCob30a;
     private javax.swing.JMenuItem mnuExportaProtesto;

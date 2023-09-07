@@ -51,7 +51,8 @@ public class Brz0012 extends javax.swing.JFrame {
         IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
 
         try {
-            String strSelect = "SELECT p.numcar, ('' || p.numped) as numped, p.ORIGEMPED, p.data, p.vltotal, p.vlatend, p.codcli, c.cliente, p.codfilial, p.codfilialnf, c.codfilialnf FilialFat_Cli ,"
+            String strSelect = "SELECT p.numcar, ('' || p.numped) as numped, p.ORIGEMPED, p.data, p.vltotal, "
+                    + " p.vlatend, p.codcli, c.cliente, p.codfilial, p.codfilialnf, c.codfilialnf FilialFat_Cli ,"
                     + " p.posicao, u.codusur, u.nome as NomeRCA, p.dtfat, p.numcupom, p.obs, p.obs1, p.obs2  "
                     + " FROM pcpedc p, pcusuari u, pcclient c "
                     + " WHERE p.posicao in ('L','B','P','M') "

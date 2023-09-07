@@ -55,7 +55,7 @@ public class Brz003 extends javax.swing.JFrame {
                     + " and p.condvenda in (1) "
                     + " and u.codusur = p.codusur "
                     + " and c.codcli = p.codcli "
-                    + " and p.codCob in ('DH','D','CH','CHV','CHP') "
+                    + " and p.codCob in ('DH','D','CH','CHV','CHP','PIX') "
                     + " and p.vlatend < 9999.00"
                     + " and p.codfilial = " + codFilial
                     + " and p.numped = " + numPedido;

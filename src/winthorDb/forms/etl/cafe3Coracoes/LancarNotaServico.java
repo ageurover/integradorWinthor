@@ -19,6 +19,8 @@ import winthorDb.util.*;
  */
 public class LancarNotaServico extends javax.swing.JDialog {
 
+    boolean insert = true;
+
     /**
      * Creates new form
      *
@@ -62,6 +64,12 @@ public class LancarNotaServico extends javax.swing.JDialog {
             tblNfServico.setTableData(wint.selectResultSet(strSelect));
             buscaNotaVinculada();
 
+            if (tblNfServico.getRowCount() >= 1) {
+                insert = false;
+            } else {
+                insert = true;
+            }
+            lblStatus.setText((insert?"Novo":"Atualiza"));
         } catch (Exception ex) {
             trataErro.trataException(ex, "buscaNotaServico");
         } finally {
@@ -110,19 +118,27 @@ public class LancarNotaServico extends javax.swing.JDialog {
             if (!edtNrNfs.getText().isEmpty()) {
                 wint.openConectOracle();
 
-                // altera a data do pedido
-                strInsert = "INSERT INTO KT_NOTASERVICO (numero,serie,dataemissao,codcli,peso,valorunit,valortotal) "
-                        + " VALUES (" + Formato.somenteNumeros(edtNrNfs.getText())
-                        + ", '" + edtSerie.getText() + "' "
-                        + ", to_date('" + Formato.dateToStr(edtDataEmissao.getDate()) + "','dd/mm/yyyy') "
-                        + ", " + edtCodCli.getText()
-                        + ", " + Formato.decimalToStrDb(edtPesoTransportado.getCurr(), 6)
-                        + ", " + Formato.decimalToStrDb(edtValorUnitFrete.getCurr(), 6)
-                        + ", " + Formato.decimalToStrDb(edtValorTotalFrete.getCurr(), 6)
-                        + " )";
-                result = wint.insertDados(strInsert);
-                ret = (result != 0);
-                buscaNotaServico();
+                if (insert) {
+                    // altera a data do pedido
+                    strInsert = "INSERT INTO KT_NOTASERVICO (numero,serie,dataemissao,codcli,peso,valorunit,valortotal,CHAVE_NFS) "
+                            + " VALUES (" + Formato.somenteNumeros(edtNrNfs.getText())
+                            + ", '" + edtSerie.getText() + "' "
+                            + ", to_date('" + Formato.dateToStr(edtDataEmissao.getDate()) + "','dd/mm/yyyy') "
+                            + ", " + edtCodCli.getText()
+                            + ", " + Formato.decimalToStrDb(edtPesoTransportado.getCurr(), 6)
+                            + ", " + Formato.decimalToStrDb(edtValorUnitFrete.getCurr(), 6)
+                            + ", " + Formato.decimalToStrDb(edtValorTotalFrete.getCurr(), 6)
+                            + ", '" + edtChaveNfs.getText()
+                            + "' )";
+                    result = wint.insertDados(strInsert);
+                    ret = (result != 0);
+                    buscaNotaServico();
+                } else {
+                    strInsert = "UPDATE KT_NOTASERVICO SET CHAVE_NFS = '" + edtChaveNfs.getText() + "' WHERE NUMERO = " + Formato.somenteNumeros(edtNrNfs.getText());
+                    result = wint.updateDados(strInsert);
+                    ret = (result != 0);
+                    buscaNotaServico();
+                }
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "gravarNotaServico");
@@ -307,6 +323,9 @@ public class LancarNotaServico extends javax.swing.JDialog {
         edtValorUnitFrete = new winthorDb.util.CurrencyField();
         edtValorTotalFrete = new winthorDb.util.CurrencyField();
         btnNovo = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        edtChaveNfs = new javax.swing.JTextField();
+        lblStatus = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblNfServicoVinculada = new winthorDb.util.CustomTable();
@@ -429,6 +448,10 @@ public class LancarNotaServico extends javax.swing.JDialog {
             }
         });
 
+        jLabel11.setText("Chave Nfs:");
+
+        lblStatus.setText("...");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -439,43 +462,50 @@ public class LancarNotaServico extends javax.swing.JDialog {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtPesoTransportado, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtValorUnitFrete, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRemoveNotaServico))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(edtCodCli, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(edtNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtNrNfs, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(edtPesoTransportado, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7)
+                                .addComponent(edtValorUnitFrete, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(edtChaveNfs))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(edtNrNfs, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(edtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(edtDataEmissao, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel16)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(edtValorTotalFrete, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGravaNotaServico, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnNovo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtDataEmissao, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtValorTotalFrete, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                        .addComponent(btnGravaNotaServico)))
+                                .addComponent(btnRemoveNotaServico))
+                            .addComponent(lblStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -498,10 +528,16 @@ public class LancarNotaServico extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel14)
                         .addComponent(jLabel15)
-                        .addComponent(btnRemoveNotaServico)
                         .addComponent(edtValorUnitFrete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(edtPesoTransportado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNovo))
+                    .addComponent(lblStatus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRemoveNotaServico)
+                    .addComponent(btnNovo)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel11)
+                        .addComponent(edtChaveNfs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -510,7 +546,7 @@ public class LancarNotaServico extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -664,6 +700,7 @@ public class LancarNotaServico extends javax.swing.JDialog {
                 edtPesoTransportado.setCurr(Formato.currStrToDecimal(tblNfServico.getConteudoRowSelected("peso").toString().replace(".", ",")));
                 edtValorTotalFrete.setCurr(Formato.currStrToDecimal(tblNfServico.getConteudoRowSelected("valortotal").toString().replace(".", ",")));
                 edtCodCli.setText(tblNfServico.getConteudoRowSelected("codcli").toString());
+                edtChaveNfs.setText(tblNfServico.getConteudoRowSelected("chave_nfs").toString());
             }
         } catch (Exception ex) {
             trataErro.trataException(ex, "tblNfServicoMouseClicked");
@@ -750,11 +787,14 @@ public class LancarNotaServico extends javax.swing.JDialog {
         edtPesoTransportado.setCurr(BigDecimal.ZERO);
         edtValorTotalFrete.setCurr(BigDecimal.ZERO);
         edtCodCli.setText("");
-        
+        edtChaveNfs.setText("");
+
         edtChaveNfe.setText("");
         edtNrNotaVinculada.setText("");
         edtSerieNotaVinculada.setText("");
         
+        insert = true;
+        lblStatus.setText((insert?"Novo":"Atualiza"));
 
     }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -797,6 +837,7 @@ public class LancarNotaServico extends javax.swing.JDialog {
     private javax.swing.JButton btnRemoveNotaServico;
     private javax.swing.JButton btnRemoveNotaVinculada;
     private javax.swing.JTextField edtChaveNfe;
+    private javax.swing.JTextField edtChaveNfs;
     private javax.swing.JTextField edtCodCli;
     private com.toedter.calendar.JDateChooser edtDataEmissao;
     private javax.swing.JTextField edtNomeCliente;
@@ -809,6 +850,7 @@ public class LancarNotaServico extends javax.swing.JDialog {
     private winthorDb.util.CurrencyField edtValorUnitFrete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -827,6 +869,7 @@ public class LancarNotaServico extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblStatus;
     private winthorDb.util.CustomTable tblNfServico;
     private winthorDb.util.CustomTable tblNfServicoVinculada;
     private javax.swing.JTextArea txtLog;
