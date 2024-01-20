@@ -55,19 +55,19 @@ public class Brz015 extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        edtCodFilial = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        edtAnoReferencia = new javax.swing.JTextField();
+        btnAbrirOrigem = new javax.swing.JButton();
+        edtArquivoOrigem = new javax.swing.JTextField();
+        btnCancelarRegH010 = new javax.swing.JButton();
+        btnSalvarRegH010Sped = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
         lblObsRegHSped = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtRegH010Sped = new javax.swing.JTextArea();
-        btnAbrirOrigem = new javax.swing.JButton();
-        edtArquivoOrigem = new javax.swing.JTextField();
-        btnCancelarRegH010 = new javax.swing.JButton();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        btnSalvarRegH010Sped = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        edtAnoReferencia = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        edtCodFilial = new javax.swing.JTextField();
 
         setTitle("Conversão de Pedidos");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -91,7 +91,7 @@ public class Brz015 extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2))
@@ -108,17 +108,14 @@ public class Brz015 extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados para importação"));
 
-        lblObsRegHSped.setColumns(20);
-        lblObsRegHSped.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
-        lblObsRegHSped.setRows(5);
-        lblObsRegHSped.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(lblObsRegHSped);
+        jLabel5.setText("Filial:");
 
-        txtRegH010Sped.setColumns(20);
-        txtRegH010Sped.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
-        txtRegH010Sped.setRows(5);
-        txtRegH010Sped.setWrapStyleWord(true);
-        jScrollPane2.setViewportView(txtRegH010Sped);
+        edtCodFilial.setText("1");
+
+        jLabel4.setText("Ano/Mês Ref.:");
+
+        edtAnoReferencia.setText("202301");
+        edtAnoReferencia.setToolTipText("Ano e Mês de Referencia");
 
         btnAbrirOrigem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/icons/folder.png"))); // NOI18N
         btnAbrirOrigem.setToolTipText("Arquivo de Origem");
@@ -145,14 +142,17 @@ public class Brz015 extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Ano/Mês Ref.:");
+        lblObsRegHSped.setColumns(20);
+        lblObsRegHSped.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        lblObsRegHSped.setRows(5);
+        lblObsRegHSped.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(lblObsRegHSped);
 
-        edtAnoReferencia.setText("202301");
-        edtAnoReferencia.setToolTipText("Ano e Mês de Referencia");
-
-        jLabel5.setText("Filial:");
-
-        edtCodFilial.setText("1");
+        txtRegH010Sped.setColumns(20);
+        txtRegH010Sped.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        txtRegH010Sped.setRows(5);
+        txtRegH010Sped.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(txtRegH010Sped);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -164,25 +164,22 @@ public class Brz015 extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnAbrirOrigem)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtArquivoOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancelarRegH010)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtAnoReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(edtAnoReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAbrirOrigem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(edtArquivoOrigem))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(btnCancelarRegH010)
+                        .addGap(18, 18, 18)
                         .addComponent(btnSalvarRegH010Sped)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -190,29 +187,23 @@ public class Brz015 extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAbrirOrigem)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(edtArquivoOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnCancelarRegH010))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(edtAnoReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSalvarRegH010Sped))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(edtAnoReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnAbrirOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(edtArquivoOrigem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCancelarRegH010, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalvarRegH010Sped, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -274,8 +265,10 @@ public class Brz015 extends javax.swing.JFrame {
                         linhaLeitura.skip(selectedFile.length());
                         int qtdLinha = linhaLeitura.getLineNumber();
                         jProgressBar1.setMaximum(qtdLinha + 1);
+                        linhaLeitura.close();
+                        linhaLeitura = null;
 
-                        try ( BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                        try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
 
                             while (br.ready()) {
 
@@ -288,14 +281,19 @@ public class Brz015 extends javax.swing.JFrame {
                                 String linha = br.readLine();
                                 jProgressBar1.setValue(countLine++);
                                 tipoReg = linha.substring(1, 5);
+
+                                /*                                
                                 if (tipoReg.equalsIgnoreCase("H005")) {
                                     regH005 = new ArrayList(Arrays.asList(linha.split("\\|")));
                                     if (!regH005.isEmpty()) {
 
+                                        edtAnoReferencia.setText(regH005.get(2).toString().substring(4, 8) + regH005.get(2).toString().substring(2, 4));
+                                        countLineH005++;
+                                            
                                         if (countLineH005 >= 1) {
                                             countLineH005++;
-                                            MessageDialog.info("Registro de inventario importados!");
-                                            lblObsRegHSped.setText("Registros para gravar: " + lstInventarioSped.size());
+                                            MessageDialog.info("H005 - Registro de inventario importados!");
+                                            lblObsRegHSped.append("\nH005 - Registros para gravar: " + lstInventarioSped.size());
                                             jProgressBar1.setValue(qtdLinha + 1);
                                             btnCancelarRegH010.setVisible(false);
                                             btnSalvarRegH010Sped.setEnabled(true);
@@ -306,12 +304,13 @@ public class Brz015 extends javax.swing.JFrame {
                                         }
                                     }
                                 }
+                                 */
                                 if (tipoReg.equalsIgnoreCase("H010")) {
                                     geraRegH010Sped(linha, countLineH010++);
                                 }
                                 if (tipoReg.equalsIgnoreCase("H990")) {
-                                    MessageDialog.info("Registro de inventario importados!");
-                                    lblObsRegHSped.setText("Registros para gravar: " + lstInventarioSped.size());
+                                    MessageDialog.info("H990 - Registro de inventario importados!");
+                                    lblObsRegHSped.append("\nH990 - Registros para gravar: " + lstInventarioSped.size());
                                     jProgressBar1.setValue(qtdLinha + 1);
                                     btnCancelarRegH010.setVisible(false);
                                     btnSalvarRegH010Sped.setEnabled(true);
@@ -454,6 +453,17 @@ public class Brz015 extends javax.swing.JFrame {
         return ret;
     }
 
+    private boolean existProd(long codprod) {
+        boolean ret = false;
+
+        for (Brz_InventarioSped item : lstInventarioSped) {
+            if (item.getCodprod() == codprod) {
+                return true;
+            }
+        }
+        return ret;
+    }
+
     private int geraRegH010Sped(String linha, int indexLinha) throws Exception {
         int ret = 0;
 
@@ -488,8 +498,13 @@ public class Brz015 extends javax.swing.JFrame {
                     regHsped.setValorUnitario(Double.parseDouble(regH010.get(5).toString().replace(',', '.')));
                     regHsped.setValorTotal(Double.parseDouble(regH010.get(6).toString().replace(',', '.')));
 
-                    lstInventarioSped.add(regHsped);
-                    txtRegH010Sped.append("\t" + regHsped + "\n");
+                    // valida se ja existe o produto na lista
+                    if (existProd(regHsped.getCodprod())) {
+                        lblObsRegHSped.append("\tJa Existe: " + regHsped + "\n");
+                    } else {
+                        lstInventarioSped.add(regHsped);
+                        txtRegH010Sped.append("\t" + regHsped + "\n");
+                    }
                 } else {
                     MessageDialog.error("tipo de registro nao tratado! " + tipoReg);
                 }

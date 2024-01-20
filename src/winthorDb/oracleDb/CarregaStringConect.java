@@ -6,6 +6,7 @@
 package winthorDb.oracleDb;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,6 +33,8 @@ public class CarregaStringConect {
         }
 
         XStream xstream = new XStream();
+        xstream.addPermission(AnyTypePermission.ANY);
+        
         String conectDbToXml = "";
         FileWriter write = null;
 
@@ -58,6 +61,8 @@ public class CarregaStringConect {
         }
 
         XStream xstream = new XStream();
+        xstream.addPermission(AnyTypePermission.ANY);
+        
         FileReader reader = null;
         File xmlFile = null;
         try {
