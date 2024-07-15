@@ -43,7 +43,7 @@ public class Brz003 extends javax.swing.JFrame {
      * @param codCliente Codigo do cliente no qual o pedido foi digitado
      * @param codFilial Codigo da filial onde o pedido foi digitado
      */
-    private void buscaPedidoWinthor(String numPedido, String codCliente, String codFilial) throws Exception {
+    private void buscaPedidoWinthor(String numPedido, String codFilial) throws Exception {
         IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
 
         try {
@@ -55,7 +55,7 @@ public class Brz003 extends javax.swing.JFrame {
                     + " and p.condvenda in (1) "
                     + " and u.codusur = p.codusur "
                     + " and c.codcli = p.codcli "
-                    + " and p.codCob in ('DH','D','CH','CHV','CHP','PIX') "
+                    + " and p.codCob in ('DH','D','CH','CHV','CHP','PIX','DEP','C') "
                     + " and p.vlatend < 9999.00"
                     + " and p.codfilial = " + codFilial
                     + " and p.numped = " + numPedido;
@@ -657,8 +657,12 @@ public class Brz003 extends javax.swing.JFrame {
 
     private void btnPesquisaPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaPedidoActionPerformed
         try {
-            if ((!edtNumeroPedido.getText().isEmpty()) && (!edtCodCliente.getText().isEmpty()) && (!edtCodFilial.getText().isEmpty()) && (!edtNumCarga.getText().isEmpty())) {
-                buscaPedidoWinthor(edtNumeroPedido.getText(), edtCodCliente.getText(), edtCodFilial.getText());
+            if ((!edtNumeroPedido.getText().isEmpty())  
+                    && (!edtCodFilial.getText().isEmpty())
+                    && (!edtCodCliente.getText().isEmpty())
+                    && (!edtNumCarga.getText().isEmpty())
+                    ) {
+                buscaPedidoWinthor(edtNumeroPedido.getText(), edtCodFilial.getText());
                 btnPesquisaPedido.setEnabled(false);
 //                edtNumeroPedido.setEditable(false);
 //                edtCodCliente.setEditable(false);
@@ -706,7 +710,11 @@ public class Brz003 extends javax.swing.JFrame {
 
     private void btnConvertePedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertePedidoActionPerformed
         try {
-            if ((!edtNumeroPedido.getText().isEmpty()) && (!edtCodCliente.getText().isEmpty()) && (!edtCodFilial.getText().isEmpty()) && (!edtNumCarga.getText().isEmpty())) {
+            if ((!edtNumeroPedido.getText().isEmpty()) 
+                    && (!edtCodCliente.getText().isEmpty()) 
+                    && (!edtCodFilial.getText().isEmpty()) 
+                    && (!edtNumCarga.getText().isEmpty())
+                ) {
                 convertePedidoCupom(edtNumeroPedido.getText(), edtCodCliente.getText(), edtCodFilial.getText(), edtNumCarga.getText());
                 MessageDialog.info("Conversão de Pedido em Cupom Realizada! \n * Realize o Faturamento da carga 1 pela rotina 2075 do winthor! \n ** Apos o faturamento continue com a proxima etapa!");
                 //btnVinculaTitulo.setEnabled(true);
@@ -727,7 +735,9 @@ public class Brz003 extends javax.swing.JFrame {
     private void btnVinculaTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVinculaTituloActionPerformed
         try {
 
-            if ((!edtNumeroPedido.getText().isEmpty()) && (!edtCodCliente.getText().isEmpty()) && (!edtCodFilial.getText().isEmpty()) && (!edtNumCarga.getText().isEmpty()) && (!edtNumCupom.getText().isEmpty())) {
+            if ((!edtNumeroPedido.getText().isEmpty())  
+                    && (!edtCodFilial.getText().isEmpty())  
+                    && (!edtNumCupom.getText().isEmpty())) {
                 if (buscaCReceberWinthor(edtNumCupom.getText(), "1", edtCodFilial.getText())) {
                     vinculaTitulos(edtNumeroPedido.getText(), edtCodCliente.getText(), edtCodFilial.getText(), edtNumCarga.getText(), edtNumCupom.getText());
                     MessageDialog.info("Vinculação dos titulos Realizada! ");

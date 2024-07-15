@@ -326,14 +326,15 @@ public class IntegracaoWinthorDb {
      * @param parametros - Array com os parametros da procedure
      * @param tipoParametros - Array com o tipo de dados dos parametros conforme
      * segue: 1 - Inteiro, 2 - String, 3 - Numerico, 4 - Data
+     * @return 
      * @throws SQLException
      * @throws Exception
      */
     @SuppressWarnings("FinallyDiscardsException")
-    public void executeProcedure(String sqlProcedure, String[] parametros, int[] tipoParametros) throws SQLException, Exception {
+    public boolean executeProcedure(String sqlProcedure, String[] parametros, int[] tipoParametros) throws SQLException, Exception {
         List dados = new ArrayList<>();
         if (connOrigem == null) {
-            return;
+            return false;
         }
         // Create a statement
         CallableStatement ctsmt = null;
@@ -341,7 +342,7 @@ public class IntegracaoWinthorDb {
 
         try {
             // Montando o sqlCommand para a execução conforme o nome da procedure e os parametros
-            sqlCommand = "{call " + sqlProcedure + "(";
+            sqlCommand = "DECLARE BEGIN " + sqlProcedure + "(";
             for (int i = 0; i < parametros.length; i++) {
                 if (i == 0) {
                     sqlCommand += "?";
@@ -350,7 +351,7 @@ public class IntegracaoWinthorDb {
                 }
 
             }
-            sqlCommand += ")}";
+            sqlCommand += ") END";
 
             ctsmt = connOrigem.prepareCall(sqlCommand, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
@@ -358,21 +359,22 @@ public class IntegracaoWinthorDb {
             for (int i = 0; i < tipoParametros.length; i++) {
                 switch (tipoParametros[i]) {
                     case 1:
-                        ctsmt.setInt(i, Formato.strToInt(parametros[i]));
+                        ctsmt.setInt(i+1, Formato.strToInt(parametros[i]));
+                        break;
                     case 2:
-                        ctsmt.setString(i, parametros[i]);
+                        ctsmt.setString(i+1, parametros[i]);
+                        break;
                     case 3:
-                        ctsmt.setDouble(i, Formato.doubleToCurrStr(parametros[i]));
+                        ctsmt.setDouble(i+1, Formato.doubleToCurrStr(parametros[i]));
+                        break;
                     case 4:
-                        ctsmt.setDate(i, (Date) Formato.strToDate(parametros[i]));
-                    default:
-                        ctsmt.setString(i, parametros[i]);
+                        ctsmt.setDate(i+1, (Date) Formato.strToDate(parametros[i]));
+                        break;
                 }
-
             }
 
-            ctsmt.execute();
-
+            return ctsmt.execute();
+             
         } catch (SQLException e) {
             trataErro.trataException(e, "executeProcedure -> " + sqlCommand);
             throw e;

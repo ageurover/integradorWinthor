@@ -1,0 +1,18 @@
+<winthorDb.oracleDb.StringConectDb>
+  <UsuarioDb>NOVAROVERSA</UsuarioDb>
+  <SenhaDb>NOVAROVERSA</SenhaDb>
+  <portaSerividor>1521</portaSerividor>
+  <IpServidorDb>192.168.1.2</IpServidorDb>
+  <SidServidorDb>WINT</SidServidorDb>
+  <TipoConectServidorDb>SERVICE_NAME</TipoConectServidorDb>
+  <CodConsumidorDb>1</CodConsumidorDb>
+  <CodFilial>1</CodFilial>
+  <CodFilialFatura>1</CodFilialFatura>
+  <Licenca>jGGz0pbkjC1suW0Im0hcJc9+07xvmC1cro4PkcEOClY=</Licenca>
+  <CnpjMatriz>18171499000165</CnpjMatriz>
+  <qtdeMaxUsuario>003</qtdeMaxUsuario>
+  <dataExpiracao>2024-01-15</dataExpiracao>
+  <valorMaxCupom>5.0</valorMaxCupom>
+  <AjustaFrenteLoja>N</AjustaFrenteLoja>
+  <pastaImagens>\\192.168.1.25\WINTHOR\IMAGENS</pastaImagens>
+</winthorDb.oracleDb.StringConectDb>

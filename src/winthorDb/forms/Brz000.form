@@ -96,6 +96,14 @@
                 <Property name="text" type="java.lang.String" value="Estoque"/>
               </Properties>
               <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuAtualizaCustoFilial">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Atualiza Custo Transferencia"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAtualizaCustoFilialActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuProcessarImagens">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Processar Imagens de Produtos"/>

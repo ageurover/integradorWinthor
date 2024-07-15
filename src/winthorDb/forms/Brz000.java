@@ -54,6 +54,7 @@ public class Brz000 extends javax.swing.JFrame {
         mnuProcessoDevolucaoCupom = new javax.swing.JMenuItem();
         mnuCadastroSintegra = new javax.swing.JMenuItem();
         mnuEstoque = new javax.swing.JMenu();
+        mnuAtualizaCustoFilial = new javax.swing.JMenuItem();
         mnuProcessarImagens = new javax.swing.JMenuItem();
         mnuBaixaLancProducao = new javax.swing.JMenuItem();
         mnuAjusteEstoqueFilial90 = new javax.swing.JMenuItem();
@@ -156,6 +157,14 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuRotinas.add(mnuVendas);
 
         mnuEstoque.setText("Estoque");
+
+        mnuAtualizaCustoFilial.setText("Atualiza Custo Transferencia");
+        mnuAtualizaCustoFilial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAtualizaCustoFilialActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuAtualizaCustoFilial);
 
         mnuProcessarImagens.setText("Processar Imagens de Produtos");
         mnuProcessarImagens.addActionListener(new java.awt.event.ActionListener() {
@@ -466,6 +475,12 @@ public class Brz000 extends javax.swing.JFrame {
         winthorDb.forms.etl.cafe3Coracoes.ExportDocNfsDialog.open(9002, "NS_3COR_DOCCOB_30A", "0");
     }//GEN-LAST:event_mnuExpNs_doccob30aActionPerformed
 
+    private void mnuAtualizaCustoFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAtualizaCustoFilialActionPerformed
+        // TODO add your handling code here:
+        Main.dialog = new Brz016();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuAtualizaCustoFilialActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -513,6 +528,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JLabel lblVersao;
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
     private javax.swing.JMenuItem mnuAtualizaBarrasPedido;
+    private javax.swing.JMenuItem mnuAtualizaCustoFilial;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
     private javax.swing.JMenuItem mnuCadastroSintegra;
     private javax.swing.JMenu mnuColetor;
