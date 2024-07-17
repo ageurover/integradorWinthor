@@ -5,8 +5,9 @@
  */
 package winthorDb.forms.nfe;
 
-import br.com.sefaz.nfe.schema.v4.TNFe.InfNFe.Det;
-import br.com.sefaz.nfe.schema.v4.TNfeProc;
+import br.inf.portalfiscal.nfe.TNFe;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det;
+import br.inf.portalfiscal.nfe.TNfeProc;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         lista.clear();
         ListFile.clear();
         //get all the files from a directory
-        
+
         File[] fList = directory.listFiles();
         for (File file : fList) {
             if (file.isFile()) {
@@ -75,15 +76,17 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         btnProcessar.setEnabled(true);
     }
 
-        private void processaXmlWinthor() {
+    private void processaXmlWinthor() {
         new Thread() {//instancia nova thread já implementando o método run()
             @Override
             public void run() {//sobrescreve o método run()
                 //FUnções e comandos de append do JTextArea
 
                 String fileXml = "";
-                TNfeProc nfe = null;
-                List <BeanItemNotaEntrada> nota_itens = null;
+                TNFe nfe = null;
+                TNfeProc nfeProc = null;
+                Object obj = null;
+                List<BeanItemNotaEntrada> nota_itens = null;
                 List itens_xml = null;
                 int i = 0;
                 int total = 0;
@@ -98,30 +101,32 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                     jProgressBar1.setMaximum(total);
                     for (Object File1 : ListFile) {
                         jProgressBar1.setValue(i);
-                        
+
                         fileXml = edtArquivoOrigem.getText() + "\\" + File1.toString();
                         txtLog.append("\n" + Formato.replicate("-", 50));
                         txtLog.append("\nXML-> " + i++ + " >> " + fileXml);
                         nfe = null;
                         if (!fileXml.isEmpty()) {
-                            nfe = importer.importarXML(fileXml);
+                            obj = importer.importarNfeProcXML(fileXml);
+                            nfeProc = (TNfeProc) obj;
+                            nfe = nfeProc.getNFe();
                             if (nfe != null) {
-                                itens_xml = nfe.getNFe().getInfNFe().getDet();
+                                itens_xml = nfe.getInfNFe().getDet();
                                 // 1 - localizar dados do xml no winthor
                                 DaoItemNotaEntrada nota = new DaoItemNotaEntrada();
-                                nota_itens = nota.listarItemNota(edtCodFilial.getText(), nfe.getNFe().getInfNFe().getIde().getNNF());
-                                gerarSequencia(nota_itens, itens_xml);
+                                nota_itens = nota.listarItemNota(edtCodFilial.getText(), nfe.getInfNFe().getIde().getNNF(), nfe.getInfNFe().getEmit().getCNPJ());
+                                gerarSequencia(nota_itens, itens_xml, mesmaRaiz(nfe.getInfNFe().getEmit().getCNPJ(), nfe.getInfNFe().getDest().getCNPJ()) );
                                 // 2 - fazer a alteração da sequencia dos itens
                                 nota.atualizar(nota_itens);
                                 // 3 - gravar sequencia no winthor
-                                
+
                                 gravou++;
-                                txtLog.append("\n" + nfe.getNFe().getInfNFe().getIde().getNNF() + " >>> Gravado com sucesso!");
-                                
+                                txtLog.append("\n" + nfe.getInfNFe().getIde().getNNF() + " >>> Gravado com sucesso!");
+
                             } else {
                                 naogravou++;
                                 txtLog.append("\n****** Erro ao gravar o produto");
-                                
+
                             }
                         } else {
                             txtLog.append("\n****** Erro ao processar imagem");
@@ -139,26 +144,43 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         }.start();//Fim Thread
 
     }
-        
-    public void gerarSequencia(List itens_nota, List itens_xml){
+
+    private boolean mesmaRaiz(String cnpjEmit, String cnpjDest){
+        return cnpjEmit.substring(0, 8).equalsIgnoreCase(cnpjDest.substring(0, 8));
+    }
+    public void gerarSequencia(List itens_nota, List itens_xml, boolean transferencia) {
+        boolean achou = false;
+        Det det = null;
+        String cProd = "";
+        String nItem ="";
+        String codprod = "";
         try {
             // passa por cada item do xml para deixar a sequencia;
             for (int i = 0; i < itens_xml.size(); i++) {
-                 Det det = (Det) itens_xml.get(i);
-                String cProd = det.getProd().getCProd();
-                String nItem = det.getNItem();
+                det = (Det) itens_xml.get(i);
+                cProd = det.getProd().getCProd();
+                nItem = det.getNItem();
                 // localiza o produto na lista da nota pelo codfabrica
                 for (int j = 0; j < itens_nota.size(); j++) {
                     BeanItemNotaEntrada item = (BeanItemNotaEntrada) itens_nota.get(j);
-                    if (item.getCodfabrica().equalsIgnoreCase(cProd)){
-                        item.setNovonumseq(Long.valueOf(nItem));
+                    codprod = item.getCodprod().toString();
+                    if (transferencia) {
+                        if (cProd.equalsIgnoreCase(codprod)){
+                            achou = true;
+                            item.setNovonumseq(Long.valueOf(nItem));
+                        }
+                    } else {
+                        if (item.getCodfabrica().equalsIgnoreCase(cProd)) {
+                            item.setNovonumseq(Long.valueOf(nItem));
+                        }
                     }
                 }
             }
         } catch (NumberFormatException e) {
-                    trataErro.trataException(e, "gerarSequencia");
-                }
+            trataErro.trataException(e, "gerarSequencia");
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -359,27 +381,25 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btnAbrirOrigemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirOrigemActionPerformed
-        new Thread() {//instancia nova thread já implementando o método run()
-            @Override
-            public void run() {//sobrescreve o método run()
-                JFileChooser fileChooser = new JFileChooser();
-                try {
-                    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                    fileChooser.setAcceptAllFileFilterUsed(false);
 
-                    int result = fileChooser.showOpenDialog(null);
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        File selectedFile = fileChooser.getSelectedFile();
-                        edtArquivoOrigem.setText(selectedFile.getCanonicalPath());
-                        listFiles(selectedFile.getCanonicalPath());
-                        lstArquivos.updateUI();
-                    }
-                } catch (HeadlessException | IOException e) {
-                    trataErro.trataException(e, "btnAbrirOrigemActionPerformed");
-                }
-            }//- Fim do Run
-        }.start();//Fim Thread      
+        JFileChooser fileChooser = new JFileChooser();
+        try {
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.setAcceptAllFileFilterUsed(false);
+
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                edtArquivoOrigem.setText(selectedFile.getCanonicalPath());
+                listFiles(selectedFile.getCanonicalPath());
+                lstArquivos.updateUI();
+            }
+            lstArquivos.updateUI();
+        } catch (HeadlessException | IOException e) {
+            trataErro.trataException(e, "btnAbrirOrigemActionPerformed");
+        }
+        lstArquivos.updateUI();
     }//GEN-LAST:event_btnAbrirOrigemActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -409,7 +429,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lstArquivosValueChanged
 
- /**
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {

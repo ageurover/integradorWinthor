@@ -20,6 +20,7 @@ public class BeanItemNotaEntrada {
     private Long numseqent;
     private String codfabrica;
     private String codfab;
+    private String codfab253;
     private String codauxiliar;
     private String codauxiliar2;
     private String rowidcomplemento;
@@ -235,6 +236,20 @@ public class BeanItemNotaEntrada {
      */
     public void setNovonumseq(Long novonumseq) {
         this.novonumseq = novonumseq;
+    }
+
+    /**
+     * @return the codfab253
+     */
+    public String getCodfab253() {
+        return codfab253;
+    }
+
+    /**
+     * @param codfab253 the codfab253 to set
+     */
+    public void setCodfab253(String codfab253) {
+        this.codfab253 = codfab253;
     }
 
     

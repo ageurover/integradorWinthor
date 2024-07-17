@@ -1,17 +1,17 @@
 <winthorDb.oracleDb.StringConectDb>
-  <UsuarioDb>BRASILDIS</UsuarioDb>
-  <SenhaDb>brah56sil59dis</SenhaDb>
+  <UsuarioDb>PARCEIRAO</UsuarioDb>
+  <SenhaDb>P4RC31R40</SenhaDb>
   <portaSerividor>1521</portaSerividor>
-  <IpServidorDb>192.168.5.2</IpServidorDb>
+  <IpServidorDb>10.0.0.4</IpServidorDb>
   <SidServidorDb>WINT</SidServidorDb>
   <TipoConectServidorDb>SERVICE_NAME</TipoConectServidorDb>
   <CodConsumidorDb>2</CodConsumidorDb>
   <CodFilial>1</CodFilial>
   <CodFilialFatura>1</CodFilialFatura>
-  <Licenca>HnRTA8hIR9Zks8w33WLcAl4P2ULbyhMFQWbwr+Xikog=</Licenca>
-  <CnpjMatriz>00735882000133</CnpjMatriz>
-  <qtdeMaxUsuario>005</qtdeMaxUsuario>
-  <dataExpiracao>2025-01-01</dataExpiracao>
+  <Licenca>F61j+u/L5JVdFtD+grUH6kmU96YLsNOv/GsFTBDsP0k=</Licenca>
+  <CnpjMatriz>07409655000167</CnpjMatriz>
+  <qtdeMaxUsuario>001</qtdeMaxUsuario>
+  <dataExpiracao>2024-31-12</dataExpiracao>
   <valorMaxCupom>5.0</valorMaxCupom>
   <AjustaFrenteLoja>N</AjustaFrenteLoja>
   <pastaImagens>\\192.168.5.3\WINTHOR\IMAGENS</pastaImagens>
