@@ -11,6 +11,7 @@ import winthorDb.Main;
 import winthorDb.forms.coletor.consultaOS;
 import winthorDb.forms.coletor.vinculaEnderecoLoja;
 import winthorDb.forms.dre.DreGrupoConta;
+import winthorDb.forms.nfe.ValidaXmlEntrada;
 
 /**
  *
@@ -75,6 +76,7 @@ public class Brz000 extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         mnuContabil = new javax.swing.JMenu();
         mnuImportarSped = new javax.swing.JMenuItem();
+        mnuSequenciaXml = new javax.swing.JMenuItem();
         mnuConfig = new javax.swing.JMenu();
         mnuConfigDb = new javax.swing.JMenuItem();
 
@@ -310,6 +312,14 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuContabil.add(mnuImportarSped);
 
+        mnuSequenciaXml.setText("jMenuItem3");
+        mnuSequenciaXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSequenciaXmlActionPerformed(evt);
+            }
+        });
+        mnuContabil.add(mnuSequenciaXml);
+
         jMenuRotinas.add(mnuContabil);
 
         mnuConfig.setText("Configuração");
@@ -481,6 +491,12 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuAtualizaCustoFilialActionPerformed
 
+    private void mnuSequenciaXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSequenciaXmlActionPerformed
+        // TODO add your handling code here:
+        Main.dialog = new ValidaXmlEntrada();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuSequenciaXmlActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -555,6 +571,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuProcessoDevolucaoCupom;
     private javax.swing.JMenuItem mnuProcessoPedidoCarga;
     private javax.swing.JMenuItem mnuProcessoPedidoCupom;
+    private javax.swing.JMenuItem mnuSequenciaXml;
     private javax.swing.JMenuItem mnuValidaEan;
     private javax.swing.JMenu mnuVendas;
     // End of variables declaration//GEN-END:variables
