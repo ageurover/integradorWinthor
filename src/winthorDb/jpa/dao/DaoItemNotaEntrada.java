@@ -33,19 +33,20 @@ public class DaoItemNotaEntrada {
     public List<BeanItemNotaEntrada> listarItemNota(String idFilial, String numnota, String cnpj) throws Exception {
         List<BeanItemNotaEntrada> ListaItem = new ArrayList<>();
         String sql = "select e.codfilial, e.numtransent, e.numnota, replace(replace(replace(e.cgc,'.',''),'/',''),'-','') as cgc, e.rowid rowidnf, \n"
-                + "       m.codprod, m.numseq, m.rowid rowidmov, \n"
+                + "       m.codprod, nvl(m.numseq,0) as numseq, m.rowid rowidmov, \n"
                 + "       nvl(mc.numseqent,0) as numseqent , nvl(mc.codfabrica,0) as codfabrica , mc.rowid rowidcomplemento, \n"
                 + "       nvl(p.codfab,0) as codfab, nvl(p.codauxiliar,0) as codauxiliar, nvl(p.codauxiliar2,0) as codauxiliar2, \n"
-                + "       cf.codfab as  codfab253 \n"
+                + "       nvl(cf.codfab,0) as  codfab253 \n"
                 + " from pcnfent e, pcmov m, pcmovcomple mc, pcprodut p, PCCODFABRICA cf \n"
                 + " where e.numtransent = m.numtransent\n"
                 + " and mc.numtransitem = m.numtransitem\n"
                 + " and p.codprod = m.codprod\n"
                 + " and cf.codprod (+) = m.codprod \n"
                 + " and cf.codfornec (+) = e.codfornec \n"
-                + " and replace(replace(replace(e.cgc,'.',''),'/',''),'-','') = " + cnpj + " \n"
+                + " and e.dtcancel is null \n"
+                + " and replace(replace(replace(e.cgc,'.',''),'/',''),'-','') = '" + cnpj + "' \n"
                 + " and e.numnota = " + numnota + " \n"
-                + " and e.codfilial = " + idFilial + "\n"
+                + " and e.codfilial = '" + idFilial + "'\n"
                 + " order by e.codfilial, e.numtransent, e.numnota,mc.numseqent";
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
@@ -77,11 +78,12 @@ public class DaoItemNotaEntrada {
 		 * Método Responsável Por Atualizar os Dados (UPDATE) no BD
 		 * @param BeanItemNotaEntrada itens nota de entrada
      */
-    public void atualizar(List<BeanItemNotaEntrada> itens) {
+    public boolean atualizar(List<BeanItemNotaEntrada> itens) {
         String sqlmov = "";
         String sqlcomple = "";
         PreparedStatement stMov;
         PreparedStatement stComple;
+        boolean ret = false;
 
         try {
             for (int i = 0; i < itens.size(); i++) {
@@ -102,6 +104,8 @@ public class DaoItemNotaEntrada {
             }
 
             connection.commit();
+            ret = true;
+            
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -110,5 +114,6 @@ public class DaoItemNotaEntrada {
                 e1.printStackTrace();
             }
         }
+        return ret;
     }
 }

@@ -312,7 +312,7 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuContabil.add(mnuImportarSped);
 
-        mnuSequenciaXml.setText("jMenuItem3");
+        mnuSequenciaXml.setText("Importar Sequencia XML entrada");
         mnuSequenciaXml.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuSequenciaXmlActionPerformed(evt);

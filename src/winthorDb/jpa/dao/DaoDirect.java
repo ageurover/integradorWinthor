@@ -131,7 +131,9 @@ public class DaoDirect {
         stmt = getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
         for (String insertString1 : insertString) {
-            stmt.addBatch(insertString1);
+            if ((insertString1 != null) && (!insertString1.isEmpty())) {
+                stmt.addBatch(insertString1);
+            }
         }
 
         rs = stmt.executeBatch();
@@ -140,6 +142,7 @@ public class DaoDirect {
                 retorno += "[" + rs[x] + " -> " + insertString[x] + "]\n";
             }
         }
+
         stmt = null;
         return retorno;
     }
@@ -271,7 +274,7 @@ public class DaoDirect {
         if (sqlString == null) {
             return null;
         }
-        
+
         crs = new CachedRowSetImpl();
         crs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
         crs.setConcurrency(ResultSet.CONCUR_UPDATABLE);

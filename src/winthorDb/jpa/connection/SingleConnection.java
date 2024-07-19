@@ -53,4 +53,15 @@ public class SingleConnection {
     public static Connection getConnection() {
         return connection;
     }
+    
+    
+    /*
+	 * Método getConnection()
+	 * Responsável Por Fazer Uso da Conexão na Aplicação
+     */
+    public static Connection reConnection() {
+        connection = null;
+        conectar();
+        return connection;
+    }
 }
