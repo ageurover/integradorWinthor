@@ -138,7 +138,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                                 nota_itens = nota.listarItemNota(edtCodFilial.getText(), nfe.getInfNFe().getIde().getNNF(), nfe.getInfNFe().getEmit().getCNPJ());
 
                                 // 2 - fazer a alteração da sequencia dos itens
-                                gerarSequencia(nota_itens, itens_xml, mesmaRaiz(nfe.getInfNFe().getEmit().getCNPJ(), nfe.getInfNFe().getDest().getCNPJ()));
+                                gerarSequencia(nota_itens, itens_xml, mesmaRaiz(nfe.getInfNFe().getEmit().getCNPJ(), nfe.getInfNFe().getDest().getCNPJ()),nfe);
                                 // 3 - gravar sequencia no winthor
                                 if (nota.atualizar(nota_itens)) {
                                     gravou++;
@@ -178,7 +178,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
             trataErro.trataException(e, "processaXmlWinthor");
         } finally {
             // salva o log
-            SaveTextArea(txtLog);
+            SaveTextArea();
 
             // limpa os objetos da memoria
             nfe = null;
@@ -199,7 +199,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         return ret;
     }
 
-    public void gerarSequencia(List itens_nota, List itens_xml, boolean transferencia) {
+    public void gerarSequencia(List itens_nota, List itens_xml, boolean transferencia, TNFe nfe) {
         boolean achou = false;
         boolean imprimeItensNota = false;
         Det det = null;
@@ -221,7 +221,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                 txtLog.append("\n >>> Processando os itens do xml <<<");
                 txtLog.append("\n >>> Produtos no XML: " + itens_xml.size());
                 txtLog.append("\n >>> Produtos na Nota: " + itens_nota.size());
-                txtLog.append("\n XML_Prod.. \t XML_EAN........ \t CodProd. \t codauxiliar.... \t CobFab_P..... \t CodFab_M...... \t CodFab_253.... \t Seq_Ent \t Seq_Xml. \tAchou");
+                txtLog.append("\n XML_Prod....... \t XML_EAN........ \t CodProd. \t codauxiliar.... \t CobFab_P..... \t CodFab_M...... \t CodFab_253.... \t Seq_Ent \t Seq_Xml. \tAchou");
                 for (int i = 0; i < itens_xml.size(); i++) {
                     det = (Det) itens_xml.get(i);
                     cProd = det.getProd().getCProd().trim();
@@ -299,7 +299,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                                 }
                             }
                         } else {
-                            txtLog.append("\n " + Formato.strTamanhoExato(cProd, 10)
+                            txtLog.append("\n " + Formato.strTamanhoExato(cProd, 15)
                                     + " \t" + Formato.strTamanhoExato(cEAN, 15)
                                     + " \t" + Formato.strTamanhoExato(codprod, 10)
                                     + " \t" + Formato.strTamanhoExato(codauxiliar, 15)
@@ -314,9 +314,19 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                     } // fim for item nota winthor
                     if (!achou) {
                         imprimeItensNota = true;
-                        txtLog.append("\n " + Formato.strTamanhoExato(cProd, 10)
+                        txtLog.append("\n " + Formato.strTamanhoExato(cProd, 15)
                                 + " \t" + Formato.strTamanhoExato(cEAN, 15)
                                 + "\t não localizdo na Nota fiscal do sistema!");
+                        
+                        txtLogErro.append("\n" + nfe.getInfNFe().getIde().getNNF()
+                                + ";" + nfe.getInfNFe().getIde().getSerie()
+                                + ";" + nfe.getInfNFe().getIde().getMod()
+                                + ";" + nfe.getInfNFe().getEmit().getCNPJ()
+                                + ";" + nfe.getInfNFe().getId()
+                                + ";" + cProd
+                                + ";" + cEAN
+                                + ";" + nItem
+                                );
                     }
                 } // fim for item xml
 
@@ -353,13 +363,18 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         }
     }
 
-    public void SaveTextArea(JTextArea text) {
+    public void SaveTextArea() {
         try {
 
-            BufferedWriter outFile = new BufferedWriter(new FileWriter(edtArquivoOrigem.getText() + "\\log_importacao_" + Formato.dateTimeNowToStr("ddMMyyyy_HHmmss") + ".txt"));
-            outFile.write(text.getText()); //put in textfile
+            BufferedWriter outFile = new BufferedWriter(new FileWriter(edtArquivoOrigem.getText() + "\\log_Geral_importacao_" + Formato.dateTimeNowToStr("MMMyyyy_HHmmss") + ".txt"));
+            outFile.write(txtLog.getText()); //put in textfile
             outFile.flush();
             outFile.close();
+            
+            BufferedWriter outFileEr = new BufferedWriter(new FileWriter(edtArquivoOrigem.getText() + "\\log_Erro_importacao_" + Formato.dateTimeNowToStr("MMMyyyy_HHmmss") + ".csv"));
+            outFileEr.write(txtLogErro.getText()); //put in textfile
+            outFileEr.flush();
+            outFileEr.close();
         } catch (IOException ex) {
             trataErro.trataException(ex, "Salvar Log");
         }
@@ -373,12 +388,14 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         btnNovo.setEnabled(true);
         edtArquivoOrigem.setText("");
         txtLog.setText("");
+        txtLogErro.setText("");
         lstArquivos.removeAll();
         lstArquivos.updateUI();
         lblContador.setText("...");
         lblProcessados.setText("...");
         jProgressBar1.setValue(0);
         jProgressBar1.updateUI();
+        txtLogErro.append("\nNumNota;Serie;Modelo;CnpjEmit;ChaveXml;Produto,Ean,Seq_xml\n");
     }
 
     /**
@@ -409,6 +426,8 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         lblContador = new javax.swing.JLabel();
         lblProcessados = new javax.swing.JLabel();
         btnProcessar1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtLogErro = new javax.swing.JTextArea();
 
         setTitle("Conversão de Pedidos");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -510,6 +529,12 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
             }
         });
 
+        txtLogErro.setColumns(20);
+        txtLogErro.setFont(new java.awt.Font("Courier New", 0, 10)); // NOI18N
+        txtLogErro.setRows(5);
+        txtLogErro.setWrapStyleWord(true);
+        jScrollPane3.setViewportView(txtLogErro);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -538,7 +563,8 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(edtArquivoOrigem)
                         .addGap(18, 18, 18)
-                        .addComponent(btnProcessar1)))
+                        .addComponent(btnProcessar1))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -550,7 +576,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                         .addComponent(jLabel5))
                     .addComponent(edtArquivoOrigem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAbrirOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProcessar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(btnProcessar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -564,7 +590,9 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                     .addComponent(lblContador, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProcessados))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -708,9 +736,11 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblContador;
     private javax.swing.JLabel lblProcessados;
     private javax.swing.JList lstArquivos;
     private javax.swing.JTextArea txtLog;
+    private javax.swing.JTextArea txtLogErro;
     // End of variables declaration//GEN-END:variables
 }
