@@ -321,10 +321,10 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
                         txtLogErro.append("\n" + nfe.getInfNFe().getIde().getNNF()
                                 + ";" + nfe.getInfNFe().getIde().getSerie()
                                 + ";" + nfe.getInfNFe().getIde().getMod()
-                                + ";" + nfe.getInfNFe().getEmit().getCNPJ()
+                                + ";`" + nfe.getInfNFe().getEmit().getCNPJ()
                                 + ";" + nfe.getInfNFe().getId()
                                 + ";" + cProd
-                                + ";" + cEAN
+                                + ";`" + cEAN
                                 + ";" + nItem
                                 );
                     }
@@ -395,7 +395,7 @@ public class ValidaXmlEntrada extends javax.swing.JFrame {
         lblProcessados.setText("...");
         jProgressBar1.setValue(0);
         jProgressBar1.updateUI();
-        txtLogErro.append("\nNumNota;Serie;Modelo;CnpjEmit;ChaveXml;Produto,Ean,Seq_xml\n");
+        txtLogErro.append("NumNota;Serie;Modelo;CnpjEmit;ChaveXml;Produto;Ean;Seq_xml\n");
     }
 
     /**
