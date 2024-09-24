@@ -55,6 +55,7 @@ public class Brz000 extends javax.swing.JFrame {
         mnuCadastroSintegra = new javax.swing.JMenuItem();
         mnuEstoque = new javax.swing.JMenu();
         mnuAtualizaCustoFilial = new javax.swing.JMenuItem();
+        mnuAtualizaPrecoReg13 = new javax.swing.JMenuItem();
         mnuProcessarImagens = new javax.swing.JMenuItem();
         mnuBaixaLancProducao = new javax.swing.JMenuItem();
         mnuAjusteEstoqueFilial90 = new javax.swing.JMenuItem();
@@ -165,6 +166,14 @@ public class Brz000 extends javax.swing.JFrame {
             }
         });
         mnuEstoque.add(mnuAtualizaCustoFilial);
+
+        mnuAtualizaPrecoReg13.setText("Atualiza Preço Venda Região 13");
+        mnuAtualizaPrecoReg13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAtualizaPrecoReg13ActionPerformed(evt);
+            }
+        });
+        mnuEstoque.add(mnuAtualizaPrecoReg13);
 
         mnuProcessarImagens.setText("Processar Imagens de Produtos");
         mnuProcessarImagens.addActionListener(new java.awt.event.ActionListener() {
@@ -481,6 +490,12 @@ public class Brz000 extends javax.swing.JFrame {
         Main.dialog.setVisible(true);
     }//GEN-LAST:event_mnuAtualizaCustoFilialActionPerformed
 
+    private void mnuAtualizaPrecoReg13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAtualizaPrecoReg13ActionPerformed
+        // TODO add your handling code here:
+        Main.dialog = new Brz017();
+        Main.dialog.setVisible(true);
+    }//GEN-LAST:event_mnuAtualizaPrecoReg13ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -529,6 +544,7 @@ public class Brz000 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAjusteEstoqueFilial90;
     private javax.swing.JMenuItem mnuAtualizaBarrasPedido;
     private javax.swing.JMenuItem mnuAtualizaCustoFilial;
+    private javax.swing.JMenuItem mnuAtualizaPrecoReg13;
     private javax.swing.JMenuItem mnuBaixaLancProducao;
     private javax.swing.JMenuItem mnuCadastroSintegra;
     private javax.swing.JMenu mnuColetor;

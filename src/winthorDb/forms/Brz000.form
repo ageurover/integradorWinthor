@@ -104,6 +104,14 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAtualizaCustoFilialActionPerformed"/>
                   </Events>
                 </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuAtualizaPrecoReg13">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Atualiza Pre&#xe7;o Venda Regi&#xe3;o 13"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAtualizaPrecoReg13ActionPerformed"/>
+                  </Events>
+                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuProcessarImagens">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Processar Imagens de Produtos"/>

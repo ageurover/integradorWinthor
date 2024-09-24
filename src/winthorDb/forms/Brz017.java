@@ -8,7 +8,6 @@ package winthorDb.forms;
 import java.util.Date;
 import java.util.List;
 import javax.swing.ListSelectionModel;
-import winthorDb.Main;
 import winthorDb.error.MessageDialog;
 import winthorDb.error.trataErro;
 import winthorDb.oracleDb.IntegracaoWinthorDb;
@@ -18,16 +17,14 @@ import winthorDb.util.Formato;
  *
  * @author ageurover
  */
-public class Brz016 extends javax.swing.JFrame {
+public class Brz017 extends javax.swing.JFrame {
 
     /**
      * Creates new form Brz001
      */
-    public Brz016() {
+    public Brz017() {
         initComponents();
         setLocationRelativeTo(null);
-        tblDados.clearTableData();
-        edtLog.setText("");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png")).getImage());
 
         // permite selecionar mais de uma linha de dados.
@@ -41,9 +38,7 @@ public class Brz016 extends javax.swing.JFrame {
         edtDataFinal.setDate(new Date());
     }
 
-    private void buscaLancamentoWinthor(String filialOrigem, String filialDestino) {
-        IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
-
+    private void buscaLancamentoWinthor() {
         try {
             tblDados.clearTableData();
             String whereSql = "";
@@ -53,40 +48,46 @@ public class Brz016 extends javax.swing.JFrame {
             if ((edtDataInicial.getDate() != null) && (edtDataFinal.getDate() != null)) {
                 whereSql += " and e.dtent between to_date('" + Formato.dateToStr(edtDataInicial.getDate()) + "','dd/mm/yyyy')"
                         + " and to_date('" + Formato.dateToStr(edtDataFinal.getDate()) + "','dd/mm/yyyy')\n";
-                whereSql += " AND e.numtransent NOT IN (SELECT NUMTRANSENT FROM BRZ_LOG_ATUALIZA_CUSTO where NUMTRANSENT is not null)\n";
+                whereSql += " AND e.numtransent NOT IN (SELECT NUMTRANSENT FROM BRZ_LOG_ATUALIZA_PRECO_SPA)\n";
             }
             if (!whereSql.isEmpty()) {
-                String strSelect = "select s.codfilial as filial_origem, "
-                        + "s.numtransvenda, e.codfilial as filial_destino, e.numtransent,\n"
-                        + "e.codfornec, f.fornecedor, \n"
-                        + "e.numnota,e.serie,e.especie,e.dtemissao,e.dtent,e.vltotal \n"
-                        + "from pcnfent e, pcnfsaid s, pcfornec f \n"
-                        + "where s.numtransvenda = e.numtransvendaorig\n"
-                        + "and e.codfornec = f.codfornec \n"
-                        + "and s.codfilial = '" + filialOrigem + "' \n"
-                        + "and e.codfilial = '" + filialDestino + "' \n"
-                        + whereSql;
+
+                String strSelect = "select e.codfilial,  e.codfornec, f.fornecedor, e.numtransent,\n"
+                        + " e.numnota, e.serie, e.especie, trunc(e.dtemissao) as dtemissao, \n"
+                        + " trunc(e.dtent) as dtent, e.vltotal, count(m.codprod) as qtde_itens \n"
+                        + " from pcnfent e, pcmov m, pcfornec f \n"
+                        + " where e.numtransent = m.numtransent \n"
+                        + " and e.especie = 'NF' \n"
+                        + " and e.dtcancel is null \n"
+                        + " and f.codfornec = e.codfornec \n"
+                        + " and m.codoper = 'E' \n"
+                        + " and e.codfilial = '" + edtCodFilial.getText() + "' \n"
+                        + whereSql
+                        + " group by e.codfilial, e.codfornec, f.fornecedor, e.numtransent,\n"
+                        + " e.numnota, e.serie, e.especie, e.dtemissao, \n"
+                        + " e.dtent, e.vltotal"
+                        + " order by e.dtent, e.numtransent";
 
                 tblDados.setTableData(strSelect);
 
                 edtLog.setText("");
                 edtLog.append("Lançamentos Encontrados no Winthor -> " + tblDados.getRowCount() + "\n");
+            } else {
+                MessageDialog.error("Devem ser informados Transação de entrada ou Periodo de Entrada!");
             }
         } catch (Exception ex) {
             trataErro.trataException(ex);
         }
-
     }
 
-    private void atualizaCusto(String filialOrigem, String filialDestino, String numTransEnt) throws Exception {
+    private void atualizaPreco(String filial, String numTransEnt) throws Exception {
         IntegracaoWinthorDb wint = new IntegracaoWinthorDb();
 
         try {
             wint.openConectOracle();
-            String sqlString = "Select kt_atualiza_custo_transf(pcodfilialorigem=>'" + filialOrigem
-                    + "' ,pcodfilialdestino=>'" + filialDestino
-                    + "' ,pnumtransent=>"
-                    + numTransEnt + ") as log from dual";
+            String sqlString = "Select KT_ATUALIZA_PVENDA_SPA(PCODFILIAL=>'" + filial
+                    + "' ,pnumtransent=>" + numTransEnt + ") as log "
+                    + " from dual";
             List lst = wint.selectDados(sqlString);
 
             for (Object object : lst.toArray()) {
@@ -99,7 +100,6 @@ public class Brz016 extends javax.swing.JFrame {
             throw ex;
         } finally {
             wint.closeConectOracle();
-
         }
 
     }
@@ -118,23 +118,21 @@ public class Brz016 extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        edtCodFilialDestino = new javax.swing.JTextField();
         btnPesquisar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         edtLog = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        edtCodFilialOrigem = new javax.swing.JTextField();
+        edtCodFilial = new javax.swing.JTextField();
         btnLimpar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         edtNumTransEnt = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblDados = new winthorDb.util.CustomTable();
-        btnAtualizaCusto = new javax.swing.JButton();
+        btnPrecificar = new javax.swing.JButton();
         edtDataInicial = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
         edtDataFinal = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
 
         setTitle("Atualização de Custo Filial Destino");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -146,7 +144,7 @@ public class Brz016 extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png"))); // NOI18N
         jLabel2.setToolTipText("Brz002");
 
-        jLabel1.setText("Ajuste de Custos na Transferencia entre Filiais!");
+        jLabel1.setText("Precificação Região 13 (Vendas filial 2 para filial 51)");
 
         jLabel3.setText("* * Rotina Distribuidora");
 
@@ -176,10 +174,6 @@ public class Brz016 extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Informe os dados"));
 
-        jLabel4.setText("Filial Destino:");
-
-        edtCodFilialDestino.setText("1");
-
         btnPesquisar.setText("Pesquisar");
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,12 +186,12 @@ public class Brz016 extends javax.swing.JFrame {
         edtLog.setWrapStyleWord(true);
         jScrollPane1.setViewportView(edtLog);
 
-        jLabel5.setText("Filial Origem:");
+        jLabel5.setText("Filial :");
 
-        edtCodFilialOrigem.setText("2");
-        edtCodFilialOrigem.addActionListener(new java.awt.event.ActionListener() {
+        edtCodFilial.setText("2");
+        edtCodFilial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edtCodFilialOrigemActionPerformed(evt);
+                edtCodFilialActionPerformed(evt);
             }
         });
 
@@ -208,23 +202,23 @@ public class Brz016 extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Num. Transação Entrada:");
+        jLabel7.setText("Transação Entrada:");
 
         tblDados.setToolTipText("");
         tblDados.setCellSelectionEnabled(true);
         tblDados.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         jScrollPane3.setViewportView(tblDados);
 
-        btnAtualizaCusto.setText("Atualizar Custo Filial Destino");
-        btnAtualizaCusto.addActionListener(new java.awt.event.ActionListener() {
+        btnPrecificar.setText("Precificar Região");
+        btnPrecificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAtualizaCustoActionPerformed(evt);
+                btnPrecificarActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("Até");
+        jLabel4.setText("Periodo de Entrada:");
 
-        jLabel8.setText("Periodo de Entrada:");
+        jLabel6.setText("Até");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -233,63 +227,62 @@ public class Brz016 extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtCodFilialOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtCodFilialDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtNumTransEnt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addComponent(btnPesquisar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLimpar))
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(edtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnAtualizaCusto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 578, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnPrecificar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnLimpar)
+                                .addGap(15, 15, 15))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnPesquisar)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(edtNumTransEnt, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(edtNumTransEnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(edtCodFilialOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(edtCodFilialDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(btnPesquisar)
-                    .addComponent(btnLimpar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(edtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(edtCodFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
                     .addComponent(edtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(edtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(edtNumTransEnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPesquisar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAtualizaCusto))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPrecificar)
+                    .addComponent(btnLimpar)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -313,15 +306,13 @@ public class Brz016 extends javax.swing.JFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            if ((!edtCodFilialDestino.getText().isEmpty())
-                    && (!edtCodFilialOrigem.getText().isEmpty())) {
-                buscaLancamentoWinthor(edtCodFilialOrigem.getText(), edtCodFilialDestino.getText());
+            if ((!edtCodFilial.getText().isEmpty())) {
+                buscaLancamentoWinthor();
                 btnPesquisar.setEnabled(false);
-                edtCodFilialDestino.setEditable(false);
-                edtCodFilialOrigem.setEditable(false);
+                edtCodFilial.setEditable(false);
             } else {
                 trataErro.lstErros.clear();
-                trataErro.addListaErros("ATENÇÃO: \nDeve ser informado a filial de origem e destino!");
+                trataErro.addListaErros("ATENÇÃO: \nDeve ser informado a filial e Periodo de entrada!");
                 trataErro.mostraListaErros();
                 trataErro.lstErros.clear();
                 btnLimparActionPerformed(evt);
@@ -331,9 +322,9 @@ public class Brz016 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void edtCodFilialOrigemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtCodFilialOrigemActionPerformed
+    private void edtCodFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtCodFilialActionPerformed
 
-    }//GEN-LAST:event_edtCodFilialOrigemActionPerformed
+    }//GEN-LAST:event_edtCodFilialActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
 
@@ -341,27 +332,25 @@ public class Brz016 extends javax.swing.JFrame {
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         btnPesquisar.setEnabled(true);
-        edtCodFilialDestino.setEditable(true);
-        edtCodFilialOrigem.setEditable(true);
-        edtCodFilialOrigem.setText("1");
-        edtCodFilialDestino.setText("");
+        edtCodFilial.setEditable(true);
+        edtCodFilial.setText("2");
+        tblDados.clearTableData();
         edtLog.setText("");
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void btnAtualizaCustoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizaCustoActionPerformed
+    private void btnPrecificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecificarActionPerformed
         // TODO add your handling code here:
         try {
             int lstSelect[] = tblDados.getSelectedRows();
             for (int i = 0; i < lstSelect.length; i++) {
-                atualizaCusto(tblDados.getConteudoRow("filial_origem", lstSelect[i]).toString(),
-                        tblDados.getConteudoRow("filial_destino", lstSelect[i]).toString(),
+                atualizaPreco(tblDados.getConteudoRow("codfilial", lstSelect[i]).toString(),
                         tblDados.getConteudoRow("numtransent", lstSelect[i]).toString());
             }
-            MessageDialog.info("Atualização de Custo Relaizada com sucesso !!!\n");
+            MessageDialog.info("Precificação Relaizada com sucesso !!!\n");
         } catch (Exception ex) {
             trataErro.trataException(ex);
         }
-    }//GEN-LAST:event_btnAtualizaCustoActionPerformed
+    }//GEN-LAST:event_btnPrecificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -381,24 +370,25 @@ public class Brz016 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Brz016.class
+            java.util.logging.Logger.getLogger(Brz017.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new Brz016().setVisible(true);
+            new Brz017().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAtualizaCusto;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnPesquisar;
-    private javax.swing.JTextField edtCodFilialDestino;
-    private javax.swing.JTextField edtCodFilialOrigem;
+    private javax.swing.JButton btnPrecificar;
+    private javax.swing.JTextField edtCodFilial;
     private com.toedter.calendar.JDateChooser edtDataFinal;
     private com.toedter.calendar.JDateChooser edtDataInicial;
     private javax.swing.JTextArea edtLog;
@@ -410,7 +400,6 @@ public class Brz016 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
