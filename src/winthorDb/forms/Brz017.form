@@ -84,12 +84,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Precifica&#xe7;&#xe3;o Regi&#xe3;o 13 (Vendas filial 2 para filial 51)"/>
+            <Property name="text" type="java.lang.String" value="Precifica&#xe7;&#xe3;o Regi&#xe3;o 13-14 (Vendas filial 2 para filial 51 e Transferencia Filial 2 para Matriz)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="* * Rotina Distribuidora"/>
+            <Property name="text" type="java.lang.String" value="* * Rotina Brasil Distribuidora"/>
           </Properties>
         </Component>
       </SubComponents>

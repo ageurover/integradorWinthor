@@ -85,16 +85,28 @@ public class Brz017 extends javax.swing.JFrame {
 
         try {
             wint.openConectOracle();
+
+            // atualiza tabela de preço do auto serviço
+            edtLog.append("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\nAtualizando Regiao 13 - Super Atacado\n");
             String sqlString = "Select KT_ATUALIZA_PVENDA_SPA(PCODFILIAL=>'" + filial
                     + "' ,pnumtransent=>" + numTransEnt + ") as log "
                     + " from dual";
             List lst = wint.selectDados(sqlString);
 
             for (Object object : lst.toArray()) {
-                edtLog.append(lst.size() + "\n");
                 edtLog.append(object.toString() + "\n");
             }
 
+            // atualiza tabela de preços da transferencia para matriz
+            edtLog.append("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\nAtualizando Regiao 14 - Transferencia Matriz\n");
+            String sqlTrf = "Select KT_ATUALIZA_PVENDA_TRF(PCODFILIAL=>'" + filial
+                    + "' ,pnumtransent=>" + numTransEnt + ") as log "
+                    + " from dual";
+            List lstTrf = wint.selectDados(sqlTrf);
+
+            for (Object object : lstTrf.toArray()) {
+                edtLog.append(object.toString() + "\n");
+            }
         } catch (Exception ex) {
             trataErro.trataException(ex);
             throw ex;
@@ -144,9 +156,9 @@ public class Brz017 extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/winthorDb/forms/RoverTecnologiaIcone.png"))); // NOI18N
         jLabel2.setToolTipText("Brz002");
 
-        jLabel1.setText("Precificação Região 13 (Vendas filial 2 para filial 51)");
+        jLabel1.setText("Precificação Região 13-14 (Vendas filial 2 para filial 51 e Transferencia Filial 2 para Matriz)");
 
-        jLabel3.setText("* * Rotina Distribuidora");
+        jLabel3.setText("* * Rotina Brasil Distribuidora");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

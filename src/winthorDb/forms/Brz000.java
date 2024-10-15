@@ -167,7 +167,7 @@ public class Brz000 extends javax.swing.JFrame {
         });
         mnuEstoque.add(mnuAtualizaCustoFilial);
 
-        mnuAtualizaPrecoReg13.setText("Atualiza Preço Venda Região 13");
+        mnuAtualizaPrecoReg13.setText("Atualiza Preço Venda Região 13-14");
         mnuAtualizaPrecoReg13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mnuAtualizaPrecoReg13ActionPerformed(evt);
